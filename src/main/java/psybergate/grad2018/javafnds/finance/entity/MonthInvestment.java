@@ -12,6 +12,12 @@ public class MonthInvestment extends Investment implements Iterable<Event> {
 	@JoinColumn
 	private List<Event> events;
 
+	protected MonthInvestment() {}
+
+	public MonthInvestment(String name, Double initailAmount, Integer months, Double rate) {
+		super(name, initailAmount, months, rate);
+	}
+
 	@Override
 	public Iterator<Event> iterator() {
 		return events.iterator();
