@@ -24,12 +24,13 @@ public abstract class Investment {
 
 	protected Investment() {}
 
-	public Investment(Double initailAmount, Integer months, Double rate) {
-		super();
+	public Investment(String name, Double initailAmount, Integer months, Double rate) {
+		this.name = name;
 		this.initailAmount = initailAmount;
 		this.months = months;
 		this.rate = rate;
 	}
+
 
 	public String getName() {
 		return name;
