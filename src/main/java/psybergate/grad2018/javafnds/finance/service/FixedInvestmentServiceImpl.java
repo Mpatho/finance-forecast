@@ -1,49 +1,32 @@
 package psybergate.grad2018.javafnds.finance.service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.Stateless;
 
-import psybergate.grad2018.javafnds.finance.entity.FixedInvestment;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
+import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
 import psybergate.grad2018.javafnds.finance.resource.Resource;
 
 @Stateless
 public class FixedInvestmentServiceImpl implements FixedInvestmentService {
 
-	Resource<FixedInvestment> fxdInvRes;
+	Resource<Investment> fxdInvRes = new InvestmentResource();
 
 	@Override
-	public void saveForecast(Investment fixedInvestment) {
+	public List<ForecastItem> calculateForecast(Investment fixedInvestment) {
+		Forecast forecast = new Forecast();
 		if(isValidateFixedInvestment(fixedInvestment)) {
-			System.out.println("Yay");
+			return forecast.getForecastItems(fixedInvestment);
 		}
 		else {
 			throw new RuntimeException("Something went wrong");
 		}
+		
 	}
 
-	@Override
-	public void updateForecast(Investment fixedInvestment) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteForecast(Investment fixedInvestment) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void viewAllForecast() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void viewForecast(Investment fixedInvestment) {
-		// TODO Auto-generated method stub
-
-	}
 
 	private boolean isValidateFixedInvestment(Investment investment) {
 		if(investment == null) {
@@ -51,13 +34,13 @@ public class FixedInvestmentServiceImpl implements FixedInvestmentService {
 		} 
 		else if(investment != null) {
 			String name = investment.getName();
-			Double initailAmount = investment.getInitailAmount();
+			BigDecimal initailAmount = investment.getInitailAmount();
 			Integer months = investment.getMonths();
 			Double rate = investment.getRate();
 			if(name == null || name.trim().length() == 0) {
 				return false;
 			}
-			else if(initailAmount==null || initailAmount <= 0)
+			else if(initailAmount==null || initailAmount.compareTo(new BigDecimal(0))<=0)
 				return false;
 			else if(months==null || months <= 0)
 				return false;
