@@ -1,5 +1,7 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +18,7 @@ public abstract class Investment {
 	@Column(unique = true)
 	private String name;
 
-	private Double initailAmount;
+	private BigDecimal initailAmount;
 
 	private Integer months;
 
@@ -24,13 +26,12 @@ public abstract class Investment {
 
 	protected Investment() {}
 
-	public Investment(String name, Double initailAmount, Integer months, Double rate) {
+	public Investment(String name, BigDecimal initailAmount, Integer months, Double rate) {
 		this.name = name;
 		this.initailAmount = initailAmount;
 		this.months = months;
 		this.rate = rate;
 	}
-
 
 	public String getName() {
 		return name;
@@ -40,11 +41,11 @@ public abstract class Investment {
 		this.name = name;
 	}
 
-	public Double getInitailAmount() {
+	public BigDecimal getInitailAmount() {
 		return initailAmount;
 	}
 
-	public void setInitailAmount(Double initailAmount) {
+	public void setInitailAmount(BigDecimal initailAmount) {
 		this.initailAmount = initailAmount;
 	}
 

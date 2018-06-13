@@ -1,37 +1,47 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 public class Event {
 
+	public static final String RATE_CHANGE = "RATE_CHANGE";
+
+	public static final String WITHDRAW = "WITHDRAW";
+
+	public static final String DEPOSIT = "DEPOSIT";
+
+	public static final String AMOUNT_CHANGE = "AMOUNT_CHANGE";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private EventType type;
+	private String type;
 
 	private Integer month;
 
-	private Double value;
+	private BigDecimal value;
 
 	protected Event() {
 
 	}
 
-	public Event(EventType type, Integer month, Double value) {
+	public Event(String type, Integer month, BigDecimal value) {
 		super();
 		this.type = type;
 		this.month = month;
 		this.value = value;
 	}
 
-	public EventType getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(EventType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -43,11 +53,11 @@ public class Event {
 		this.month = month;
 	}
 
-	public Double getValue() {
+	public BigDecimal getValue() {
 		return value;
 	}
 
-	public void setValue(Double value) {
+	public void setValue(BigDecimal value) {
 		this.value = value;
 	}
 
