@@ -1,5 +1,6 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class MonthInvestment extends Investment implements Iterable<Event> {
 
 	protected MonthInvestment() {}
 
-	public MonthInvestment(String name, Double initailAmount, Integer months, Double rate) {
+	public MonthInvestment(String name, BigDecimal initailAmount, Integer months, Double rate) {
 		super(name, initailAmount, months, rate);
 	}
 
