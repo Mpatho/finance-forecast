@@ -19,6 +19,5 @@ public class FixedForecastItem extends ForecastItem{
 	public BigDecimal getEndMonthBalance() {
 		return getBeginMonthAmount().add(getInterest());
 	}
-	
 
 }
