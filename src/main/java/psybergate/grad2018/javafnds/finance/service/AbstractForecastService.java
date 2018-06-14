@@ -5,10 +5,12 @@ import java.util.List;
 
 import javax.ejb.Stateful;
 
+import psybergate.grad2018.javafnds.finance.entity.Money;
+
 @Stateful
 public abstract class AbstractForecastService implements ForecastService {
 
-	private BigDecimal initialAmount;
+	private Money initialAmount;
 
 	private BigDecimal rate;
 
@@ -19,12 +21,12 @@ public abstract class AbstractForecastService implements ForecastService {
 
 
 	@Override
-	public BigDecimal getInitialAmount() {
+	public Money getInitialAmount() {
 		return initialAmount;
 	}
 
 	@Override
-	public void setInitialAmount(BigDecimal initialAmount) {
+	public void setInitialAmount(Money initialAmount) {
 		this.initialAmount = initialAmount;
 	}
 

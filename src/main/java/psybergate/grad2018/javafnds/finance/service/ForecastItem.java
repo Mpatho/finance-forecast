@@ -2,35 +2,40 @@ package psybergate.grad2018.javafnds.finance.service;
 
 import java.math.BigDecimal;
 
+import psybergate.grad2018.javafnds.finance.entity.Money;
+
 public abstract class ForecastItem {
 
-	private BigDecimal beginMonthAmount;
+	private Money initialAmount;
 
-	private Double rate;
+	private BigDecimal rate;
 
-	public ForecastItem(BigDecimal beginMonthAmount, Double rate) {
-		this.beginMonthAmount = beginMonthAmount;
+	public ForecastItem(Money initialAmount, BigDecimal rate) {
+		super();
+		this.initialAmount = initialAmount;
 		this.rate = rate;
 	}
 
-	public BigDecimal getBeginMonthAmount() {
-		return beginMonthAmount;
+	public Money getInitialAmount() {
+		return initialAmount;
 	}
 
-	public void setBeginMonthAmount(BigDecimal beginMonthAmount) {
-		this.beginMonthAmount = beginMonthAmount;
+	public void setInitialAmount(Money initialAmount) {
+		this.initialAmount = initialAmount;
 	}
 
-	public abstract BigDecimal getEndMonthBalance();
-
-	public abstract BigDecimal getInterest();
-
-	public Double getRate() {
+	public BigDecimal getRate() {
 		return rate;
 	}
 
-	public void setRate(Double rate) {
+	public void setRate(BigDecimal rate) {
 		this.rate = rate;
 	}
+
+	public abstract Money getInterest();
+
+	public abstract Money getEndAmount();
+
+	
 
 }

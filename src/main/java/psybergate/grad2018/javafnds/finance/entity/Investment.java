@@ -41,7 +41,7 @@ public abstract class Investment {
 		this.name = name;
 	}
 
-	public Money getInitailAmount() {
+	public Money getInitialAmount() {
 		return initialAmount;
 	}
 
