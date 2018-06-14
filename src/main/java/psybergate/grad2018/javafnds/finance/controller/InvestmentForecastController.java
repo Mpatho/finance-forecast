@@ -49,6 +49,7 @@ public class InvestmentForecastController {
 	}
 
 	public String view(Map<String, String[]> request, Map<String, Object> response) {
+		System.out.println("in view");
 		Collection<Investment> investments = investmentForecastService.getInvestments();
 		response.put("investments", investments);
 		return "/WEB-INF/views/investment/forecasts.jsp";
