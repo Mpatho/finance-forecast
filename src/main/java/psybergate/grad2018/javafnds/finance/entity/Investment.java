@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public abstract class Investment {
@@ -18,6 +19,7 @@ public abstract class Investment {
 	@Column(unique = true)
 	private String name;
 
+	@OneToOne
 	private Money initialAmount;
 
 	private Integer months;
