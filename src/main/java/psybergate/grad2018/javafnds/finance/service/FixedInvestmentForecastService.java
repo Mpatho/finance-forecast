@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
-@Stateless
-public class FixedInvestmentForecastService extends AbstractForecastService {
+@Stateful
+public class FixedInvestmentForecastService extends AbstractForecastService implements ForecastService {
 
 	@Override
 	public List<ForecastItem> getForecastItems() {
