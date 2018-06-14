@@ -3,13 +3,15 @@ package psybergate.grad2018.javafnds.finance.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import psybergate.grad2018.javafnds.finance.entity.Money;
+
 public interface ForecastService {
 
 	List<ForecastItem> getForecastItems();
 
-	BigDecimal getInitialAmount();
+	Money getInitialAmount();
 
-	void setInitialAmount(BigDecimal initialAmount);
+	void setInitialAmount(Money initialAmount);
 
 	BigDecimal getRate();
 
@@ -18,5 +20,7 @@ public interface ForecastService {
 	Integer getMonths();
 
 	void setMonths(Integer months);
+
+	List<ForecastItem> getForecastItems(String name);
 
 }
