@@ -19,6 +19,8 @@ public abstract class AbstractForecastService implements ForecastService {
 	@Override
 	public abstract List<ForecastItem> getForecastItems();
 
+	@Override
+	public abstract List<ForecastItem> getForecastItems(String name);
 
 	@Override
 	public Money getInitialAmount() {

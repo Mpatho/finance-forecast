@@ -21,4 +21,6 @@ public interface ForecastService {
 
 	void setMonths(Integer months);
 
+	List<ForecastItem> getForecastItems(String name);
+
 }

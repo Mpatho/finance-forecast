@@ -40,4 +40,10 @@ public class FixedInvestmentForecastService extends AbstractForecastService {
 		return true;
 	}
 
+	@Override
+	public List<ForecastItem> getForecastItems(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

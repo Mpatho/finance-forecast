@@ -1,6 +1,7 @@
 package psybergate.grad2018.javafnds.finance.controller;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Map;
 
 import javax.annotation.ManagedBean;
@@ -48,6 +49,8 @@ public class InvestmentForecastController {
 	}
 
 	public String view(Map<String, String[]> request, Map<String, Object> response) {
+		Collection<Investment> investments = investmentForecastService.getInvestments();
+		response.put("investments", investments);
 		return "/WEB-INF/views/investment/forecasts.jsp";
 	}
 
