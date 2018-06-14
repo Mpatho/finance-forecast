@@ -77,4 +77,8 @@ public final class Money implements Comparable<Money> {
 		return String.format("%.2f", rands);
 	}
 
+	@Override
+	public String toString() {
+		return stringValue();
+	}
 }
