@@ -6,9 +6,9 @@
 </head>
 <body>
   <div class="container-fluid">
-    <table>
+    <table class="table table-bordered">
       <thead>
-        <tr>
+        <tr class="blue-grey lighten-4">
           <th>Name</th>
           <th>Initial Amount</th>
           <th>Months</th>
@@ -21,12 +21,12 @@
         %>
         <%
         	for (Investment investment : investments) {
-        		out.print("<tr><a href='#?name="+ investment.getName()+"'>");
+        		out.print("<tr><a href='#?name=" + investment.getName() + "'>");
         		out.print("<td>" + investment.getName() + "</td>");
         		out.print("<td>" + investment.getInitailAmount() + "</td>");
         		out.print("<td>" + investment.getMonths() + "</td>");
         		out.print("<td>" + investment.getRate() + "</td>");
-        		out.print("</tr></a>");
+        		out.print("</a></tr>");
         	}
         %>
       </tbody>

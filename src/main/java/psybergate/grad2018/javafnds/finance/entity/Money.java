@@ -62,4 +62,8 @@ public final class Money implements Comparable<Money> {
 		return rands.doubleValue();
 	}
 
+	public String stringValue() {
+		return String.format("%.2f", rands);
+	}
+
 }
