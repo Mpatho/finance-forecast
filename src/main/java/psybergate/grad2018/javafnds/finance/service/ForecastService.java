@@ -1,29 +1,17 @@
 package psybergate.grad2018.javafnds.finance.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Local;
 
-import psybergate.grad2018.javafnds.finance.entity.Money;
+import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
+import psybergate.grad2018.javafnds.finance.entity.Investment;
 
 @Local
-public interface ForecastService {
+public interface ForecastService<I extends Investment, F extends ForecastItem> {
 
-	List<ForecastItem> getForecastItems();
+	List<F> getForecastItems(I investment);
 
-	Money getInitialAmount();
-
-	void setInitialAmount(Money initialAmount);
-
-	BigDecimal getRate();
-
-	void setRate(BigDecimal rate);
-
-	Integer getMonths();
-
-	void setMonths(Integer months);
-
-	List<ForecastItem> getForecastItems(String name);
+	List<F> getForecastItems(String name);
 
 }

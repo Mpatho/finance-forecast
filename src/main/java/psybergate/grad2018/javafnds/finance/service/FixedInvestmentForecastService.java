@@ -7,22 +7,25 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
+import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
+import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
+import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
 @Stateful
-public class FixedInvestmentForecastService extends AbstractForecastService implements ForecastService {
+public class FixedInvestmentForecastService implements ForecastService<Investment, ForecastItem> {
 
 	@EJB
 	private InvestmentForecastService inv;
 
 	@Override
-	public List<ForecastItem> getForecastItems() {
+	public List<ForecastItem> getForecastItems(Investment investment) {
 
 		List<ForecastItem> forecastItems = new ArrayList<>();
-		if (isValidateFixedInvestment()) {
-			Money currentAmount = getInitialAmount();
-			for (int i = 0; i < getMonths(); i++) {
-				ForecastItem item = new FixedForecastItem(currentAmount, getRate());
+		if (isValidateFixedInvestment(investment)) {
+			Money currentAmount = investment.getInitialAmount();
+			for (int i = 0; i < investment.getMonths(); i++) {
+				ForecastItem item = new FixedForecastItem(currentAmount, investment.getRate());
 				forecastItems.add(item);
 				currentAmount = item.getEndAmount();
 			}
@@ -30,16 +33,13 @@ public class FixedInvestmentForecastService extends AbstractForecastService impl
 		return forecastItems;
 	}
 
-	private boolean isValidateFixedInvestment() {
-		Money initialAmount = getInitialAmount();
-		Integer months = getMonths();
-		BigDecimal rate = getRate();
-		if (initialAmount == null || initialAmount.compareTo(new Money(0)) <= 0)
-			return false;
-		else if (months == null || months <= 0)
-			return false;
-		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100)
-			return false;
+	private boolean isValidateFixedInvestment(Investment investment) {
+		Money initialAmount = investment.getInitialAmount();
+		Integer months = investment.getMonths();
+		BigDecimal rate = investment.getRate();
+		if (initialAmount == null || initialAmount.compareTo(new Money(0)) <= 0) return false;
+		else if (months == null || months <= 0) return false;
+		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
 
 		return true;
 	}

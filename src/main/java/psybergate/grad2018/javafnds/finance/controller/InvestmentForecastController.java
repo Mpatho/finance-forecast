@@ -11,6 +11,7 @@ import psybergate.grad2018.javafnds.finance.entity.FixedInvestment;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.entity.MonthlyInvestment;
+import psybergate.grad2018.javafnds.finance.service.FixedInvestmentForecastService;
 import psybergate.grad2018.javafnds.finance.service.InvestmentForecastService;
 
 @ManagedBean("Investment")
@@ -19,6 +20,9 @@ public class InvestmentForecastController {
 	@EJB
 	private InvestmentForecastService investmentForecastService;
 
+	@EJB
+	private FixedInvestmentForecastService fixedInvestmentForecastServic;
+	
 	public String save(Map<String, String[]> request, Map<String, Object> response) {
 		String name = request.get("name")[0];
 		Investment investment = investmentForecastService.getInvestmentByName(name);
@@ -29,15 +33,17 @@ public class InvestmentForecastController {
 			String type = request.get("type")[0];
 			if (type.equals("fixed")) {
 				investment = new FixedInvestment(name, initialAmount, months, rate);
+				response.put("type", type);
+				if (investmentForecastService.save(investment)) {
+					response.put("message", "saved successfully");
+					response.put("forecast", fixedInvestmentForecastServic.getForecastItems(investment));
+				}
 			}
 			else if (type.equals("monthly")) {
 				investment = new MonthlyInvestment(name, initialAmount, months, rate);
+				response.put("type", type);
 			}
 		}
-		System.out.println("investment: " + investment);
-		boolean saved = investmentForecastService.save(investment);
-		response.put("saved", saved);
-		response.put("forecast", saved);
 		return "/WEB-INF/views/investment/forecast.jsp";
 	}
 
