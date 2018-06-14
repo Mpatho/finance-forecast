@@ -1,6 +1,7 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 
 @Entity
 public final class Money implements Comparable<Money> {
+
+	private static final DecimalFormat FORMAT = new DecimalFormat("#,###.##");
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,18 +24,15 @@ public final class Money implements Comparable<Money> {
 	@Column(precision = 8, scale = 2)
 	private BigDecimal rands;
 
-	protected Money() {
-	}
+	protected Money() {}
 
 	public Money(double rands) {
-		if (!isValid(rands))
-			throw new IllegalArgumentException();
+		if (!isValid(rands)) throw new IllegalArgumentException();
 		this.rands = new BigDecimal(rands);
 	}
 
 	public Money(BigDecimal rands) {
-		if (!isValid(rands.doubleValue()))
-			throw new IllegalArgumentException();
+		if (!isValid(rands.doubleValue())) throw new IllegalArgumentException();
 		this.rands = rands;
 	}
 
@@ -52,19 +52,15 @@ public final class Money implements Comparable<Money> {
 
 	@Override
 	public int compareTo(Money money) {
-		if (money == null)
-			throw new IllegalArgumentException();
+		if (money == null) throw new IllegalArgumentException();
 		return this.rands.compareTo(money.rands);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null)
-			return false;
-		if (obj == this)
-			return true;
-		if (!obj.getClass().equals(this.getClass()))
-			return false;
+		if (obj == null) return false;
+		if (obj == this) return true;
+		if (!obj.getClass().equals(this.getClass())) return false;
 		Money money = (Money) obj;
 		return money.rands.equals(this.rands);
 	}
@@ -74,7 +70,7 @@ public final class Money implements Comparable<Money> {
 	}
 
 	public String stringValue() {
-		return String.format("%.2f", rands);
+		return FORMAT.format(rands);
 	}
 
 }

@@ -19,10 +19,6 @@ public class InvestmentForecastController {
 	@EJB
 	private InvestmentForecastService investmentForecastService;
 
-	public InvestmentForecastController() {
-		System.out.println("daljda");
-	}
-
 	public String save(Map<String, String[]> request, Map<String, Object> response) {
 		String name = request.get("name")[0];
 		Investment investment = investmentForecastService.getInvestmentByName(name);
@@ -46,14 +42,22 @@ public class InvestmentForecastController {
 
 	public String delete(Map<String, String[]> request, Map<String, Object> response) {
 		String name = request.get("name")[0];
-		boolean deleted = investmentForecastService.deleteInvestmentByName(name);
-		response.put("deleted", deleted);
-		response.put("forecast", deleted);
+		Investment investment = investmentForecastService.getInvestmentByName(name);
+		if (investment != null && investmentForecastService.deleteInvestmentByName(name)) {
+			response.put("message", "deleted successfully");
+			response.put("investment", investment);
+		}
 		return "/WEB-INF/views/investment/forecast.jsp";
 	}
 
 	public String view(Map<String, String[]> request, Map<String, Object> response) {
-		System.out.println("in view");
+		String name = request.get("name")[0];
+		Investment investment = investmentForecastService.getInvestmentByName(name);
+		response.put("investment", investment);
+		return "/WEB-INF/views/investment/forecast.jsp";
+	}
+
+	public String viewAll(Map<String, String[]> request, Map<String, Object> response) {
 		Collection<Investment> investments = investmentForecastService.getInvestments();
 		response.put("investments", investments);
 		return "/WEB-INF/views/investment/forecasts.jsp";

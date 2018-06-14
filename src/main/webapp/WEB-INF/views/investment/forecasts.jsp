@@ -21,9 +21,9 @@
         %>
         <%
         	for (Investment investment : investments) {
-        		out.print("<tr><a href='#?name=" + investment.getName() + "'>");
+        		out.print("<tr><a href='/finance-1.0/investment/view?name=" + investment.getName() + "'>");
         		out.print("<td>" + investment.getName() + "</td>");
-        		out.print("<td>" + investment.getInitailAmount() + "</td>");
+        		out.print("<td>" + investment.getInitialAmount() + "</td>");
         		out.print("<td>" + investment.getMonths() + "</td>");
         		out.print("<td>" + investment.getRate() + "</td>");
         		out.print("</a></tr>");
