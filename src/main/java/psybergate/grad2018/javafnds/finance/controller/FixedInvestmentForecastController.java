@@ -17,13 +17,13 @@ public class FixedInvestmentForecastController {
 
 	@EJB
 	private ForecastService fixedInvestmentForecastService;
-	
+
 	@Inject
 	private InvestmentForecastController investmentForecastController;
-	
+
 	public String forecast(Map<String, String[]> request, Map<String, Object> response) {
 		if (request.isEmpty()) {
-			return "/WEB-INF/views/fixed_investment/forecast.jsp";
+			return "/WEB-INF/views/investment/forecast.jsp";
 		}
 		BigDecimal rate = new BigDecimal(request.get("rate")[0]);
 
@@ -37,17 +37,12 @@ public class FixedInvestmentForecastController {
 		List<ForecastItem> forecastItems = fixedInvestmentForecastService.getForecastItems();
 
 		response.put("forecastItems", forecastItems);
+		response.put("rate", rate.doubleValue());
+		response.put("months", numOfMonths);
+		response.put("initialAmount", initialAmount);
 
-		return "/WEB-INF/views/fixed_investment/forecast.jsp";
+		return "/WEB-INF/views/investment/forecast.jsp";
 
 	}
-
-	public String save(Map<String, String[]> request, Map<String, Object> response) {
-		if (request.isEmpty()) {
-			return "/WEB-INF/views/fixed_investment/forecast.jsp";
-		}
-		String [] type = {"fixed"};
-		request.put("type", type);
-		return investmentForecastController.save(request, response);
-	}
+	
 }

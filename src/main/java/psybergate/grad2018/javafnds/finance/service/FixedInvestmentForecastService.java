@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
+import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
 @Stateful
@@ -19,15 +20,22 @@ public class FixedInvestmentForecastService extends AbstractForecastService impl
 	public List<ForecastItem> getForecastItems() {
 
 		List<ForecastItem> forecastItems = new ArrayList<>();
-		if (isValidateFixedInvestment()) {
-			Money currentAmount = getInitialAmount();
-			for (int i = 0; i < getMonths(); i++) {
-				ForecastItem item = new FixedForecastItem(currentAmount, getRate());
-				forecastItems.add(item);
-				currentAmount = item.getEndAmount();
-			}
-		}
-		return forecastItems;
+		Money currentAmount = getInitialAmount();
+		BigDecimal rate = getRate();
+
+		return createForecastItemsList(forecastItems, rate, currentAmount);
+
+	}
+
+	@Override
+	public List<ForecastItem> getForecastItems(String name) {
+		Investment investment = inv.getInvestmentByName(name);
+		List<ForecastItem> forecastItems = new ArrayList<>();
+		BigDecimal rate = investment.getRate();
+		Money currentAmount = investment.getInitialAmount();
+
+		return createForecastItemsList(forecastItems, rate, currentAmount);
+
 	}
 
 	private boolean isValidateFixedInvestment() {
@@ -44,10 +52,16 @@ public class FixedInvestmentForecastService extends AbstractForecastService impl
 		return true;
 	}
 
-	@Override
-	public List<ForecastItem> getForecastItems(String name) {
-		inv.getInvestmentByName(name);
-		return null;
+	private List<ForecastItem> createForecastItemsList(List<ForecastItem> forecastItems, BigDecimal rate,
+			Money currentAmount) {
+		if (isValidateFixedInvestment()) {
+			for (int i = 0; i < getMonths(); i++) {
+				ForecastItem item = new FixedForecastItem(currentAmount, rate);
+				forecastItems.add(item);
+				currentAmount = item.getEndAmount();
+			}
+		}
+		return forecastItems;
 	}
 
 }

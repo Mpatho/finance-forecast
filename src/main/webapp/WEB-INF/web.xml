@@ -12,6 +12,11 @@
 		<servlet-class>psybergate.grad2018.javafnds.jee.servlet.core.DispatcherServlet
 		</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>forecastJSP</servlet-name>
+		<jsp-file></jsp-file>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>DispatcherServlet</servlet-name>
 		<url-pattern>/investment/*</url-pattern>
