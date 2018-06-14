@@ -14,7 +14,7 @@ import psybergate.grad2018.javafnds.finance.resource.Resource;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class InvestmentServiceImpl implements InvestmentService {
+public class InvestmentForecastServiceImpl implements InvestmentForecastService {
 
 	@Inject
 	private Resource<Investment> investmentResource;
@@ -41,6 +41,7 @@ public class InvestmentServiceImpl implements InvestmentService {
 
 	@Override
 	public Investment getInvestmentByName(String name) {
+		if (name == null) return null;
 		for (Investment investment : investmentResource) {
 			if (investment.getName().equals(name)) return investment;
 		}

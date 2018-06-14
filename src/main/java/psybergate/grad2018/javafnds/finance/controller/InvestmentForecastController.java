@@ -9,17 +9,17 @@ import javax.ejb.EJB;
 import psybergate.grad2018.javafnds.finance.entity.FixedInvestment;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.MonthlyInvestment;
-import psybergate.grad2018.javafnds.finance.service.InvestmentService;
+import psybergate.grad2018.javafnds.finance.service.InvestmentForecastService;
 
 @ManagedBean("Investment")
 public class InvestmentForecastController {
 
 	@EJB
-	private InvestmentService investmentService;
+	private InvestmentForecastService investmentForecastService;
 
 	public String save(Map<String, String[]> request, Map<String, Object> response) {
 		String name = request.get("name")[0];
-		Investment investment = investmentService.getInvestmentByName(name);
+		Investment investment = investmentForecastService.getInvestmentByName(name);
 		if (investment == null) {
 			BigDecimal initialAmount = new BigDecimal(request.get("initialAmount")[0]);
 			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
@@ -32,7 +32,7 @@ public class InvestmentForecastController {
 				investment = new MonthlyInvestment(name, initialAmount, months, rate);
 			}
 		}
-		boolean saved = investmentService.save(investment);
+		boolean saved = investmentForecastService.save(investment);
 		response.put("saved", saved);
 		response.put("forecast", saved);
 		return "/WEB-INF/views/investment/forecast.jsp";
@@ -40,7 +40,7 @@ public class InvestmentForecastController {
 
 	public String delete(Map<String, String[]> request, Map<String, Object> response) {
 		String name = request.get("name")[0];
-		boolean deleted = investmentService.deleteInvestmentByName(name);
+		boolean deleted = investmentForecastService.deleteInvestmentByName(name);
 		response.put("deleted", deleted);
 		response.put("forecast", deleted);
 		return "/WEB-INF/views/investment/forecast.jsp";
