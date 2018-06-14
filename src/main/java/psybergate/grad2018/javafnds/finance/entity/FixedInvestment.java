@@ -6,8 +6,8 @@ public class FixedInvestment extends Investment {
 
 	public FixedInvestment() {}
 
-	public FixedInvestment(String name, BigDecimal initailAmount, Integer months, Double rate) {
-		super(name, initailAmount, months, rate);
+	public FixedInvestment(String name, BigDecimal initialAmount, Integer months, BigDecimal rate) {
+		super(name, initialAmount, months, rate);
 	}
 
 }

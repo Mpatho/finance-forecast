@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <controllers>
-	<controller name="greeting" JNDIName="java:module/Example">
+	<controller name="investment" JNDIName="java:module/Investment">
 		<method name="hy" invoke="hello" />
 	</controller>
 </controllers>

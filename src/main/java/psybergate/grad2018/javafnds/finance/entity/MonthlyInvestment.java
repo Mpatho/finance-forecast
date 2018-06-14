@@ -7,16 +7,15 @@ import java.util.List;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-public class MonthInvestment extends Investment implements Iterable<Event> {
+public class MonthlyInvestment extends Investment implements Iterable<Event> {
 
 	@OneToMany
 	@JoinColumn
 	private List<Event> events;
 
-	protected MonthInvestment() {
-	}
+	protected MonthlyInvestment() {}
 
-	public MonthInvestment(String name, BigDecimal initailAmount, Integer months, Double rate) {
+	public MonthlyInvestment(String name, BigDecimal initailAmount, Integer months, BigDecimal rate) {
 		super(name, initailAmount, months, rate);
 	}
 
