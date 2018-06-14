@@ -10,7 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 public abstract class AbstractResource<T> implements Resource<T> {
 
-	@PersistenceContext
+	@PersistenceContext(unitName="financeDB")
 	protected EntityManager em;
 
 	public AbstractResource() {

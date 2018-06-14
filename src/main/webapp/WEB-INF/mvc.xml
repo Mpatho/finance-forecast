@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <controllers>
 	<controller name="investment" JNDIName="java:module/Investment">
-		<method name="hy" invoke="hello" />
+		<method name="save" invoke="save" />
+		<method name="delete" invoke="delete" />
+		<method name="view" invoke="view" />
 	</controller>
 </controllers>
