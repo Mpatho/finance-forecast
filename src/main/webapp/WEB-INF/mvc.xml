@@ -5,4 +5,7 @@
 		<method name="delete" invoke="delete" />
 		<method name="view" invoke="view" />
 	</controller>
+	<controller name="fixed_investment" JNDIName="java:module/FixedInvestment">
+		<method name="getForecast" invoke="getForecast" />
+	</controller>
 </controllers>
