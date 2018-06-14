@@ -14,7 +14,7 @@ public class FixedInvestmentForecastService extends AbstractForecastService impl
 
 	@EJB
 	private InvestmentForecastService inv;
-	
+
 	@Override
 	public List<ForecastItem> getForecastItems() {
 
@@ -46,7 +46,7 @@ public class FixedInvestmentForecastService extends AbstractForecastService impl
 
 	@Override
 	public List<ForecastItem> getForecastItems(String name) {
-	inv.getInvestmentByName(name);
+		inv.getInvestmentByName(name);
 		return null;
 	}
 

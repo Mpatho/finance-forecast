@@ -18,14 +18,22 @@ public final class Money implements Comparable<Money> {
 	/**
 	 * The number of rands, decimal point indicate cents
 	 */
-	@Column(precision=8,scale=2)
+	@Column(precision = 8, scale = 2)
 	private BigDecimal rands;
 
-	protected Money() {}
+	protected Money() {
+	}
 
 	public Money(double rands) {
-		if (!isValid(rands)) throw new IllegalArgumentException();
+		if (!isValid(rands))
+			throw new IllegalArgumentException();
 		this.rands = new BigDecimal(rands);
+	}
+
+	public Money(BigDecimal rands) {
+		if (!isValid(rands.doubleValue()))
+			throw new IllegalArgumentException();
+		this.rands = rands;
 	}
 
 	private static boolean isValid(double rands) {
@@ -33,27 +41,30 @@ public final class Money implements Comparable<Money> {
 	}
 
 	public Money add(Money money) {
-		BigDecimal rands = this.rands.add(money.rands);
-		double doubleValue = ((int) rands.doubleValue() * 100) / 100.0;
-		return new Money(doubleValue);
+		BigDecimal moneyValue = money.rands.add(this.rands);
+		return new Money(moneyValue);
 	}
 
 	public Money percentOf(double percent) {
-		double doubleValue = ((int) rands.doubleValue() * percent) / 100.0;
-		return new Money(doubleValue);
+		BigDecimal value = rands.multiply(new BigDecimal(percent)).divide(new BigDecimal(100));
+		return new Money(value);
 	}
 
 	@Override
 	public int compareTo(Money money) {
-		if (money == null) throw new IllegalArgumentException();
+		if (money == null)
+			throw new IllegalArgumentException();
 		return this.rands.compareTo(money.rands);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		if (obj == this) return true;
-		if (!obj.getClass().equals(this.getClass())) return false;
+		if (obj == null)
+			return false;
+		if (obj == this)
+			return true;
+		if (!obj.getClass().equals(this.getClass()))
+			return false;
 		Money money = (Money) obj;
 		return money.rands.equals(this.rands);
 	}
