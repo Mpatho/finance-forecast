@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 
 @Local
-public interface InvestmentService {
+public interface InvestmentForecastService {
 
 	Collection<Investment> getInvestments();
 

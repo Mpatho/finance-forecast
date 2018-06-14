@@ -6,7 +6,7 @@ import java.util.List;
 import javax.ejb.Stateful;
 
 @Stateful
-public abstract class ForecastServiceImpl implements ForecastService {
+public abstract class AbstractForecastService implements ForecastService {
 
 	private BigDecimal initialAmount;
 
@@ -16,6 +16,7 @@ public abstract class ForecastServiceImpl implements ForecastService {
 
 	@Override
 	public abstract List<ForecastItem> getForecastItems();
+
 
 	@Override
 	public BigDecimal getInitialAmount() {
@@ -37,12 +38,10 @@ public abstract class ForecastServiceImpl implements ForecastService {
 		this.rate = rate;
 	}
 
-	@Override
 	public Integer getMonths() {
 		return months;
 	}
 
-	@Override
 	public void setMonths(Integer months) {
 		this.months = months;
 	}

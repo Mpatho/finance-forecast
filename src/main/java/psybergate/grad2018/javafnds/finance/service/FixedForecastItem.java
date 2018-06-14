@@ -2,9 +2,8 @@ package psybergate.grad2018.javafnds.finance.service;
 
 import java.math.BigDecimal;
 
-public class FixedForecastItem extends ForecastItem{
+public class FixedForecastItem extends ForecastItem {
 
-	
 	public FixedForecastItem(BigDecimal beginMonthAmount, Double rate) {
 		super(beginMonthAmount, rate);
 	}

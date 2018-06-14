@@ -15,7 +15,7 @@ public class MonthlyInvestment extends Investment implements Iterable<Event> {
 
 	protected MonthlyInvestment() {}
 
-	public MonthlyInvestment(String name, BigDecimal initailAmount, Integer months, BigDecimal rate) {
+	public MonthlyInvestment(String name, Money initailAmount, Integer months, BigDecimal rate) {
 		super(name, initailAmount, months, rate);
 	}
 

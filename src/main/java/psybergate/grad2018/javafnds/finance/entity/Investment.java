@@ -18,7 +18,7 @@ public abstract class Investment {
 	@Column(unique = true)
 	private String name;
 
-	private BigDecimal initialAmount;
+	private Money initialAmount;
 
 	private Integer months;
 
@@ -26,7 +26,7 @@ public abstract class Investment {
 
 	protected Investment() {}
 
-	public Investment(String name, BigDecimal initialAmount, Integer months, BigDecimal rate) {
+	public Investment(String name, Money initialAmount, Integer months, BigDecimal rate) {
 		this.name = name;
 		this.initialAmount = initialAmount;
 		this.months = months;
@@ -41,11 +41,11 @@ public abstract class Investment {
 		this.name = name;
 	}
 
-	public BigDecimal getInitailAmount() {
+	public Money getInitailAmount() {
 		return initialAmount;
 	}
 
-	public void setInitailAmount(BigDecimal initailAmount) {
+	public void setInitailAmount(Money initailAmount) {
 		this.initialAmount = initailAmount;
 	}
 

@@ -5,16 +5,13 @@ import java.math.BigDecimal;
 public abstract class ForecastItem {
 
 	private BigDecimal beginMonthAmount;
-	
+
 	private Double rate;
 
 	public ForecastItem(BigDecimal beginMonthAmount, Double rate) {
-		super();
 		this.beginMonthAmount = beginMonthAmount;
 		this.rate = rate;
 	}
-
-
 
 	public BigDecimal getBeginMonthAmount() {
 		return beginMonthAmount;
@@ -25,7 +22,7 @@ public abstract class ForecastItem {
 	}
 
 	public abstract BigDecimal getEndMonthBalance();
-	
+
 	public abstract BigDecimal getInterest();
 
 	public Double getRate() {
@@ -36,7 +33,4 @@ public abstract class ForecastItem {
 		this.rate = rate;
 	}
 
-	
-
-	
 }

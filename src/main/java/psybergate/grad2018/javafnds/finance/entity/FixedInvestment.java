@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 public class FixedInvestment extends Investment {
 
-	public FixedInvestment() {}
+	protected FixedInvestment() {}
 
-	public FixedInvestment(String name, BigDecimal initialAmount, Integer months, BigDecimal rate) {
+	public FixedInvestment(String name, Money initialAmount, Integer months, BigDecimal rate) {
 		super(name, initialAmount, months, rate);
 	}
 
