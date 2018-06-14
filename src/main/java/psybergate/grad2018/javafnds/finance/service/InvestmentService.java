@@ -11,7 +11,11 @@ public interface InvestmentService {
 
 	Collection<Investment> getInvestments();
 
-	void save(Investment investment);
+	boolean save(Investment investment);
 
-	void delete(Investment investment);
+	boolean delete(Investment investment);
+	
+	Investment getInvestmentByName(String name);
+
+	boolean deleteInvestmentByName(String name);
 }

@@ -1,6 +1,7 @@
 package psybergate.grad2018.javafnds.finance.resource;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,6 +39,11 @@ public abstract class AbstractResource<T> implements Resource<T> {
 		cq.select(cq.from(clazz));
 		Query q = em.createQuery(cq);
 		return q.getResultList();
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return getAll().iterator();
 	}
 
 }

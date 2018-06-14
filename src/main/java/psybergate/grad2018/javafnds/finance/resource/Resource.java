@@ -2,7 +2,7 @@ package psybergate.grad2018.javafnds.finance.resource;
 
 import java.util.Collection;
 
-public interface Resource<T> {
+public interface Resource<T> extends Iterable<T> {
 
 	T getById(Long id);
 
