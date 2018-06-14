@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 
 import psybergate.grad2018.javafnds.finance.entity.FixedInvestment;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
+import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.entity.MonthlyInvestment;
 import psybergate.grad2018.javafnds.finance.service.InvestmentForecastService;
 
@@ -21,7 +22,7 @@ public class InvestmentForecastController {
 		String name = request.get("name")[0];
 		Investment investment = investmentForecastService.getInvestmentByName(name);
 		if (investment == null) {
-			BigDecimal initialAmount = new BigDecimal(request.get("initialAmount")[0]);
+			Money initialAmount = new Money(Double.valueOf(request.get("initialAmount")[0]));
 			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
 			Integer months = new Integer(request.get("months")[0]);
 			String type = request.get("type")[0];

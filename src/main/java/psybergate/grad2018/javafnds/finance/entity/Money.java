@@ -1,15 +1,20 @@
-package psybergate.grad2018.javafnds.finance.service;
+package psybergate.grad2018.javafnds.finance.entity;
 
 import java.math.BigDecimal;
 
-@SuppressWarnings("rawtypes")
-public final class Money implements Comparable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
+public final class Money implements Comparable<Money> {
 
 	/**
 	 * The number of rands, decimal point indicate cents
 	 */
+	@Column
+	private BigDecimal rands;
 
-	private final BigDecimal rands;
+	protected Money() {}
 
 	public Money(double rands) {
 		if (!isValid(rands)) throw new IllegalArgumentException();
@@ -32,10 +37,8 @@ public final class Money implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		if (o == null) { throw new IllegalArgumentException(); }
-		if (!o.getClass().equals(this.getClass())) throw new IllegalArgumentException();
-		Money money = (Money) o;
+	public int compareTo(Money money) {
+		if (money == null) throw new IllegalArgumentException();
 		return this.rands.compareTo(money.rands);
 	}
 
