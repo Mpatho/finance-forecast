@@ -21,7 +21,7 @@ public final class Money implements Comparable<Money> {
 	/**
 	 * The number of rands, decimal point indicate cents
 	 */
-	@Column(precision = 8, scale = 2)
+	@Column(columnDefinition = "DECIMAL(10,2)")
 	private BigDecimal rands;
 
 	protected Money() {}
@@ -73,4 +73,8 @@ public final class Money implements Comparable<Money> {
 		return FORMAT.format(rands);
 	}
 
+	@Override
+	public String toString() {
+		return stringValue();
+	}
 }
