@@ -14,6 +14,10 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DispatcherServlet</servlet-name>
-		<url-pattern>/greeting/*</url-pattern>
+		<url-pattern>/investment/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DispatcherServlet</servlet-name>
+		<url-pattern>/fixed_investment/*</url-pattern>
 	</servlet-mapping>
 </web-app>
