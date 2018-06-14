@@ -19,6 +19,10 @@ public class InvestmentForecastController {
 	@EJB
 	private InvestmentForecastService investmentForecastService;
 
+	public InvestmentForecastController() {
+		System.out.println("daljda");
+	}
+
 	public String save(Map<String, String[]> request, Map<String, Object> response) {
 		String name = request.get("name")[0];
 		Investment investment = investmentForecastService.getInvestmentByName(name);
