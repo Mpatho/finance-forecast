@@ -4,14 +4,21 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public final class Money implements Comparable<Money> {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	/**
 	 * The number of rands, decimal point indicate cents
 	 */
-	@Column
+	@Column(precision=8,scale=2)
 	private BigDecimal rands;
 
 	protected Money() {}

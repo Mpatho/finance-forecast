@@ -2,16 +2,21 @@ package psybergate.grad2018.javafnds.finance.entity;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
+@Entity
 public class MonthlyInvestment extends Investment implements Iterable<Event> {
 
-	@OneToMany
-	@JoinColumn
-	private List<Event> events;
+//	@OneToMany
+//	@JoinColumn(name="investment_id")
+	@Transient
+	private List<Event> events = new LinkedList<>();
 
 	protected MonthlyInvestment() {}
 
