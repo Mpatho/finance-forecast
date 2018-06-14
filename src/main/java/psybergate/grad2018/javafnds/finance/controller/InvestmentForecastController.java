@@ -38,6 +38,7 @@ public class InvestmentForecastController {
 				investment = new MonthlyInvestment(name, initialAmount, months, rate);
 			}
 		}
+		System.out.println("investment: " + investment);
 		boolean saved = investmentForecastService.save(investment);
 		response.put("saved", saved);
 		response.put("forecast", saved);

@@ -47,7 +47,7 @@ public abstract class Investment {
 		return initialAmount;
 	}
 
-	public void setInitailAmount(Money initailAmount) {
+	public void setInitialAmount(Money initailAmount) {
 		this.initialAmount = initailAmount;
 	}
 
@@ -69,6 +69,12 @@ public abstract class Investment {
 
 	public Long getId() {
 		return id;
+	}
+
+	@Override
+	public String toString() {
+		return "Investment [id=" + id + ", name=" + name + ", initialAmount=" + initialAmount + ", months=" + months
+				+ ", rate=" + rate + "]";
 	}
 
 }

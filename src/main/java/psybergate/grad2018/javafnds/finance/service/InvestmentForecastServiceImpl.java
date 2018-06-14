@@ -10,6 +10,7 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 
 import psybergate.grad2018.javafnds.finance.entity.Investment;
+import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.resource.Resource;
 
 @Stateless
@@ -18,6 +19,9 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 
 	@Inject
 	private Resource<Investment> investmentResource;
+
+	@Inject
+	private Resource<Money> moneyResource;
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.NEVER)
@@ -28,6 +32,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean save(Investment investment) {
+		moneyResource.save(investment.getInitialAmount());
 		investmentResource.save(investment);
 		return true;
 	}
