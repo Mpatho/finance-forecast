@@ -6,6 +6,6 @@
 		<method name="view" invoke="view" />
 	</controller>
 	<controller name="fixed_investment" JNDIName="java:module/FixedInvestment">
-		<method name="getForecast" invoke="getForecast" />
+		<method name="forecast" invoke="forecast" />
 	</controller>
 </controllers>

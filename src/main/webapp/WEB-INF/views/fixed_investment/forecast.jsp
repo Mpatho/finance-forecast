@@ -24,9 +24,9 @@
   	monthCount++;%>
   	  <tr>
       <th scope="row"><%=monthCount%></th>
-      <td><%=forecastItem.getInitialAmount()%></td>
-      <td><%=forecastItem.getInterest()%></td>
-      <td><%=forecastItem.getEndAmount()%></td>
+      <td><%=forecastItem.getInitialAmount().stringValue()%></td>
+      <td><%=forecastItem.getInterest().stringValue()%></td>
+      <td><%=forecastItem.getEndAmount().stringValue()%></td>
     </tr>
   	<%}
   %>

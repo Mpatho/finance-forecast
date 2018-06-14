@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 import psybergate.grad2018.javafnds.finance.entity.Money;
@@ -11,6 +12,9 @@ import psybergate.grad2018.javafnds.finance.entity.Money;
 @Stateful
 public class FixedInvestmentForecastService extends AbstractForecastService implements ForecastService {
 
+	@EJB
+	private InvestmentForecastService inv;
+	
 	@Override
 	public List<ForecastItem> getForecastItems() {
 
@@ -42,7 +46,7 @@ public class FixedInvestmentForecastService extends AbstractForecastService impl
 
 	@Override
 	public List<ForecastItem> getForecastItems(String name) {
-		// TODO Auto-generated method stub
+	inv.getInvestmentByName(name);
 		return null;
 	}
 

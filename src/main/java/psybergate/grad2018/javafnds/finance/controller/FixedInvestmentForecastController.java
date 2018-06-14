@@ -17,7 +17,7 @@ public class FixedInvestmentForecastController {
 	@EJB
 	private ForecastService fixedInvestmentForecastService;
 	
-	public String getForecast(Map<String, String[]> request, Map<String, Object> response) {
+	public String forecast(Map<String, String[]> request, Map<String, Object> response) {
 		BigDecimal rate =  new BigDecimal(request.get("rate")[0]);
 		
 		Double doubleInitialAmount = Double.valueOf(request.get("initialAmout")[0]);

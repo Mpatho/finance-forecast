@@ -14,8 +14,8 @@ public class FixedForecastItem extends ForecastItem {
 
 	@Override
 	public Money getInterest() {
-		BigDecimal monthlyRate = getRate().divide(new BigDecimal(12));
-		return getInitialAmount().percentOf(monthlyRate.doubleValue());
+		Double monthlyRate = getRate().doubleValue()/12;
+		return getInitialAmount().percentOf(monthlyRate);
 	}
 
 	@Override
