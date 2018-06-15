@@ -23,12 +23,10 @@ public class InvestmentForecastController {
 	@EJB
 	private InvestmentForecastService investmentForecastService;
 
-	@EJB
-	@Named("fixed")
+	@EJB(beanName="fixed")
 	private ForecastService fixedInvestmentForecastService;
 
-	@EJB
-	@Named("monthly")
+	@EJB(beanName="monthly")
 	private ForecastService monthlyInvestmentForecastService;
 
 	public String save(Map<String, String[]> request, Map<String, Object> response) {

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -14,6 +15,7 @@ import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
 
 @Stateless(name="fixed")
+@EJB(name="fixed", beanInterface=ForecastService.class, beanName="fixed")
 public class FixedInvestmentForecastService implements ForecastService {
 
 	@Inject
