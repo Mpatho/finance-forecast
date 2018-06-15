@@ -9,8 +9,6 @@ public abstract class ForecastItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String name;
-
 	private Money initialAmount;
 
 	private BigDecimal rate;
@@ -38,16 +36,47 @@ public abstract class ForecastItem implements Serializable {
 		this.rate = rate;
 	}
 
-	public String getName() {
-		return name;
+	public Money getMonthlyAmount() {
+		return new Money(0);
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public abstract Money getInterest();
 
 	public abstract Money getEndAmount();
+	
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((initialAmount == null) ? 0 : initialAmount.hashCode());
+		result = prime * result + ((rate == null) ? 0 : rate.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ForecastItem other = (ForecastItem) obj;
+		if (initialAmount == null) {
+			if (other.initialAmount != null)
+				return false;
+		}
+		else if (!initialAmount.equals(other.initialAmount))
+			return false;
+		if (rate == null) {
+			if (other.rate != null)
+				return false;
+		}
+		else if (!rate.equals(other.rate))
+			return false;
+		return true;
+	}
+
+	
+	
 }

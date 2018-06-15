@@ -6,27 +6,34 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.inject.Named;
 
-import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
+import psybergate.grad2018.javafnds.finance.bean.MonthlyForecastItem;
+import psybergate.grad2018.javafnds.finance.entity.ForecastResource;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
+import psybergate.grad2018.javafnds.finance.entity.MonthlyInvestment;
 import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
 
-@Stateless(name="fixed")
-public class FixedInvestmentForecastService implements ForecastService {
+@Stateless(name="monthly")
+public class MonthlyInvestmentForecastService implements ForecastService {
 
 	@Inject
 	private InvestmentResource invRes;
-
+	
 	@Override
 	public List<ForecastItem> getForecastItems(Investment investment) {
 		if (investment == null) return null;
+		
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (isValidateFixedInvestment(investment)) {
+			
 			Money currentAmount = investment.getInitialAmount();
+			Money monthlyAmount = currentAmount;
+			currentAmount = new Money(0);
 			for (int i = 0; i < investment.getMonths(); i++) {
-				ForecastItem item = new FixedForecastItem(currentAmount, investment.getRate());
+				ForecastItem item = new MonthlyForecastItem(currentAmount, investment.getRate(), monthlyAmount);
 				forecastItems.add(item);
 				currentAmount = item.getEndAmount();
 			}
