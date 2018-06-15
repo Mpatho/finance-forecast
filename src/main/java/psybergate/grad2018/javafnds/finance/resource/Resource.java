@@ -4,13 +4,14 @@ import java.util.Collection;
 
 public interface Resource<T> extends Iterable<T> {
 
+	Collection<T> getAll();
+
 	T getById(Long id);
 
 	void save(T entity);
 
-	Collection<T> getAll();
-
 	void removeById(Long id);
 
 	void remove(T entity);
+
 }

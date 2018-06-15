@@ -8,10 +8,10 @@ import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 
 @Local
-public interface ForecastService<I extends Investment, F extends ForecastItem> {
+public interface ForecastService {
 
-	List<F> getForecastItems(I investment);
+	List<ForecastItem> getForecastItems(Investment investment);
 
-	List<F> getForecastItems(String name);
+	List<ForecastItem> getForecastItems(String name);
 
 }

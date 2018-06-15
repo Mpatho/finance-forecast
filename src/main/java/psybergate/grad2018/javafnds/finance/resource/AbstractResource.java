@@ -10,12 +10,10 @@ import javax.persistence.criteria.CriteriaQuery;
 
 public abstract class AbstractResource<T> implements Resource<T> {
 
-	@PersistenceContext(unitName="financeDB")
+	@PersistenceContext(unitName = "financeDB")
 	protected EntityManager em;
 
-	public AbstractResource() {
-		super();
-	}
+	public AbstractResource() {}
 
 	@Override
 	public void removeById(Long id) {
@@ -34,7 +32,7 @@ public abstract class AbstractResource<T> implements Resource<T> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Collection<T> getAll(Class<T> clazz) {
+	protected Collection<T> getAll(Class<T> clazz) {
 		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
 		cq.select(cq.from(clazz));
 		Query q = em.createQuery(cq);
@@ -45,5 +43,4 @@ public abstract class AbstractResource<T> implements Resource<T> {
 	public Iterator<T> iterator() {
 		return getAll().iterator();
 	}
-
 }

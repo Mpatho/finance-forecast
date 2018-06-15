@@ -6,31 +6,26 @@
 </head>
 <body>
   <div class="container-fluid">
-    <table class="table table-bordered">
-      <thead>
-        <tr class="blue-grey lighten-4">
-          <th>Name</th>
-          <th>Initial Amount</th>
-          <th>Months</th>
-          <th>Rate</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%
-        	Collection<Investment> investments = (Collection<Investment>) request.getAttribute("investments");
-        %>
-        <%
-        	for (Investment investment : investments) {
-        		out.print("<tr><a href='/finance-1.0/investment/view?name=" + investment.getName() + "'>");
-        		out.print("<td>" + investment.getName() + "</td>");
-        		out.print("<td>" + investment.getInitialAmount() + "</td>");
-        		out.print("<td>" + investment.getMonths() + "</td>");
-        		out.print("<td>" + investment.getRate() + "</td>");
-        		out.print("</a></tr>");
-        	}
-        %>
-      </tbody>
-    </table>
+    <%
+    	Collection<Investment> investments = (Collection<Investment>) request.getAttribute("investments");
+    	for (Investment investment : investments) {
+    %>
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Investment Forecast</h5>
+        <h6 class="card-subtitle mb-2 text-muted"><%=investment.getName()%></h6>
+        <p class="card-text">
+          <%=investment.getInitialAmount()%><br>
+          <%=investment.getMonths()%><br>
+          <%=investment.getRate()%>
+        </p>
+        <a href="/finance-1.0/investment/delete?name=<%=investment.getName()%>" class="card-link">delete</a>
+        <a href="/finance-1.0/investment/forecast?name=<%=investment.getName()%>&type=${type}" class="card-link">view</a>
+      </div>
+    </div>
+    <%
+    	}
+    %>
   </div>
   <script src="/finance-1.0/js/jquery-3.3.1.min.js"></script>
   <script src="/finance-1.0/js/bootstrap.min.js"></script>

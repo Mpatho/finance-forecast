@@ -8,14 +8,12 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 @Entity
 public class MonthlyInvestment extends Investment implements Iterable<Event> {
 
-//	@OneToMany
-//	@JoinColumn(name="investment_id")
-	@Transient
+	@OneToMany
+	@JoinColumn(name="monthlyinvestment_id")
 	private List<Event> events = new LinkedList<>();
 
 	protected MonthlyInvestment() {}

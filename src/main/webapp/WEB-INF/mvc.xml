@@ -6,10 +6,6 @@
 		<method name="delete" invoke="delete" />
 		<method name="view" invoke="view" />
 		<method name="all" invoke="viewAll" />
-	</controller>
-	<controller name="fixed_investment"
-		JNDIName="java:module/FixedInvestment">
 		<method name="forecast" invoke="forecast" />
-		<method name="save" invoke="save" />
 	</controller>
 </controllers>

@@ -18,7 +18,7 @@ import psybergate.grad2018.javafnds.finance.resource.Resource;
 public class InvestmentForecastServiceImpl implements InvestmentForecastService {
 
 	@Inject
-	private Resource<Investment> investmentResource;
+	private ForecastResource<Investment> investmentResource;
 
 	@Inject
 	private Resource<Money> moneyResource;
@@ -46,11 +46,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 
 	@Override
 	public Investment getInvestmentByName(String name) {
-		if (name == null) return null;
-		for (Investment investment : investmentResource) {
-			if (investment.getName().equals(name)) return investment;
-		}
-		return null;
+		return investmentResource.getByName(name);
 	}
 
 	@Override
