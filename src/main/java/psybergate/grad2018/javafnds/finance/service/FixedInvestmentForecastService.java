@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.inject.Named;
 
 import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
@@ -13,6 +14,7 @@ import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
 @Stateful
+@Named("fixed")
 public class FixedInvestmentForecastService implements ForecastService {
 
 	@EJB
@@ -48,6 +50,5 @@ public class FixedInvestmentForecastService implements ForecastService {
 		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
 		return true;
 	}
-
 
 }

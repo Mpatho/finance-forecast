@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.enterprise.context.Dependent;
 
+import psybergate.grad2018.javafnds.finance.entity.ForecastResource;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 
 @Dependent

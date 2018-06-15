@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
+import javax.inject.Named;
 
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.FixedInvestment;
@@ -23,8 +24,13 @@ public class InvestmentForecastController {
 	private InvestmentForecastService investmentForecastService;
 
 	@EJB
+	@Named("fixed")
 	private ForecastService fixedInvestmentForecastService;
 
+	@EJB
+	@Named("monthly")
+	private ForecastService monthlyInvestmentForecastService;
+	
 	public String save(Map<String, String[]> request, Map<String, Object> response) {
 		String name = request.get("name")[0];
 		Investment investment = investmentForecastService.getInvestmentByName(name);
@@ -70,27 +76,28 @@ public class InvestmentForecastController {
 
 	public String forecast(Map<String, String[]> request, Map<String, Object> response) {
 		if (request.isEmpty()) return "/WEB-INF/views/investment/forecast.jsp";
-		String name = request.get("name") == null ? null : request.get("name")[0];
-		List<ForecastItem> forecastItems = fixedInvestmentForecastService.getForecastItems(name);
-		if (forecastItems == null) {
+		List<ForecastItem> forecastItems = null;
+		if (request.get("name") == null) {
 			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
 			Double doubleInitialAmount = Double.valueOf(request.get("initialAmount")[0]);
 			Money initialAmount = new Money(doubleInitialAmount);
 			Integer months = Integer.valueOf(request.get("months")[0]);
 			String type = request.get("type")[0];
 			if (type.equals("fixed")) {
-				Investment investment = new FixedInvestment(name, initialAmount, months, rate);
+				Investment investment = new FixedInvestment(null, initialAmount, months, rate);
 				forecastItems = fixedInvestmentForecastService.getForecastItems(investment);
 			}
 			else if (type.equals("monthly")) {
-				Investment investment = new MonthlyInvestment(name, initialAmount, months, rate);
-				// this is incorrect logic 
-				forecastItems = fixedInvestmentForecastService.getForecastItems(investment);
+				Investment investment = new MonthlyInvestment(null, initialAmount, months, rate);
+				forecastItems = monthlyInvestmentForecastService.getForecastItems(investment);
 			}
 			response.put("type", type);
 			response.put("rate", rate.doubleValue());
 			response.put("months", months);
 			response.put("initialAmount", initialAmount);
+		} else {
+			String name = request.get("name")[0];
+			forecastItems = fixedInvestmentForecastService.getForecastItems(name);
 		}
 		response.put("forecastItems", forecastItems);
 		return "/WEB-INF/views/investment/forecast.jsp";
