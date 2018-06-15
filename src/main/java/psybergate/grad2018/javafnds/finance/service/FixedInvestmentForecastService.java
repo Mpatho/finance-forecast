@@ -5,20 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.inject.Named;
 
 import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
+import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
 
-@Stateful
+@Stateless
 @Named("fixed")
 public class FixedInvestmentForecastService implements ForecastService {
 
 	@EJB
-	private InvestmentForecastService inv;
+	private InvestmentResource invRes;
 
 	@Override
 	public List<ForecastItem> getForecastItems(Investment investment) {
@@ -31,13 +32,16 @@ public class FixedInvestmentForecastService implements ForecastService {
 				forecastItems.add(item);
 				currentAmount = item.getEndAmount();
 			}
+		} 
+		else {
+			throw new RuntimeException("Invalid investment");
 		}
 		return forecastItems;
 	}
 
 	@Override
 	public List<ForecastItem> getForecastItems(String name) {
-		Investment investment = inv.getInvestmentByName(name);
+		Investment investment = invRes.getByName(name);
 		return getForecastItems(investment);
 	}
 
