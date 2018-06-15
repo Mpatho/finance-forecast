@@ -30,7 +30,7 @@ public class InvestmentForecastController {
 	@EJB
 	@Named("monthly")
 	private ForecastService monthlyInvestmentForecastService;
-	
+
 	public String save(Map<String, String[]> request, Map<String, Object> response) {
 		String name = request.get("name")[0];
 		Investment investment = investmentForecastService.getInvestmentByName(name);
@@ -45,10 +45,9 @@ public class InvestmentForecastController {
 			else if (type.equals("monthly")) {
 				investment = new MonthlyInvestment(name, initialAmount, months, rate);
 			}
-			response.put("type", type);
-			investmentForecastService.save(investment);
 		}
-		return viewAll(request, response);
+		investmentForecastService.save(investment);
+		return viewForecasts(request, response);
 	}
 
 	public String delete(Map<String, String[]> request, Map<String, Object> response) {
@@ -58,48 +57,86 @@ public class InvestmentForecastController {
 			response.put("message", "deleted successfully");
 			response.put("investment", investment);
 		}
-		return viewAll(request, response);
+		return viewForecasts(request, response);
 	}
 
-	public String view(Map<String, String[]> request, Map<String, Object> response) {
-		String name = request.get("name")[0];
-		Investment investment = investmentForecastService.getInvestmentByName(name);
-		response.put("investment", investment);
-		return "/WEB-INF/views/investment/forecast.jsp";
-	}
-
-	public String viewAll(Map<String, String[]> request, Map<String, Object> response) {
+	public String viewForecasts(Map<String, String[]> request, Map<String, Object> response) {
 		Collection<Investment> investments = investmentForecastService.getInvestments();
 		response.put("investments", investments);
 		return "/WEB-INF/views/investment/forecasts.jsp";
 	}
 
-	public String forecast(Map<String, String[]> request, Map<String, Object> response) {
-		if (request.isEmpty()) return "/WEB-INF/views/investment/forecast.jsp";
+	public String forecastFixedInvestment(Map<String, String[]> request, Map<String, Object> response) {
+		if (request.isEmpty()) return "/WEB-INF/views/investment/fixed.jsp";
 		List<ForecastItem> forecastItems = null;
+		Investment investment = getFixedInvestment(request);
+		forecastItems = fixedInvestmentForecastService.getForecastItems(investment);
+		response.put("rate", investment.getRate().doubleValue());
+		response.put("months", investment.getMonths());
+		response.put("initialAmount", investment.getInitialAmount());
+		response.put("forecastItems", forecastItems);
+		return "/WEB-INF/views/investment/fixed.jsp";
+	}
+
+	public String forecastMonthlyInvestment(Map<String, String[]> request, Map<String, Object> response) {
+		if (request.isEmpty()) return "/WEB-INF/views/investment/monthly.jsp";
+		List<ForecastItem> forecastItems = null;
+		Investment investment = getMonthlyInvestment(request);
+		return "/WEB-INF/views/investment/monthly.jsp";
+	}
+
+	public String forecastInvestment(Map<String, String[]> request, Map<String, Object> response) {
+		String name = request.get("name")[0];
+		Investment investment = investmentForecastService.getInvestmentByName(name);
+		if (investment.getClass().equals(FixedInvestment.class)) {
+			List<ForecastItem> forecastItems = fixedInvestmentForecastService.getForecastItems(investment);
+			response.put("rate", investment.getRate().doubleValue());
+			response.put("months", investment.getMonths());
+			response.put("initialAmount", investment.getInitialAmount());
+			response.put("forecastItems", forecastItems);
+			return "/WEB-INF/views/investment/fixed.jsp";
+		}
+		if (investment.getClass().equals(MonthlyInvestment.class)) {
+			List<ForecastItem> forecastItems = monthlyInvestmentForecastService.getForecastItems(investment);
+			response.put("rate", investment.getRate().doubleValue());
+			response.put("months", investment.getMonths());
+			response.put("initialAmount", investment.getInitialAmount());
+			response.put("forecastItems", forecastItems);
+			return "/WEB-INF/views/investment/monthly.jsp";
+		}
+		return "/WEB-INF/views/investment/forecasts.jsp";
+
+	}
+
+	private Investment getMonthlyInvestment(Map<String, String[]> request) {
+		Investment investment = null;
 		if (request.get("name") == null) {
 			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
 			Double doubleInitialAmount = Double.valueOf(request.get("initialAmount")[0]);
 			Money initialAmount = new Money(doubleInitialAmount);
 			Integer months = Integer.valueOf(request.get("months")[0]);
-			String type = request.get("type")[0];
-			if (type.equals("fixed")) {
-				Investment investment = new FixedInvestment(null, initialAmount, months, rate);
-				forecastItems = fixedInvestmentForecastService.getForecastItems(investment);
-			}
-			else if (type.equals("monthly")) {
-				Investment investment = new MonthlyInvestment(null, initialAmount, months, rate);
-				forecastItems = monthlyInvestmentForecastService.getForecastItems(investment);
-			}
-			response.put("type", type);
-			response.put("rate", rate.doubleValue());
-			response.put("months", months);
-			response.put("initialAmount", initialAmount);
-		} else {
-			String name = request.get("name")[0];
-			forecastItems = fixedInvestmentForecastService.getForecastItems(name);
+			investment = new MonthlyInvestment(null, initialAmount, months, rate);
 		}
-		response.put("forecastItems", forecastItems);
-		return "/WEB-INF/views/investment/forecast.jsp";
+		else {
+			String name = request.get("name")[0];
+			investment = investmentForecastService.getInvestmentByName(name);
+		}
+		return investment;
+	}
+
+	private Investment getFixedInvestment(Map<String, String[]> request) {
+		Investment investment = null;
+		if (request.get("name") == null) {
+			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
+			Double doubleInitialAmount = Double.valueOf(request.get("initialAmount")[0]);
+			Money initialAmount = new Money(doubleInitialAmount);
+			Integer months = Integer.valueOf(request.get("months")[0]);
+			investment = new FixedInvestment(null, initialAmount, months, rate);
+		}
+		else {
+			String name = request.get("name")[0];
+			investment = investmentForecastService.getInvestmentByName(name);
+		}
+		return investment;
 	}
 }

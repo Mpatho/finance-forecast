@@ -6,8 +6,12 @@
 <link rel="stylesheet" href="/finance-1.0/css/font-awesome.min.css">
 </head>
 <body>
-  <h1>Fixed Investment Forecast</h1>
-  <form action="forecast">
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link" href="/finance-1.0/investment/forecasts">Forecasts</a></li>
+    <li class="nav-item"><a class="nav-link active" href="/finance-1.0/investment/fixed">Fixed Investment</a></li>
+    <li class="nav-item"><a class="nav-link" href="/finance-1.0/investment/forecast?type=monthly">Monthly Investment</a></li>
+  </ul>
+  <form action="fixed">
     <input type="hidden" name="type" value="fixed" />
     <div class="form-group">
       <label for="initialAmount">Initial Amount</label> <input type="number" min="0" step=".01"
