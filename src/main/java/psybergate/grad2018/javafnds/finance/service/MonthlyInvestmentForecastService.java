@@ -4,21 +4,22 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.MonthlyForecastItem;
+import psybergate.grad2018.javafnds.finance.entity.ForecastResource;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
+import psybergate.grad2018.javafnds.finance.entity.MonthlyInvestment;
 import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
 
-@Stateless
-@Named("monthly")
+@Stateless(name="monthly")
 public class MonthlyInvestmentForecastService implements ForecastService {
 
-	@EJB
+	@Inject
 	private InvestmentResource invRes;
 	
 	@Override
