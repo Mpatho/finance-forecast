@@ -36,9 +36,13 @@ public abstract class ForecastItem implements Serializable {
 		this.rate = rate;
 	}
 
+	public Money getMonthlyAmount() {
+		return new Money(0);
+	}
 	public abstract Money getInterest();
 
 	public abstract Money getEndAmount();
+	
 
 	@Override
 	public int hashCode() {

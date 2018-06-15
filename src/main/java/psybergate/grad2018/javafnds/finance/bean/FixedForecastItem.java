@@ -12,7 +12,8 @@ public class FixedForecastItem extends ForecastItem {
 		super(initialAmount, rate);
 	}
 
-	public FixedForecastItem() {}
+	public FixedForecastItem() {
+	}
 
 	@Override
 	public Money getInterest() {
