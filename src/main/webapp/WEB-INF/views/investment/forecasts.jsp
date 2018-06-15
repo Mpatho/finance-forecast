@@ -5,6 +5,11 @@
 <link rel="stylesheet" href="/finance-1.0/css/font-awesome.min.css">
 </head>
 <body>
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link active" href="/finance-1.0/investment/forecasts">Forecasts</a></li>
+    <li class="nav-item"><a class="nav-link" href="/finance-1.0/investment/fixed">Fixed Investment</a></li>
+    <li class="nav-item"><a class="nav-link" href="/finance-1.0/investment/forecast?type=monthly">Monthly Investment</a></li>
+  </ul>
   <div class="container-fluid">
     <%
     	Collection<Investment> investments = (Collection<Investment>) request.getAttribute("investments");
@@ -20,7 +25,9 @@
           <%=investment.getRate()%>
         </p>
         <a href="/finance-1.0/investment/delete?name=<%=investment.getName()%>" class="card-link">delete</a>
-        <a href="/finance-1.0/investment/forecast?name=<%=investment.getName()%>&type=${type}" class="card-link">view</a>
+        <a href="/finance-1.0/investment/forecast?name=<%=investment.getName()%>"
+          class="card-link"
+        >view</a>
       </div>
     </div>
     <%
