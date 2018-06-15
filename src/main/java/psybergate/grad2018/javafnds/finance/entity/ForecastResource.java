@@ -1,4 +1,4 @@
-package psybergate.grad2018.javafnds.finance.service;
+package psybergate.grad2018.javafnds.finance.entity;
 
 import psybergate.grad2018.javafnds.finance.resource.Resource;
 
