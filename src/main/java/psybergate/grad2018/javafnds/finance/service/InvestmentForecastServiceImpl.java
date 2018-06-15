@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
+import psybergate.grad2018.javafnds.finance.resource.ForecastResource;
 import psybergate.grad2018.javafnds.finance.resource.Resource;
 
 @Stateless

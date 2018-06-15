@@ -5,7 +5,6 @@ import java.util.Collection;
 import javax.enterprise.context.Dependent;
 
 import psybergate.grad2018.javafnds.finance.entity.Investment;
-import psybergate.grad2018.javafnds.finance.service.ForecastResource;
 
 @Dependent
 public class InvestmentResource extends AbstractResource<Investment> implements ForecastResource<Investment> {

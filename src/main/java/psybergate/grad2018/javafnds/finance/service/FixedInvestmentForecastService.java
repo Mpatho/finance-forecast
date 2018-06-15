@@ -9,7 +9,6 @@ import javax.ejb.Stateful;
 
 import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
-import psybergate.grad2018.javafnds.finance.entity.FixedInvestment;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
@@ -50,17 +49,5 @@ public class FixedInvestmentForecastService implements ForecastService {
 		return true;
 	}
 
-	private List<ForecastItem> createForecastItemsList(List<ForecastItem> forecastItems, BigDecimal rate,
-			Money currentAmount) {
-		Investment investment = new FixedInvestment(null, currentAmount, null, rate);
-		if (isValidateFixedInvestment(investment)) {
-			for (int i = 0; i < investment.getMonths(); i++) {
-				ForecastItem item = new FixedForecastItem(currentAmount, rate);
-				forecastItems.add(item);
-				currentAmount = item.getEndAmount();
-			}
-		}
-		return forecastItems;
-	}
 
 }
