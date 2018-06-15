@@ -21,18 +21,21 @@
     	Collection<Investment> investments = (Collection<Investment>) request.getAttribute("investments");
     	for (Investment investment : investments) {
     %>
-    <div class="card" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title">Investment Forecast</h5>
-        <h6 class="card-subtitle mb-2 text-muted"><%=investment.getName()%></h6>
-        <p class="card-text">
-          <%=investment.getInitialAmount()%><br>
-          <%=investment.getMonths()%><br>
-          <%=investment.getRate()%>
-        </p>
-        <a href="/finance-1.0/investment/delete?name=<%=investment.getName()%>" class="card-link">delete</a>
-        <a href="/finance-1.0/investment/forecast?name=<%=investment.getName()%>" class="card-link">view</a>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Investment Forecast</h3>
       </div>
+      <div class="panel-body">
+        <%=investment.getName()%>
+        <%=investment.getInitialAmount()%><br>
+        <%=investment.getMonths()%><br>
+        <%=investment.getRate()%>
+        <div class="panel-footer">
+          <a href="/finance-1.0/investment/delete?name=<%=investment.getName()%>" class="card-link">delete</a>
+          <a href="/finance-1.0/investment/forecast?name=<%=investment.getName()%>" class="card-link">view</a>
+        </div>
+      </div>
+      <div class="panel-footer">Panel footer</div>
     </div>
     <%
     	}
