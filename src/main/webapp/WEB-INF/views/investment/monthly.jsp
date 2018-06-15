@@ -11,9 +11,17 @@
 <link rel="stylesheet" href="/finance-1.0/css/font-awesome.min.css">
 </head>
 <body class="container">
+	<ul class="nav nav-tabs">
+		<li class="nav-item"><a class="nav-link active"
+			href="/finance-1.0/investment/forecasts">Forecasts</a></li>
+		<li class="nav-item"><a class="nav-link"
+			href="/finance-1.0/investment/fixed">Fixed Investment</a></li>
+		<li class="nav-item"><a class="nav-link"
+			href="/finance-1.0/investment/monthly">Monthly Investment</a></li>
+	</ul>
 
 	<h1>Monthly Investment Forecast</h1>
-	<form action="forecast">
+	<form action="monthly">
 		<input type="hidden" name="type" value="monthly" />
 		<div class="form-group">
 			<label for="initialAmount">Monthly Contribution</label> <input

@@ -80,6 +80,7 @@ public class InvestmentForecastController {
 		if (request.isEmpty()) return "/WEB-INF/views/investment/monthly.jsp";
 		List<ForecastItem> forecastItems = null;
 		Investment investment = getMonthlyInvestment(request);
+		forecastItems = monthlyInvestmentForecastService.getForecastItems(investment);
 		response.put("rate", investment.getRate().doubleValue());
 		response.put("months", investment.getMonths());
 		response.put("initialAmount", investment.getInitialAmount());

@@ -8,7 +8,7 @@
   <ul class="nav nav-tabs">
     <li class="nav-item"><a class="nav-link active" href="/finance-1.0/investment/forecasts">Forecasts</a></li>
     <li class="nav-item"><a class="nav-link" href="/finance-1.0/investment/fixed">Fixed Investment</a></li>
-    <li class="nav-item"><a class="nav-link" href="/finance-1.0/investment/montly">Monthly Investment</a></li>
+    <li class="nav-item"><a class="nav-link" href="/finance-1.0/investment/monthly">Monthly Investment</a></li>
   </ul>
   <div class="container-fluid">
     <%
