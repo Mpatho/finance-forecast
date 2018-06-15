@@ -43,4 +43,9 @@ public abstract class AbstractResource<T> implements Resource<T> {
 	public Iterator<T> iterator() {
 		return getAll().iterator();
 	}
+
+	@Override
+	public boolean contains(T entity) {
+		return em.contains(entity);
+	}
 }

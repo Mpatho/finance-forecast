@@ -14,4 +14,6 @@ public interface Resource<T> extends Iterable<T> {
 
 	void remove(T entity);
 
+	boolean contains(T entity);
+
 }
