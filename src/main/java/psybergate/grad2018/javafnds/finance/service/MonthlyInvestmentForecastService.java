@@ -7,14 +7,11 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.MonthlyForecastItem;
-import psybergate.grad2018.javafnds.finance.entity.ForecastResource;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
-import psybergate.grad2018.javafnds.finance.entity.MonthlyInvestment;
 import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
 
 @Stateless(name="monthly")

@@ -6,40 +6,43 @@
 </head>
 <body>
   <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" href="/finance-1.0/investment/forecasts">Forecasts</a>
+    <li class="nav-item"><a class="nav-link active" href="/finance-1.0/investment/forecasts">Forecasts</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/finance-1.0/investment/fixed">Fixed Investment</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/finance-1.0/investment/forecast?type=monthly">Monthly Investment</a>
-     </li>
+    <li class="nav-item"><a class="nav-link" href="/finance-1.0/investment/fixed">Fixed
+        Investment</a></li>
+    <li class="nav-item"><a class="nav-link" href="/finance-1.0/investment/monthly">Monthly
+        Investment</a></li>
   </ul>
   <div class="container-fluid">
-    <%
-    	Collection<Investment> investments = (Collection<Investment>) request.getAttribute("investments");
-    	for (Investment investment : investments) {
-    %>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Investment Forecast</h3>
-      </div>
-      <div class="panel-body">
-        <%=investment.getName()%>
-        <%=investment.getInitialAmount()%><br>
-        <%=investment.getMonths()%><br>
-        <%=investment.getRate()%>
-        <div class="panel-footer">
-          <a href="/finance-1.0/investment/delete?name=<%=investment.getName()%>" class="card-link">delete</a>
-          <a href="/finance-1.0/investment/forecast?name=<%=investment.getName()%>" class="card-link">view</a>
+    <div class="row">
+      <%
+      	Collection<Investment> investments = (Collection<Investment>) request.getAttribute("investments");
+      	for (Investment investment : investments) {
+      %>
+      <div class="col-sm-4" style="margin-top: 1em;">
+        <div class="card bg-light mb-3">
+          <div class="card-body">
+            <h4 class="card-title">Investment Forecast</h4>
+            <h6 class="card-subtitle mb-2 text-muted"><%=investment.getName()%></h6>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Initial Amount: <%=investment.getInitialAmount()%></li>
+            <li class="list-group-item">Months: <%=investment.getMonths()%></li>
+            <li class="list-group-item">Interest: <%=investment.getRate()%></li>
+          </ul>
+          <div class="card-footer">
+            <a href="/finance-1.0/investment/delete?name=<%=investment.getName()%>"
+              class="card-link btn btn-warning fa fa-trash"
+            ></a> <a href="/finance-1.0/investment/forecast?name=<%=investment.getName()%>"
+              class="card-link btn btn-primary fa fa-eye"
+            ></a>
+          </div>
         </div>
       </div>
-      <div class="panel-footer">Panel footer</div>
+      <%
+      	}
+      %>
     </div>
-    <%
-    	}
-    %>
   </div>
   <script src="/finance-1.0/js/jquery-3.3.1.min.js"></script>
   <script src="/finance-1.0/js/bootstrap.bundle.min.js"></script>

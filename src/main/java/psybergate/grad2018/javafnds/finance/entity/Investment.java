@@ -2,6 +2,7 @@ package psybergate.grad2018.javafnds.finance.entity;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public abstract class Investment {
 	@Column(unique = true)
 	private String name;
 
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private Money initialAmount;
 
 	private Integer months;

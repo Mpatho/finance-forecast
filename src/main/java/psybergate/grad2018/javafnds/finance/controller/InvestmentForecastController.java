@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
-import javax.inject.Named;
 
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.FixedInvestment;
@@ -23,16 +22,16 @@ public class InvestmentForecastController {
 	@EJB
 	private InvestmentForecastService investmentForecastService;
 
-	@EJB(beanName="fixed")
+	@EJB(beanName = "fixed")
 	private ForecastService fixedInvestmentForecastService;
 
-	@EJB(beanName="monthly")
+	@EJB(beanName = "monthly")
 	private ForecastService monthlyInvestmentForecastService;
 
 	public String save(Map<String, String[]> request, Map<String, Object> response) {
-		String name = request.get("name")[0];
-		Investment investment = investmentForecastService.getInvestmentByName(name);
-		if (investment == null) {
+		Investment investment = null;
+		if (validInput(request)) {
+			String name = request.get("name")[0];
 			Money initialAmount = new Money(Double.valueOf(request.get("initialAmount")[0]));
 			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
 			Integer months = new Integer(request.get("months")[0]);
@@ -43,6 +42,9 @@ public class InvestmentForecastController {
 			else if (type.equals("monthly")) {
 				investment = new MonthlyInvestment(name, initialAmount, months, rate);
 			}
+		}
+		else {
+			// investment = investmentForecastService.getInvestmentByName(name);
 		}
 		investmentForecastService.save(investment);
 		return viewForecasts(request, response);
@@ -71,7 +73,7 @@ public class InvestmentForecastController {
 		forecastItems = fixedInvestmentForecastService.getForecastItems(investment);
 		response.put("rate", investment.getRate().doubleValue());
 		response.put("months", investment.getMonths());
-		response.put("initialAmount", investment.getInitialAmount());
+		response.put("initialAmount", investment.getInitialAmount().doubleValue());
 		response.put("forecastItems", forecastItems);
 		return "/WEB-INF/views/investment/fixed.jsp";
 	}
@@ -80,9 +82,10 @@ public class InvestmentForecastController {
 		if (request.isEmpty()) return "/WEB-INF/views/investment/monthly.jsp";
 		List<ForecastItem> forecastItems = null;
 		Investment investment = getMonthlyInvestment(request);
+		forecastItems = monthlyInvestmentForecastService.getForecastItems(investment);
 		response.put("rate", investment.getRate().doubleValue());
 		response.put("months", investment.getMonths());
-		response.put("initialAmount", investment.getInitialAmount());
+		response.put("initialAmount", investment.getInitialAmount().doubleValue());
 		response.put("forecastItems", forecastItems);
 		return "/WEB-INF/views/investment/monthly.jsp";
 	}
@@ -110,9 +113,14 @@ public class InvestmentForecastController {
 
 	}
 
+	private boolean validInput(Map<String, String[]> request) {
+		return request.get("initialAmount") != null && request.get("rate") != null && request.get("months") != null
+				&& request.get("type") != null;
+	}
+
 	private Investment getMonthlyInvestment(Map<String, String[]> request) {
 		Investment investment = null;
-		if (request.get("name") == null) {
+		if (validInput(request)) {
 			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
 			Double doubleInitialAmount = Double.valueOf(request.get("initialAmount")[0]);
 			Money initialAmount = new Money(doubleInitialAmount);
@@ -128,7 +136,7 @@ public class InvestmentForecastController {
 
 	private Investment getFixedInvestment(Map<String, String[]> request) {
 		Investment investment = null;
-		if (request.get("name") == null) {
+		if (validInput(request)) {
 			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
 			Double doubleInitialAmount = Double.valueOf(request.get("initialAmount")[0]);
 			Money initialAmount = new Money(doubleInitialAmount);
