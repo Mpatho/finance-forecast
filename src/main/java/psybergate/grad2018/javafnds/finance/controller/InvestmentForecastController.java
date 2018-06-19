@@ -71,10 +71,7 @@ public class InvestmentForecastController {
 		List<ForecastItem> forecastItems = null;
 		Investment investment = getFixedInvestment(request);
 		forecastItems = fixedInvestmentForecastService.getForecastItems(investment);
-		response.put("rate", investment.getRate().doubleValue());
-		response.put("months", investment.getMonths());
-		response.put("initialAmount", investment.getInitialAmount().doubleValue());
-		response.put("forecastItems", forecastItems);
+		loadInvestmentResponce(response, investment, forecastItems);
 		return "/WEB-INF/views/investment/fixed.jsp";
 	}
 
@@ -83,10 +80,7 @@ public class InvestmentForecastController {
 		List<ForecastItem> forecastItems = null;
 		Investment investment = getMonthlyInvestment(request);
 		forecastItems = monthlyInvestmentForecastService.getForecastItems(investment);
-		response.put("rate", investment.getRate().doubleValue());
-		response.put("months", investment.getMonths());
-		response.put("initialAmount", investment.getInitialAmount().doubleValue());
-		response.put("forecastItems", forecastItems);
+		loadInvestmentResponce(response, investment, forecastItems);
 		return "/WEB-INF/views/investment/monthly.jsp";
 	}
 
@@ -95,22 +89,23 @@ public class InvestmentForecastController {
 		Investment investment = investmentForecastService.getInvestmentByName(name);
 		if (investment.getClass().equals(FixedInvestment.class)) {
 			List<ForecastItem> forecastItems = fixedInvestmentForecastService.getForecastItems(investment);
-			response.put("rate", investment.getRate().doubleValue());
-			response.put("months", investment.getMonths());
-			response.put("initialAmount", investment.getInitialAmount());
-			response.put("forecastItems", forecastItems);
+			loadInvestmentResponce(response, investment, forecastItems);
 			return "/WEB-INF/views/investment/fixed.jsp";
 		}
 		if (investment.getClass().equals(MonthlyInvestment.class)) {
 			List<ForecastItem> forecastItems = monthlyInvestmentForecastService.getForecastItems(investment);
-			response.put("rate", investment.getRate().doubleValue());
-			response.put("months", investment.getMonths());
-			response.put("initialAmount", investment.getInitialAmount());
-			response.put("forecastItems", forecastItems);
+			loadInvestmentResponce(response, investment, forecastItems);
 			return "/WEB-INF/views/investment/monthly.jsp";
 		}
 		return "/WEB-INF/views/investment/forecasts.jsp";
 
+	}
+
+	private void loadInvestmentResponce(Map<String, Object> response, Investment investment, List<ForecastItem> forecastItems) {
+		response.put("rate", investment.getRate().doubleValue());
+		response.put("months", investment.getMonths());
+		response.put("initialAmount", investment.getInitialAmount().doubleValue());
+		response.put("forecastItems", forecastItems);
 	}
 
 	private boolean validInput(Map<String, String[]> request) {

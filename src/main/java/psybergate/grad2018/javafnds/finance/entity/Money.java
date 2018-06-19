@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @Entity
 public final class Money implements Comparable<Money> {
 
-	private static final DecimalFormat FORMAT = new DecimalFormat("#,###.##");
+	private static final DecimalFormat FORMAT = new DecimalFormat("#,##0.00");
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
