@@ -6,14 +6,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 
 import psybergate.grad2018.javafnds.finance.bean.BondForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Bond;
 import psybergate.grad2018.javafnds.finance.entity.Money;
+import psybergate.grad2018.javafnds.finance.resource.ForecastResource;
 
 @Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class BondForecastService implements ForecastService<Bond> {
+
+	@Inject
+	private ForecastResource<Bond> bondResource;
 
 	protected Money getRepayment(Bond bond) {
 		BigDecimal one = BigDecimal.ONE;
@@ -40,7 +48,8 @@ public class BondForecastService implements ForecastService<Bond> {
 
 	@Override
 	public List<ForecastItem> getForecastItems(String name) {
-		return null;
+		Bond bond = bondResource.getByName(name);
+		return getForecastItems(bond);
 	}
 
 }

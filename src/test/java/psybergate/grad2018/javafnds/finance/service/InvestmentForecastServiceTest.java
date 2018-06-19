@@ -160,7 +160,6 @@ public class InvestmentForecastServiceTest {
 	@Test
 	public void testIfReturnsCorrectAmountsinGetForecastItemsMonthly() {
 		Investment investment1 = new Investment("Sizwe", Investment.MONTHLY, new Money(1_000), 3, new BigDecimal(22.4));
-		System.out.println(investment1);
 		List<ForecastItem> serviceForecastItems = ifs.getForecastItems(investment1);
 
 		assertListEquals(getForecastItemsMonthly(), serviceForecastItems);

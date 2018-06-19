@@ -9,5 +9,9 @@ public interface ForecastService<T> {
 	List<ForecastItem> getForecastItems(T investment);
 
 	List<ForecastItem> getForecastItems(String name);
+	
+	boolean save(T investment);
+
+	boolean delete(T investment);
 
 }
