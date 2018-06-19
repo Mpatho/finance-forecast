@@ -16,7 +16,7 @@ import psybergate.grad2018.javafnds.finance.entity.Money;
 
 public class BondForecastServiceTest {
 
-	private static BondForecastService fs = new BondForecastService();
+	private static BondForecastServiceImpl fs = new BondForecastServiceImpl();
 
 	@Test
 	public void testGetForecastItems() {
