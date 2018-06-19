@@ -39,10 +39,13 @@ public abstract class ForecastItem implements Serializable {
 	public Money getMonthlyAmount() {
 		return new Money(0);
 	}
-	public abstract Money getInterest();
+
+	public Money getInterest() {
+		Double monthlyRate = getRate().doubleValue() / 12;
+		return getInitialAmount().percentOf(monthlyRate);
+	}
 
 	public abstract Money getEndAmount();
-	
 
 	@Override
 	public int hashCode() {
@@ -55,28 +58,19 @@ public abstract class ForecastItem implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
 		ForecastItem other = (ForecastItem) obj;
 		if (initialAmount == null) {
-			if (other.initialAmount != null)
-				return false;
+			if (other.initialAmount != null) return false;
 		}
-		else if (!initialAmount.equals(other.initialAmount))
-			return false;
+		else if (!initialAmount.equals(other.initialAmount)) return false;
 		if (rate == null) {
-			if (other.rate != null)
-				return false;
+			if (other.rate != null) return false;
 		}
-		else if (!rate.equals(other.rate))
-			return false;
+		else if (!rate.equals(other.rate)) return false;
 		return true;
 	}
 
-	
-	
 }

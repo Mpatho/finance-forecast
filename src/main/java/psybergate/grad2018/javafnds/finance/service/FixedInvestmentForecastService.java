@@ -14,9 +14,9 @@ import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
 
-@Stateless(name="fixed")
-@EJB(name="fixed", beanInterface=ForecastService.class, beanName="fixed")
-public class FixedInvestmentForecastService implements ForecastService {
+@Stateless(name = "fixed")
+@EJB(name = "fixed", beanInterface = ForecastService.class, beanName = "fixed")
+public class FixedInvestmentForecastService implements ForecastService<Investment> {
 
 	@Inject
 	private InvestmentResource invRes;
@@ -32,7 +32,7 @@ public class FixedInvestmentForecastService implements ForecastService {
 				forecastItems.add(item);
 				currentAmount = item.getEndAmount();
 			}
-		} 
+		}
 		else {
 			throw new RuntimeException("Invalid investment");
 		}

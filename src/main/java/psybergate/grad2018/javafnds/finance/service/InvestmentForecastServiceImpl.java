@@ -1,7 +1,10 @@
 package psybergate.grad2018.javafnds.finance.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -10,6 +13,9 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 
+import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
+import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
+import psybergate.grad2018.javafnds.finance.bean.MonthlyForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.resource.ForecastResource;
@@ -40,17 +46,49 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 		return true;
 	}
 
-	private boolean validate(Investment investment) {
-		String name = investment.getName();
-		Money initialAmount = investment.getInitialAmount();
-		Integer months = investment.getMonths();
-		BigDecimal rate = investment.getRate();
-		if (name == null || name.isEmpty()) return false;
-		else if (initialAmount == null || initialAmount.compareTo(new Money(0)) <= 0) return false;
-		else if (months == null || months <= 0) return false;
-		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
-		return true;
+	public List<ForecastItem> getMonthlyForecastItems(Investment investment) {
+		if (investment == null) return null;
+		
+		List<ForecastItem> forecastItems = new ArrayList<>();
+		if (validate(investment)) {
+			
+			Money currentAmount = investment.getInitialAmount();
+			Money monthlyAmount = currentAmount;
+			currentAmount = new Money(0);
+			for (int i = 0; i < investment.getMonths(); i++) {
+				ForecastItem item = new MonthlyForecastItem(currentAmount, investment.getRate(), monthlyAmount);
+				forecastItems.add(item);
+				currentAmount = item.getEndAmount();
+			}
+		} 
+		else {
+			throw new RuntimeException("Invalid investment");
+		}
+		return forecastItems;
 	}
+
+	public List<ForecastItem> getForecastItems(String name) {
+		Investment investment = investmentResource.getByName(name);
+		return getForecastItems(investment);
+	}
+
+	public List<ForecastItem> getFixedForecastItems(Investment investment) {
+		if (investment == null) return null;
+		List<ForecastItem> forecastItems = new ArrayList<>();
+		if (validate(investment)) {
+			Money currentAmount = investment.getInitialAmount();
+			for (int i = 0; i < investment.getMonths(); i++) {
+				ForecastItem item = new FixedForecastItem(currentAmount, investment.getRate());
+				forecastItems.add(item);
+				currentAmount = item.getEndAmount();
+			}
+		}
+		else {
+			throw new RuntimeException("Invalid investment");
+		}
+		return forecastItems;
+	}
+
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -76,4 +114,27 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 		return false;
 	}
 
+	@Override
+	public List<ForecastItem> getForecastItems(Investment investment) {
+		if (investment.getType().equals(Investment.FIXED)) {
+			return getFixedForecastItems(investment);
+		}
+		else if (investment.getType().equals(Investment.MONTHLY)) {
+			return getMonthlyForecastItems(investment);
+		}
+		return new LinkedList<>();
+	}
+
+	private boolean validate(Investment investment) {
+		String name = investment.getName();
+		Money initialAmount = investment.getInitialAmount();
+		Integer months = investment.getMonths();
+		BigDecimal rate = investment.getRate();
+		if (name == null || name.isEmpty()) return false;
+		else if (initialAmount == null || initialAmount.compareTo(new Money(0)) <= 0) return false;
+		else if (months == null || months <= 0) return false;
+		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
+		return true;
+	}
 }
+

@@ -1,3 +1,4 @@
+
 package psybergate.grad2018.javafnds.finance.service;
 
 import java.util.Collection;
@@ -7,7 +8,7 @@ import javax.ejb.Local;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 
 @Local
-public interface InvestmentForecastService {
+public interface InvestmentForecastService extends ForecastService<Investment> {
 
 	Collection<Investment> getInvestments();
 
@@ -18,4 +19,5 @@ public interface InvestmentForecastService {
 	Investment getInvestmentByName(String name);
 
 	boolean deleteInvestmentByName(String name);
+	
 }

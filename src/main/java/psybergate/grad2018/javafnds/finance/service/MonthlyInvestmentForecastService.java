@@ -16,7 +16,7 @@ import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
 
 @Stateless(name="monthly")
 @EJB(name="monthly", beanInterface=ForecastService.class, beanName="monthly")
-public class MonthlyInvestmentForecastService implements ForecastService {
+public class MonthlyInvestmentForecastService implements ForecastService<Investment> {
 
 	@Inject
 	private InvestmentResource invRes;

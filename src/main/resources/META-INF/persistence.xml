@@ -8,6 +8,7 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:/FinanceDataSource</jta-data-source>
 		<class>psybergate.grad2018.javafnds.finance.entity.Investment</class>
+		<class>psybergate.grad2018.javafnds.finance.entity.Bond</class>
 		<class>psybergate.grad2018.javafnds.finance.entity.Money</class>
 		<class>psybergate.grad2018.javafnds.finance.entity.Event</class>
 		<class>psybergate.grad2018.javafnds.finance.entity.FixedInvestment</class>
@@ -15,7 +16,7 @@
 		<properties>
 			<property
 				name="javax.persistence.schema-generation.database.action"
-				value="none" />
+				value="drop-and-create" />
 		</properties>
 
 	</persistence-unit>

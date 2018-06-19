@@ -45,6 +45,16 @@ public final class Money implements Comparable<Money> {
 		return new Money(moneyValue);
 	}
 
+	public Money subtract(Money money) {
+		BigDecimal moneyValue = this.rands.subtract(money.rands);
+		return new Money(moneyValue);
+	}
+
+	public Money multiply(BigDecimal value) {
+		BigDecimal moneyValue = rands.multiply(value);
+		return new Money(moneyValue);
+	}
+
 	public Money percentOf(double percent) {
 		BigDecimal value = rands.multiply(new BigDecimal(percent)).divide(new BigDecimal(100));
 		return new Money(value);
@@ -62,7 +72,7 @@ public final class Money implements Comparable<Money> {
 		if (obj == this) return true;
 		if (!obj.getClass().equals(this.getClass())) return false;
 		Money money = (Money) obj;
-		return money.rands.equals(this.rands);
+		return money.stringValue().equals(this.stringValue());
 	}
 
 	public double doubleValue() {
