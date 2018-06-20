@@ -52,17 +52,21 @@ public class BondForecastController extends ForecastController {
 	public String forecastBond(Map<String, String[]> request, Map<String, Object> response) {
 		if (validInput(request)) {
 			Bond bond = getBond(request);
-			List<ForecastItem> forecastItems = bondForecastService.getForecastItems(bond);
-			setBond(response, bond);
-			response.put("forecastItems", forecastItems);
+			forecastBond(request, response, bond);
 		}
 		else if (request.get("name") != null) {
 			Bond bond = bondForecastService.getBondByName(request.get("name")[0]);
-			List<ForecastItem> forecastItems = bondForecastService.getForecastItems(bond);
-			setBond(response, bond);
-			response.put("forecastItems", forecastItems);
+			forecastBond(request, response, bond);
 		}
 		return "/WEB-INF/views/bond/forecast.jsp";
+	}
+
+	private void forecastBond(Map<String, String[]> request, Map<String, Object> response, Bond bond) {
+		boolean required = request.get("include_cash_required") != null ? true : false;
+		List<ForecastItem> forecastItems = bondForecastService.getForecastItems(bond, required);
+		setBond(response, bond);
+		response.put("checked", required ? "checked" : "");
+		response.put("forecastItems", forecastItems);
 	}
 
 	private void setBond(Map<String, Object> response, Bond bond) {
@@ -71,6 +75,10 @@ public class BondForecastController extends ForecastController {
 		response.put("deposit", bond.getDeposit().doubleValue());
 		response.put("rate", bond.getRate().doubleValue());
 		response.put("months", bond.getMonths());
+		response.put("bondCost", bondForecastService.getBondCost(bond).stringValue());
+		response.put("transferCost", bondForecastService.getTransferCost(bond).stringValue());
+		response.put("legalCost", bondForecastService.getLegalCost(bond).stringValue());
+		response.put("cashRequired", bondForecastService.getCashRequired(bond).stringValue());
 	}
 
 	private boolean validInput(Map<String, String[]> request) {

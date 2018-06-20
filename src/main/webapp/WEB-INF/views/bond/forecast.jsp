@@ -26,6 +26,16 @@
   <br>
   <div class="container-fluid">
     <div class="input-group">
+      <span class="input-group-text">Bond Cost</span>
+      <input type="text" readonly="readonly" class="form-control" value='${bondCost}'>
+      <span class="input-group-text">Transfer Cost</span>
+      <input type="text" readonly="readonly" class="form-control" value='${transferCost}'>
+      <span class="input-group-text">Legal Cost</span>
+      <input type="text" readonly="readonly" class="form-control" value='${legalCost}'>
+      <label class="input-group-text">Cash Required</label>
+      <input type="text" readonly="readonly" class="form-control" value='${cashRequired}'>
+    </div>
+    <div class="input-group">
       <span class="input-group-text">Purchase Price</span>
       <input type="number" min="0" form="form" class="form-control" name="price" value='${price}'
         placeholder="Rands"
@@ -42,6 +52,8 @@
       <input type="number" min="0" form="form" class="form-control" id="months" name="months"
         value='${months}' placeholder="Number of Months"
       >
+      <label class="input-group-text">Include cash required in bond</label>
+      <input type="checkbox" form="form" class="form-control" name="include_cash_required" ${checked}>
     </div>
     <button type="button" class="btn btn-primary fa fa-save" data-toggle="modal"
       data-target="#exampleModal"

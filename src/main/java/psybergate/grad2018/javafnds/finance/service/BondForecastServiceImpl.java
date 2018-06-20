@@ -19,23 +19,38 @@ import psybergate.grad2018.javafnds.finance.resource.ForecastResource;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class BondForecastServiceImpl implements BondForecastService {
 
+	private static final double BOND_COST_PERCENT = 1.0;
+
+	private static final double LEGAL_COST_PERCENT = 1.2;
+
+	private static final Money[] TRANSFER_DUTY_PRICES = { new Money(900_000.00), new Money(1_250_000.00), new Money(
+			1_750_000.00), new Money(2_250_000.00), new Money(10_000_000.00), };
+
+	private static final Double[] TRANSFER_DUTY_RATES = { 3.0, 6.0, 8.0, 11.0, 13.0, };
+
 	@Inject
 	private ForecastResource<Bond> bondResource;
 
 	protected Money getRepayment(Bond bond) {
 		Double one = 1.00;
 		Double rate = bond.getRate() / 1200;
-		Double fraction = Math.pow((one / (one + rate )), bond.getMonths());
+		Double fraction = Math.pow((one / (one + rate)), bond.getMonths());
 		Double factor = rate / (one - (fraction));
 		Money subtract = bond.getPrice().subtract(bond.getDeposit());
 		return subtract.multiply(factor);
 	}
 
 	@Override
-	public List<ForecastItem> getForecastItems(Bond bond) {
+	public List<ForecastItem> getForecastItems(Bond bond, boolean includeCashRequired) {
 		List<ForecastItem> forectastItems = new LinkedList<>();
 		Money repaymentMoney = getRepayment(bond);
-		Money currentMoney = bond.getPrice().subtract(bond.getDeposit());
+		Money currentMoney;
+		if (includeCashRequired) {
+			currentMoney = bond.getPrice().subtract(bond.getDeposit()).add(getCashRequired(bond));
+		}
+		else {
+			currentMoney = bond.getPrice().subtract(bond.getDeposit());
+		}
 		Double rate = bond.getRate();
 		ForecastItem item;
 		for (int i = 0; i < bond.getMonths(); i++) {
@@ -44,6 +59,12 @@ public class BondForecastServiceImpl implements BondForecastService {
 			currentMoney = item.getEndAmount();
 		}
 		return forectastItems;
+
+	}
+
+	@Override
+	public List<ForecastItem> getForecastItems(Bond bond) {
+		return getForecastItems(bond, false);
 	}
 
 	@Override
@@ -89,6 +110,43 @@ public class BondForecastServiceImpl implements BondForecastService {
 
 	private boolean validate(Bond bond) {
 		return true;
+	}
+
+	@Override
+	public Money getBondCost(Bond bond) {
+		return bond.getPrice().percentOf(BOND_COST_PERCENT);
+	}
+
+	@Override
+	public Money getTransferCost(Bond bond) {
+		Money price = bond.getPrice();
+		Money transerCost = new Money(0.0);
+		if (price.compareTo(TRANSFER_DUTY_PRICES[0]) <= 0) return transerCost;
+		for (int i = 1; i < TRANSFER_DUTY_PRICES.length; i++) {
+			if (price.compareTo(TRANSFER_DUTY_PRICES[i]) <= 0) {
+				Money cost = price.subtract(TRANSFER_DUTY_PRICES[i - 1]).percentOf(TRANSFER_DUTY_RATES[i - 1]);
+				return transerCost.add(cost);
+			}
+			else {
+				Money cost = TRANSFER_DUTY_PRICES[i].subtract(TRANSFER_DUTY_PRICES[i - 1]).percentOf(TRANSFER_DUTY_RATES[i
+						- 1]);
+				transerCost = transerCost.add(cost);
+			}
+		}
+
+		int last = TRANSFER_DUTY_PRICES.length - 1;
+		Money cost = price.subtract(TRANSFER_DUTY_PRICES[last]).percentOf(TRANSFER_DUTY_RATES[last]);
+		return transerCost.add(cost);
+	}
+
+	@Override
+	public Money getLegalCost(Bond bond) {
+		return bond.getPrice().percentOf(LEGAL_COST_PERCENT);
+	}
+
+	@Override
+	public Money getCashRequired(Bond bond) {
+		return getBondCost(bond).add(getLegalCost(bond)).add(getTransferCost(bond));
 	}
 
 }
