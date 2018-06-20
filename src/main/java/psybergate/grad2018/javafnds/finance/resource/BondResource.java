@@ -20,6 +20,22 @@ public class BondResource extends AbstractResource<Bond> implements ForecastReso
 	}
 
 	@Override
+	public void save(Bond entity) {
+		if (entity.getId() == null) {
+			super.save(entity);
+		}
+		else {
+			Bond bond = getById(entity.getId());
+			bond.setPrice(entity.getPrice());
+			bond.setDeposit(entity.getDeposit());
+			bond.setMonths(entity.getMonths());
+			bond.setName(entity.getName());
+			bond.setRate(entity.getRate());
+			super.save(bond);
+		}
+	}
+
+	@Override
 	public Bond getByName(String name) {
 		// need modification
 		if (name == null)

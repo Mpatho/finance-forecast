@@ -6,12 +6,12 @@ import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 
 public interface ForecastService<T> {
 
-	List<ForecastItem> getForecastItemsByInv(T investment);
+	List<ForecastItem> getForecastItems(T entity);
 
-	List<ForecastItem> getForecastItems(String name);
+	List<ForecastItem> getForecastItemsByName(String name);
 	
-	boolean save(T investment);
+	boolean save(T entity);
 
-	boolean delete(T investment);
-
+	boolean delete(T entity);
+	
 }

@@ -1,0 +1,100 @@
+<%@ page import="psybergate.grad2018.javafnds.finance.entity.*,java.util.Collection"%>
+<html>
+<head>
+<link rel="stylesheet" href="/finance-1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="/finance-1.0/css/font-awesome.min.css">
+</head>
+<body>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="/finance-1.0/forecast/forecasts">Forecasts</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/finance-1.0/investment/fixed">Fixed Investment</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/finance-1.0/investment/monthly">Monthly Investment</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/finance-1.0/bond/forecast">Bond</a>
+    </li>
+  </ul>
+  <div class="container-fluid">
+    <div class="row">
+      <%
+      	Collection<Investment> investments = (Collection<Investment>) request.getAttribute("investments");
+      	for (Investment investment : investments) {
+      %>
+      <div class="col-sm-4" style="margin-top: 1em;">
+        <div class="card bg-light mb-3">
+          <div class="card-body">
+            <h4 class="card-title">Investment Forecast</h4>
+            <h6 class="card-subtitle mb-2 text-muted"><%=investment.getName()%></h6>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Initial Amount:
+              <%=investment.getInitialAmount()%></li>
+            <li class="list-group-item">
+              Months:
+              <%=investment.getMonths()%></li>
+            <li class="list-group-item">
+              Interest:
+              <%=investment.getRate()%></li>
+          </ul>
+          <div class="card-footer">
+            <a href="/finance-1.0/investment/delete?name=<%=investment.getName()%>"
+              class="card-link btn btn-warning fa fa-trash"
+            ></a> <a href="/finance-1.0/investment/forecast?name=<%=investment.getName()%>"
+              class="card-link btn btn-primary fa fa-eye"
+            ></a>
+          </div>
+        </div>
+      </div>
+      <%
+      	}
+      %>
+    </div>
+    <div class="row">
+      <%
+      	Collection<Bond> bonds = (Collection<Bond>) request.getAttribute("bonds");
+      	for (Bond bond : bonds) {
+      %>
+      <div class="col-sm-4" style="margin-top: 1em;">
+        <div class="card bg-light mb-3">
+          <div class="card-body">
+            <h4 class="card-title">Bond Forecast</h4>
+            <h6 class="card-subtitle mb-2 text-muted"><%=bond.getName()%></h6>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Price:
+              <%=bond.getPrice()%></li>
+            <li class="list-group-item">
+              Deposit:
+              <%=bond.getDeposit()%></li>
+            <li class="list-group-item">
+              Months:
+              <%=bond.getMonths()%></li>
+            <li class="list-group-item">
+              Interest:
+              <%=bond.getRate()%></li>
+          </ul>
+          <div class="card-footer">
+            <a href="/finance-1.0/bond/delete?name=<%=bond.getName()%>"
+              class="card-link btn btn-warning fa fa-trash"
+            ></a> <a href="/finance-1.0/bond/forecast?name=<%=bond.getName()%>"
+              class="card-link btn btn-primary fa fa-eye"
+            ></a>
+          </div>
+        </div>
+      </div>
+      <%
+      	}
+      %>
+    </div>
+  </div>
+  <script src="/finance-1.0/js/jquery-3.3.1.min.js"></script>
+  <script src="/finance-1.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

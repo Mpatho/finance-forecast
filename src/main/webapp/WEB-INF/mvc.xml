@@ -9,4 +9,14 @@
 		<method name="fixed" invoke="forecastFixedInvestment" />
 		<method name="forecast" invoke="forecastInvestment" />
 	</controller>
+	<controller name="bond"
+		JNDIName="java:module/Bond">
+		<method name="save" invoke="save" />
+		<method name="delete" invoke="delete" />
+		<method name="forecast" invoke="forecastBond" />
+	</controller>
+	<controller name="forecast"
+		JNDIName="java:module/Forecast">
+		<method name="forecasts" invoke="viewForecasts" />
+	</controller>
 </controllers>

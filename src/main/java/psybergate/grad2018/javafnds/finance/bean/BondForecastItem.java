@@ -1,7 +1,5 @@
 package psybergate.grad2018.javafnds.finance.bean;
 
-import java.math.BigDecimal;
-
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
 public class BondForecastItem extends ForecastItem {
@@ -14,7 +12,7 @@ public class BondForecastItem extends ForecastItem {
 		super();
 	}
 
-	public BondForecastItem(Money initialAmount, BigDecimal rate, Money repayment) {
+	public BondForecastItem(Money initialAmount, Double rate, Money repayment) {
 		super(initialAmount, rate);
 		this.repayment = repayment;
 	}
@@ -25,7 +23,8 @@ public class BondForecastItem extends ForecastItem {
 		Money repayment = getRepayment();
 		if (repayment.doubleValue() < sum.doubleValue())
 			return sum.subtract(repayment);
-		return sum;
+		setRepayment(sum);
+		return sum.subtract(sum);
 	}
 
 	public Money getRepayment() {
@@ -36,4 +35,12 @@ public class BondForecastItem extends ForecastItem {
 		this.repayment = repayment;
 	}
 
+	@Override
+	public String toString() {
+		return "BondForecastItem [repayment=" + repayment + ", getInitialAmount()=" + getInitialAmount() + ", getRate()="
+				+ getRate() + ", getMonthlyAmount()=" + getMonthlyAmount() + ", getInterest()=" + getInterest() + "]";
+	}
+
+	
 }
+

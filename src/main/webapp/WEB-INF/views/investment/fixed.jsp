@@ -13,11 +13,13 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="nav-item"><a class="nav-link"
-			href="/finance-1.0/investment/forecasts">Forecasts</a></li>
+			href="/finance-1.0/forecast/forecasts">Forecasts</a></li>
 		<li class="nav-item"><a class="nav-link active"
 			href="/finance-1.0/investment/fixed">Fixed Investment</a></li>
 		<li class="nav-item"><a class="nav-link"
 			href="/finance-1.0/investment/monthly">Monthly Investment</a></li>
+		<li class="nav-item"><a class="nav-link"
+			href="/finance-1.0/bond/forecast">Bond</a></li>
 	</ul>
 	<br>
 	<div class="container-fluid">
@@ -35,7 +37,8 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">Forecast Events</div>
 			<div class="panel-body event-form">
-				<div class="event-form-input" style="max-height: 200px; display:block;overflow-y: scroll;">
+				<div class="event-form-input"
+					style="max-height: 200px; display: block; overflow-y: scroll;">
 					<div class="input-group event-form-child">
 						<span class="input-group-text">Month</span> <input type="number"
 							min="0" form="form" class="form-control" id="month"
@@ -112,6 +115,8 @@
 				<div class="modal-body">
 					<form action="fixed" id="form">
 						<input type="hidden" name="type" value="fixed" />
+						<input type="hidden" name="id" value="${id }" />
+						
 						<div class="form-group">
 							<label for="name">Name</label> <input type="text"
 								class="form-control" id="name" name="name"
@@ -133,9 +138,10 @@
 	<script src="/finance-1.0/js/bootstrap.bundle.min.js"></script>
 	<script>
 		function generateEventInput() {
-			$(".event-form-input").children(":first").clone()
-					.appendTo(".event-form-input");
+			$(".event-form-input").children(":first").clone().appendTo(
+					".event-form-input");
 		}
 	</script>
+
 </body>
 </html>

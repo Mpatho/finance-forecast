@@ -2,8 +2,6 @@ package psybergate.grad2018.javafnds.finance.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -20,18 +18,18 @@ public class FixedForecastItemTest {
 
 	@Test
 	public void testGetInterestCalculation() {
-		ffi.setInitialAmount(new Money(1000));
-		ffi.setRate(new BigDecimal(12));
+		ffi.setInitialAmount(new Money(1000.00));
+		ffi.setRate(12.00);
 		
-		assertEquals(new Money(10), ffi.getInterest());
+		assertEquals(new Money(10.00), ffi.getInterest());
 	}
 	
 	@Test
 	public void testGetEndAmountCalculation() {
-		ffi.setInitialAmount(new Money(1000));
-		ffi.setRate(new BigDecimal(12));
+		ffi.setInitialAmount(new Money(1000.00));
+		ffi.setRate(12.00);
 		
-		assertEquals(new Money(1010), ffi.getEndAmount());
+		assertEquals(new Money(1010.00), ffi.getEndAmount());
 	}
 	
 }
