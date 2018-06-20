@@ -20,6 +20,20 @@ public class InvestmentResource extends AbstractResource<Investment> implements 
 	}
 
 	@Override
+	public void save(Investment entity) {
+		if (entity.getId() == null) {
+			super.save(entity);
+		} else {
+			Investment investment = getById(entity.getId());
+			investment.setInitialAmount(entity.getInitialAmount());
+			investment.setMonths(entity.getMonths());
+			investment.setName(entity.getName());
+			investment.setRate(entity.getRate());
+			super.save(investment);
+		}
+	}
+	
+	@Override
 	public Investment getByName(String name) {
 		// need modification
 		if (name == null) return null;

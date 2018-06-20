@@ -1,7 +1,5 @@
 package psybergate.grad2018.javafnds.finance.controller;
 
-import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.service.InvestmentForecastService;
 
 @ManagedBean("Investment")
-public class InvestmentForecastController {
+public class InvestmentForecastController extends ForecastController {
 
 	@EJB
 	private InvestmentForecastService investmentForecastService;
@@ -24,37 +22,29 @@ public class InvestmentForecastController {
 		if (validInput(request)) {
 			String name = request.get("name")[0];
 			Money initialAmount = new Money(Double.valueOf(request.get("initialAmount")[0]));
-			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
+			Double rate = Double.valueOf(request.get("rate")[0]);
 			Integer months = new Integer(request.get("months")[0]);
 			String type = request.get("type")[0];
-			if (type.equals("fixed")) {
+			if (request.get("id")[0].length() != 0) {
+				Long id = Long.valueOf(request.get("id")[0]);
+				investment = new Investment(id, name, type, initialAmount, months, rate);
+			}
+			else {
 				investment = new Investment(name, type, initialAmount, months, rate);
 			}
-			else if (type.equals("monthly")) {
-				investment = new Investment(name, type, initialAmount, months, rate);
-			}
+			investmentForecastService.save(investment);
 		}
-		else {
-			// investment = investmentForecastService.getInvestmentByName(name);
-		}
-		investmentForecastService.save(investment);
 		return viewForecasts(request, response);
 	}
 
 	public String delete(Map<String, String[]> request, Map<String, Object> response) {
-		String name = request.get("name")[0];
-		Investment investment = investmentForecastService.getInvestmentByName(name);
-		if (investment != null && investmentForecastService.deleteInvestmentByName(name)) {
+		Long id = Long.valueOf(request.get("id")[0]);
+		Investment investment = investmentForecastService.getInvestmentById(id);
+		if (investment != null && investmentForecastService.delete(investment)) {
 			response.put("message", "deleted successfully");
 			response.put("investment", investment);
 		}
 		return viewForecasts(request, response);
-	}
-
-	public String viewForecasts(Map<String, String[]> request, Map<String, Object> response) {
-		Collection<Investment> investments = investmentForecastService.getInvestments();
-		response.put("investments", investments);
-		return "/WEB-INF/views/investment/forecasts.jsp";
 	}
 
 	public String forecastFixedInvestment(Map<String, String[]> request, Map<String, Object> response) {
@@ -85,6 +75,7 @@ public class InvestmentForecastController {
 
 	private void loadInvestmentResponce(Map<String, Object> response, Investment investment,
 			List<ForecastItem> forecastItems) {
+		response.put("id", investment.getId());
 		response.put("rate", investment.getRate().doubleValue());
 		response.put("months", investment.getMonths());
 		response.put("initialAmount", investment.getInitialAmount().doubleValue());
@@ -99,11 +90,12 @@ public class InvestmentForecastController {
 	private Investment getMonthlyInvestment(Map<String, String[]> request) {
 		Investment investment = null;
 		if (validInput(request)) {
-			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
+			Long id = request.get("id")[0].length() == 0 ? null : Long.valueOf(request.get("id")[0]);
+			Double rate = Double.valueOf(request.get("rate")[0]);
 			Double doubleInitialAmount = Double.valueOf(request.get("initialAmount")[0]);
 			Money initialAmount = new Money(doubleInitialAmount);
 			Integer months = Integer.valueOf(request.get("months")[0]);
-			investment = new Investment("temp", "monthly", initialAmount, months, rate);
+			investment = new Investment(id, "temp", "monthly", initialAmount, months, rate);
 		}
 		else {
 			String name = request.get("name")[0];
@@ -115,11 +107,12 @@ public class InvestmentForecastController {
 	private Investment getFixedInvestment(Map<String, String[]> request) {
 		Investment investment = null;
 		if (validInput(request)) {
-			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
+			Long id = request.get("id")[0].length() == 0 ? null : Long.valueOf(request.get("id")[0]);
+			Double rate = Double.valueOf(request.get("rate")[0]);
 			Double doubleInitialAmount = Double.valueOf(request.get("initialAmount")[0]);
 			Money initialAmount = new Money(doubleInitialAmount);
 			Integer months = Integer.valueOf(request.get("months")[0]);
-			investment = new Investment("temp", "fixed", initialAmount, months, rate);
+			investment = new Investment(id, "temp", "fixed", initialAmount, months, rate);
 		}
 		else {
 			String name = request.get("name")[0];

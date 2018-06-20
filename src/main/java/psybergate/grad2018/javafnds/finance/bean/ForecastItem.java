@@ -1,7 +1,6 @@
 package psybergate.grad2018.javafnds.finance.bean;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
@@ -11,9 +10,9 @@ public abstract class ForecastItem implements Serializable {
 
 	private Money initialAmount;
 
-	private BigDecimal rate;
+	private Double rate;
 
-	public ForecastItem(Money initialAmount, BigDecimal rate) {
+	public ForecastItem(Money initialAmount, Double rate) {
 		this.initialAmount = initialAmount;
 		this.rate = rate;
 	}
@@ -28,16 +27,16 @@ public abstract class ForecastItem implements Serializable {
 		this.initialAmount = initialAmount;
 	}
 
-	public BigDecimal getRate() {
+	public Double getRate() {
 		return rate;
 	}
 
-	public void setRate(BigDecimal rate) {
+	public void setRate(Double rate) {
 		this.rate = rate;
 	}
 
 	public Money getMonthlyAmount() {
-		return new Money(0);
+		return new Money(0L);
 	}
 
 	public Money getInterest() {

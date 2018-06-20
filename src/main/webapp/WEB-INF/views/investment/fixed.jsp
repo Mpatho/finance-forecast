@@ -11,13 +11,16 @@
 <body>
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="/finance-1.0/investment/forecasts">Forecasts</a>
+      <a class="nav-link" href="/finance-1.0/forecast/forecasts">Forecasts</a>
     </li>
     <li class="nav-item">
       <a class="nav-link active" href="/finance-1.0/investment/fixed">Fixed Investment</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="/finance-1.0/investment/monthly">Monthly Investment</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/finance-1.0/bond/forecast">Bond</a>
     </li>
   </ul>
   <br>
@@ -44,9 +47,9 @@
       <thead>
         <tr>
           <th style="width: 10%;" class="text-center">Month</th>
-          <th style="width: 30%;" class="text-center">Begin Amount</th>
+          <th style="width: 30%;" class="text-center">Opening Balance</th>
           <th style="width: 30%;" class="text-center">Interest</th>
-          <th style="width: 30%;" class="text-center">End Amount</th>
+          <th style="width: 30%;" class="text-center">Closing Balance</th>
         </tr>
       </thead>
       <tbody>
@@ -84,6 +87,7 @@
         <div class="modal-body">
           <form action="fixed" id="form">
             <input type="hidden" name="type" value="fixed" />
+            <input type="hidden" name="id" value="${id}" />
             <div class="form-group">
               <label for="name">Name</label>
               <input type="text" class="form-control" id="name" name="name"

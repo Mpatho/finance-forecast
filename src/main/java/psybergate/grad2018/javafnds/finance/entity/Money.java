@@ -1,9 +1,7 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,22 +16,22 @@ public final class Money implements Comparable<Money> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	/**
-	 * The number of rands, decimal point indicate cents
-	 */
-	@Column(columnDefinition = "DECIMAL(10,2)")
-	private BigDecimal rands;
+	private Long cents;
 
 	protected Money() {}
 
-	public Money(double rands) {
+	public Money(Double rands) {
 		if (!isValid(rands)) throw new IllegalArgumentException();
-		this.rands = new BigDecimal(rands);
+		this.cents = Math.round(rands * 100);
 	}
 
-	public Money(BigDecimal rands) {
-		if (!isValid(rands.doubleValue())) throw new IllegalArgumentException();
-		this.rands = rands;
+	public Money(String rands) {
+		this(Double.valueOf(rands));
+	}
+
+	public Money(Long cents) {
+		if (!isValid(cents.doubleValue())) throw new IllegalArgumentException();
+		this.cents = cents;
 	}
 
 	private static boolean isValid(double rands) {
@@ -41,29 +39,31 @@ public final class Money implements Comparable<Money> {
 	}
 
 	public Money add(Money money) {
-		BigDecimal moneyValue = money.rands.add(this.rands);
-		return new Money(moneyValue);
+		Long cents = this.cents + money.cents;
+		return new Money(cents);
+//		BigDecimal moneyValue = money.rands.add(this.rands);
+//		return new Money(moneyValue);
 	}
 
 	public Money subtract(Money money) {
-		BigDecimal moneyValue = this.rands.subtract(money.rands);
-		return new Money(moneyValue);
+		Long cents = this.cents - money.cents;
+		return new Money(cents);
 	}
 
-	public Money multiply(BigDecimal value) {
-		BigDecimal moneyValue = rands.multiply(value);
-		return new Money(moneyValue);
+	public Money multiply(Double value) {
+		long cents = Math.round(this.cents * value);
+		return new Money(cents);
 	}
 
-	public Money percentOf(double percent) {
-		BigDecimal value = rands.multiply(new BigDecimal(percent)).divide(new BigDecimal(100));
-		return new Money(value);
+	public Money percentOf(Double percent) {
+		long cents = Math.round(this.cents * percent / 100.00);
+		return new Money(cents);
 	}
 
 	@Override
 	public int compareTo(Money money) {
 		if (money == null) throw new IllegalArgumentException();
-		return this.rands.compareTo(money.rands);
+		return this.cents.compareTo(money.cents);
 	}
 
 	@Override
@@ -76,11 +76,11 @@ public final class Money implements Comparable<Money> {
 	}
 
 	public double doubleValue() {
-		return rands.doubleValue();
+		return cents / 100.0;
 	}
 
 	public String stringValue() {
-		return FORMAT.format(rands);
+		return FORMAT.format(cents / 100.0);
 	}
 
 	@Override

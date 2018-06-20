@@ -1,14 +1,12 @@
 package psybergate.grad2018.javafnds.finance.bean;
 
-import java.math.BigDecimal;
-
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
 public class FixedForecastItem extends ForecastItem {
 
 	private static final long serialVersionUID = 1L;
 
-	public FixedForecastItem(Money initialAmount, BigDecimal rate) {
+	public FixedForecastItem(Money initialAmount, Double rate) {
 		super(initialAmount, rate);
 	}
 

@@ -1,7 +1,6 @@
 
 package psybergate.grad2018.javafnds.finance.entity;
 
-import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class Investment implements Iterable<Event> {
 
 	private Integer months;
 
-	private BigDecimal rate;
+	private Double rate;
 
 	@OneToMany
 	@JoinColumn(name = "investment_id")
@@ -45,7 +44,16 @@ public class Investment implements Iterable<Event> {
 
 	protected Investment() {}
 
-	public Investment(String name, String type, Money initialAmount, Integer months, BigDecimal rate) {
+	public Investment(Long id, String name, String type, Money initialAmount, Integer months, Double rate) {
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.initialAmount = initialAmount;
+		this.months = months;
+		this.rate = rate;
+	}
+
+	public Investment(String name, String type, Money initialAmount, Integer months, Double rate) {
 		this.name = name;
 		this.type = type;
 		this.initialAmount = initialAmount;
@@ -85,11 +93,11 @@ public class Investment implements Iterable<Event> {
 		this.months = months;
 	}
 
-	public BigDecimal getRate() {
+	public Double getRate() {
 		return rate;
 	}
 
-	public void setRate(BigDecimal rate) {
+	public void setRate(Double rate) {
 		this.rate = rate;
 	}
 

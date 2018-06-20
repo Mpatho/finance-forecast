@@ -1,6 +1,5 @@
 package psybergate.grad2018.javafnds.finance.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -54,7 +53,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 			
 			Money currentAmount = investment.getInitialAmount();
 			Money monthlyAmount = currentAmount;
-			currentAmount = new Money(0);
+			currentAmount = new Money(0.0);
 			for (int i = 0; i < investment.getMonths(); i++) {
 				ForecastItem item = new MonthlyForecastItem(currentAmount, investment.getRate(), monthlyAmount);
 				forecastItems.add(item);
@@ -67,7 +66,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 		return forecastItems;
 	}
 
-	public List<ForecastItem> getForecastItems(String name) {
+	public List<ForecastItem> getForecastItemsByName(String name) {
 		Investment investment = investmentResource.getByName(name);
 		return getForecastItems(investment);
 	}
@@ -129,12 +128,17 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 		String name = investment.getName();
 		Money initialAmount = investment.getInitialAmount();
 		Integer months = investment.getMonths();
-		BigDecimal rate = investment.getRate();
+		Double rate = investment.getRate();
 		if (name == null || name.isEmpty()) return false;
-		else if (initialAmount == null || initialAmount.compareTo(new Money(0)) <= 0) return false;
+		else if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0) return false;
 		else if (months == null || months <= 0) return false;
 		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
 		return true;
+	}
+
+	@Override
+	public Investment getInvestmentById(Long id) {
+		return investmentResource.getById(id);
 	}
 }
 

@@ -1,7 +1,5 @@
 package psybergate.grad2018.javafnds.finance.bean;
 
-import java.math.BigDecimal;
-
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
 public class MonthlyForecastItem extends ForecastItem {
@@ -14,7 +12,7 @@ public class MonthlyForecastItem extends ForecastItem {
 		super();
 	}
 
-	public MonthlyForecastItem(Money initialAmount, BigDecimal rate, Money monthlyAmount) {
+	public MonthlyForecastItem(Money initialAmount, Double rate, Money monthlyAmount) {
 		super(initialAmount, rate);
 		this.monthlyAmount = monthlyAmount;
 	}

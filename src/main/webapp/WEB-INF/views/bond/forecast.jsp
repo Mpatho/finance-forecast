@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE = edge">
+<meta name="viewport" content="width = device-width, initial-scale = 1">
 <link rel="stylesheet" href="/finance-1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="/finance-1.0/css/font-awesome.min.css">
 </head>
@@ -14,26 +17,30 @@
       <a class="nav-link" href="/finance-1.0/investment/fixed">Fixed Investment</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" href="/finance-1.0/investment/monthly">Monthly Investment</a>
+      <a class="nav-link" href="/finance-1.0/investment/monthly">Monthly Investment</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/finance-1.0/bond/forecast">Bond</a>
+      <a class="nav-link active" href="/finance-1.0/bond/forecast">Bond</a>
     </li>
   </ul>
   <br>
   <div class="container-fluid">
     <div class="input-group">
-      <span class="input-group-text">Monthly Amount</span>
-      <input type="number" min="0" form="form" class="form-control" id="initialAmount"
-        name="initialAmount" value='${initialAmount}' placeholder="0.00"
+      <span class="input-group-text">Purchase Price</span>
+      <input type="number" min="0" form="form" class="form-control" name="price" value='${price}'
+        placeholder="Rands"
       >
-      <span class="input-group-text"> Interest Rate</span>
+      <span class="input-group-text">Deposit</span>
+      <input type="number" min="0" form="form" class="form-control" name="deposit"
+        value='${deposit}' placeholder="Rands"
+      >
+      <span class="input-group-text">Interest Rate</span>
       <input type="number" min="0" form="form" class="form-control" id="rate" name="rate"
         value='${rate}' placeholder="%"
       >
-      <span class="input-group-text">Investment Term</span>
-      <input type="number" min="0" step="1" form="form" class="form-control" id="months"
-        name="months" value='${months}' placeholder="Number of Months"
+      <label class="input-group-text">Investment Term</label>
+      <input type="number" min="0" form="form" class="form-control" id="months" name="months"
+        value='${months}' placeholder="Number of Months"
       >
     </div>
     <button type="button" class="btn btn-primary fa fa-save" data-toggle="modal"
@@ -45,9 +52,9 @@
         <tr>
           <th style="width: 8%;" class="text-center">Month</th>
           <th style="width: 23%;" class="text-center">Opening Balance</th>
-          <th style="width: 23%;" class="text-center">Monthly Amount</th>
           <th style="width: 23%;" class="text-center">Interest</th>
-          <th style="width: 23%;" class="text-center">Closing Amount</th>
+          <th style="width: 23%;" class="text-center">Repayment</th>
+          <th style="width: 23%;" class="text-center">Closing Balance</th>
         </tr>
       </thead>
       <tbody>
@@ -61,8 +68,8 @@
           <tr>
             <th style="width: 8%;" class="text-right"><%=monthCount%></th>
             <td style="width: 23%;" class="text-right"><%=forecastItem.getInitialAmount().stringValue()%></td>
-            <td style="width: 23%;" class="text-right"><%=forecastItem.getMonthlyAmount().stringValue()%></td>
             <td style="width: 23%;" class="text-right"><%=forecastItem.getInterest().stringValue()%></td>
+            <td style="width: 23%;" class="text-right"><%=((BondForecastItem) forecastItem).getRepayment().stringValue()%></td>
             <td style="width: 23%;" class="text-right"><%=forecastItem.getEndAmount().stringValue()%></td>
           </tr>
           <%
@@ -78,14 +85,13 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Monthly Investment</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Fixed Investment</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form action="monthly" id="form">
-            <input type="hidden" name="type" value="monthly" />
+          <form action="forecast" id="form">
             <input type="hidden" name="id" value="${id}" />
             <div class="form-group">
               <label for="name">Name</label>
@@ -96,9 +102,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button form="form" type="submit" class="btn btn-primary fa fa-save"
-            formaction="/finance-1.0/investment/save"
-          ></button>
+          <button form="form" type="submit" class="btn btn-primary fa fa-save" formaction="save"></button>
         </div>
       </div>
     </div>
