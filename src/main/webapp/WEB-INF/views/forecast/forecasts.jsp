@@ -83,7 +83,7 @@
           <div class="card-footer">
             <a href="/finance-1.0/bond/delete?name=<%=bond.getName()%>"
               class="card-link btn btn-warning fa fa-trash"
-            ></a> <a href="/finance-1.0/bond/forecast?name=<%=bond.getName()%>"
+            ></a> <a href="/finance-1.0/bond/forecast?name=<%=bond.getName()%>&include_cash_required=checked"
               class="card-link btn btn-primary fa fa-eye"
             ></a>
           </div>

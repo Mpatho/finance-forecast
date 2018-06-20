@@ -21,7 +21,7 @@ public class BondForecastItem extends ForecastItem {
 	public Money getEndAmount() {
 		Money sum = getInitialAmount().add(getInterest());
 		Money repayment = getRepayment();
-		if (repayment.doubleValue() < sum.doubleValue())
+		if (repayment.percentOf(110.0).compareTo(sum) < 0)
 			return sum.subtract(repayment);
 		setRepayment(sum);
 		return sum.subtract(sum);
@@ -41,6 +41,4 @@ public class BondForecastItem extends ForecastItem {
 				+ getRate() + ", getMonthlyAmount()=" + getMonthlyAmount() + ", getInterest()=" + getInterest() + "]";
 	}
 
-	
 }
-

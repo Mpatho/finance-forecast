@@ -42,7 +42,105 @@ public class BondForecastServiceTest {
 
 	private void assertListEquals(List<ForecastItem> expected, List<ForecastItem> actual) {
 		for (int index = 0; index < expected.size(); index++) {
-			if (!expected.get(index).equals(actual.get(index))) fail("expected : " + expected.get(index) + ", actaul : " + actual.get(index));
+			if (!expected.get(index).equals(actual.get(index))) fail("expected : " + expected.get(index) + ", actaul : "
+					+ actual.get(index));
 		}
 	}
+
+	@Test
+	public void testGetBondCost() {
+		Bond bond = new Bond(new Money(700_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(7_000.0), fs.getBondCost(bond));
+		bond = new Bond(new Money(1_000_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(10_000.0), fs.getBondCost(bond));
+		bond = new Bond(new Money(5_600_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(56_000.0), fs.getBondCost(bond));
+	}
+
+	@Test
+	public void testGetLegalCost() {
+		Bond bond = new Bond(new Money(700_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(8_400.0), fs.getLegalCost(bond));
+		bond = new Bond(new Money(1_000_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(12_000.0), fs.getLegalCost(bond));
+		bond = new Bond(new Money(5_600_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(67_200.0), fs.getLegalCost(bond));
+	}
+
+	@Test
+	public void testGetCashRequired() {
+		Bond bond = new Bond(new Money(700_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(15_400.0), fs.getCashRequired(bond));
+		bond = new Bond(new Money(1_000_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(25_000.0), fs.getCashRequired(bond));
+		bond = new Bond(new Money(5_600_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(572_200.0), fs.getCashRequired(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceLessThan900K() {
+		Bond bond = new Bond(new Money(700_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(0.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceEqua900K() {
+		Bond bond = new Bond(new Money(900_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(0.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceGreaterThan900KAndLessThan1250K() {
+		Bond bond = new Bond(new Money(1_200_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(9000.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceEqual1250K() {
+		Bond bond = new Bond(new Money(1_250_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(10_500.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceGreaterThan1250KAndLessThan1750K() {
+		Bond bond = new Bond(new Money(1_700_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(37_500.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceEqual1750K() {
+		Bond bond = new Bond(new Money(1_750_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(40_500.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceGreaterThan1750KAndLessThan2250K() {
+		Bond bond = new Bond(new Money(2_200_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(76_500.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceEqual2250K() {
+		Bond bond = new Bond(new Money(2_250_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(80_500.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceGreaterThan2250KAndLessThan10M() {
+		Bond bond = new Bond(new Money(5_000_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(383_000.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceEqual10M() {
+		Bond bond = new Bond(new Money(10_000_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(933_000.0), fs.getTransferCost(bond));
+	}
+
+	@Test
+	public void testGetTransferCostIfPriceGreaterThan10M() {
+		Bond bond = new Bond(new Money(11_000_000.00), new Money(100000.00), 12.00, 240, null);
+		assertEquals(new Money(1_063_000.00), fs.getTransferCost(bond));
+	}
+
 }
