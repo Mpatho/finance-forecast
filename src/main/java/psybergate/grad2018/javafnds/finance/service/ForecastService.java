@@ -6,7 +6,7 @@ import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 
 public interface ForecastService<T> {
 
-	List<ForecastItem> getForecastItems(T investment);
+	List<ForecastItem> getForecastItemsByInv(T investment);
 
 	List<ForecastItem> getForecastItems(String name);
 	

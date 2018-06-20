@@ -17,7 +17,11 @@ public class FixedForecastItem extends ForecastItem {
 
 	@Override
 	public Money getEndAmount() {
-		return getInitialAmount().add(getInterest());
+		Money endAmount = getInitialAmount().add(getDeposit());
+		endAmount = endAmount.subtract(getWithdrawal());
+		endAmount = endAmount.add(getInterest());
+
+		return endAmount;
 	}
 
 }

@@ -35,7 +35,7 @@ public class BondForecastServiceImpl implements BondForecastService {
 	}
 
 	@Override
-	public List<ForecastItem> getForecastItems(Bond bond) {
+	public List<ForecastItem> getForecastItemsByInv(Bond bond) {
 		List<ForecastItem> forectastItems = new LinkedList<>();
 		Money repaymentMoney = getRepayment(bond);
 		Money currentMoney = bond.getPrice().subtract(bond.getDeposit());
@@ -51,7 +51,7 @@ public class BondForecastServiceImpl implements BondForecastService {
 	@Override
 	public List<ForecastItem> getForecastItems(String name) {
 		Bond bond = bondResource.getByName(name);
-		return getForecastItems(bond);
+		return getForecastItemsByInv(bond);
 	}
 
 	@Override

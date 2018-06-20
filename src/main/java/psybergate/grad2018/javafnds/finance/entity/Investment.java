@@ -2,19 +2,21 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Investment implements Iterable<Event> {
@@ -24,6 +26,7 @@ public class Investment implements Iterable<Event> {
 	public static final String MONTHLY = "monthly";
 
 	@Id
+	@Column(name = "investment_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
@@ -39,11 +42,12 @@ public class Investment implements Iterable<Event> {
 
 	private BigDecimal rate;
 
-	@OneToMany
-	@JoinColumn(name = "investment_id")
-	private List<Event> events = new LinkedList<>();
+	@OneToMany(mappedBy = "investment", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OrderBy("month")
+	private List<Event> events = new ArrayList<>();
 
-	protected Investment() {}
+	protected Investment() {
+	}
 
 	public Investment(String name, String type, Money initialAmount, Integer months, BigDecimal rate) {
 		this.name = name;
@@ -104,6 +108,14 @@ public class Investment implements Iterable<Event> {
 
 	public boolean addEvent(Event event) {
 		return events.add(event);
+	}
+
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
 	}
 
 	@Override

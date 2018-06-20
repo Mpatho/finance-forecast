@@ -13,12 +13,20 @@ public abstract class ForecastItem implements Serializable {
 
 	private BigDecimal rate;
 
+	private Money deposit;
+
+	private Money withdrawal;
+
 	public ForecastItem(Money initialAmount, BigDecimal rate) {
+		this();
 		this.initialAmount = initialAmount;
 		this.rate = rate;
 	}
 
-	public ForecastItem() {}
+	public ForecastItem() {
+		this.deposit = new Money(0);
+		this.withdrawal = new Money(0);
+	}
 
 	public Money getInitialAmount() {
 		return initialAmount;
@@ -42,7 +50,27 @@ public abstract class ForecastItem implements Serializable {
 
 	public Money getInterest() {
 		Double monthlyRate = getRate().doubleValue() / 12;
-		return getInitialAmount().percentOf(monthlyRate);
+
+		Money sum = getInitialAmount().add(getDeposit());
+		sum = sum.subtract(getWithdrawal());
+
+		return sum.percentOf(monthlyRate);
+	}
+
+	public Money getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(Money deposit) {
+		this.deposit = deposit;
+	}
+
+	public Money getWithdrawal() {
+		return withdrawal;
+	}
+
+	public void setWithdrawal(Money withdrawal) {
+		this.withdrawal = withdrawal;
 	}
 
 	public abstract Money getEndAmount();
@@ -58,18 +86,25 @@ public abstract class ForecastItem implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		ForecastItem other = (ForecastItem) obj;
 		if (initialAmount == null) {
-			if (other.initialAmount != null) return false;
+			if (other.initialAmount != null)
+				return false;
 		}
-		else if (!initialAmount.equals(other.initialAmount)) return false;
+		else if (!initialAmount.equals(other.initialAmount))
+			return false;
 		if (rate == null) {
-			if (other.rate != null) return false;
+			if (other.rate != null)
+				return false;
 		}
-		else if (!rate.equals(other.rate)) return false;
+		else if (!rate.equals(other.rate))
+			return false;
 		return true;
 	}
 

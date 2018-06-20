@@ -129,7 +129,7 @@ public class InvestmentForecastServiceTest {
 	public void testIfReturnsCorrectAmountsinGetForecastItems() {
 		Investment investment1 = new Investment("Sizwe", Investment.FIXED, new Money(1_000_000), 3, new BigDecimal(8));
 
-		List<ForecastItem> serviceForecastItems = ifs.getForecastItems(investment1);
+		List<ForecastItem> serviceForecastItems = ifs.getForecastItemsByInv(investment1);
 		List<ForecastItem> testForecastItems = getForecastItemsFixed();
 		for (int i = 0; i < getForecastItemsFixed().size(); i++) {
 			assertEquals(testForecastItems.get(i).getInitialAmount().stringValue(), serviceForecastItems.get(i)
@@ -139,7 +139,7 @@ public class InvestmentForecastServiceTest {
 
 	public void testFixedItemsSizeEqualnumberOfMonthsinGetForecastItems() {
 		Investment investment1 = new Investment("Sizwe", Investment.FIXED, new Money(1_000_000), 50, new BigDecimal(8));
-		List<ForecastItem> forecastItems = ifs.getForecastItems(investment1);
+		List<ForecastItem> forecastItems = ifs.getForecastItemsByInv(investment1);
 		assertEquals(50, forecastItems.size());
 	}
 
@@ -160,14 +160,14 @@ public class InvestmentForecastServiceTest {
 	@Test
 	public void testIfReturnsCorrectAmountsinGetForecastItemsMonthly() {
 		Investment investment1 = new Investment("Sizwe", Investment.MONTHLY, new Money(1_000), 3, new BigDecimal(22.4));
-		List<ForecastItem> serviceForecastItems = ifs.getForecastItems(investment1);
+		List<ForecastItem> serviceForecastItems = ifs.getForecastItemsByInv(investment1);
 
 		assertListEquals(getForecastItemsMonthly(), serviceForecastItems);
 	}
 
 	public void testFixedItemsSizeEqualnumberOfMonthsInGetForecastItemsMonthly() {
 		Investment investment1 = new Investment("Sizwe", Investment.MONTHLY, new Money(1_000_000), 50, new BigDecimal(8));
-		List<ForecastItem> forecastItems = ifs.getForecastItems(investment1);
+		List<ForecastItem> forecastItems = ifs.getForecastItemsByInv(investment1);
 		assertEquals(50, forecastItems.size());
 	}
 

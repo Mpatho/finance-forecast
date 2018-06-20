@@ -21,7 +21,7 @@ public class BondForecastServiceTest {
 	@Test
 	public void testGetForecastItems() {
 		Bond bond = new Bond(new Money(750000), new Money(100000), new BigDecimal(12), 240, null);
-		List<ForecastItem> forecastItems = fs.getForecastItems(bond);
+		List<ForecastItem> forecastItems = fs.getForecastItemsByInv(bond);
 		assertListEquals(loadList(), forecastItems);
 	}
 

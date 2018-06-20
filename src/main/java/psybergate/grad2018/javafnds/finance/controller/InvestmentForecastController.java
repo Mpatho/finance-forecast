@@ -9,6 +9,7 @@ import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
+import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.service.InvestmentForecastService;
@@ -26,16 +27,49 @@ public class InvestmentForecastController {
 			Money initialAmount = new Money(Double.valueOf(request.get("initialAmount")[0]));
 			BigDecimal rate = new BigDecimal(request.get("rate")[0]);
 			Integer months = new Integer(request.get("months")[0]);
+
 			String type = request.get("type")[0];
+
 			if (type.equals("fixed")) {
 				investment = new Investment(name, type, initialAmount, months, rate);
+				for (int i = 0; i < request.get("eventType").length; i++) {
+
+					if (validateEvent(investment.getMonths(), request.get("eventType")[i], request.get("eventValue")[i],
+							request.get("eventMonth")[i])) {
+						String eventType = request.get("eventType")[i];
+						System.out.println("Mahlori");
+						BigDecimal eventValue = new BigDecimal(request.get("eventValue")[i]);
+						int month = Integer.parseInt(request.get("eventMonth")[i]);
+
+						Event event = new Event(eventType, month, eventValue);
+						event.setInvestment(investment);
+						investment.addEvent(event);
+					}
+
+				}
 			}
 			else if (type.equals("monthly")) {
 				investment = new Investment(name, type, initialAmount, months, rate);
+				for (int i = 0; i < request.get("eventType").length; i++) {
+					if (validateEvent(investment.getMonths(), request.get("eventType")[i], request.get("eventValue")[i],
+							request.get("eventMonth")[i])) {
+						String eventType = request.get("eventType")[i];
+
+						BigDecimal eventValue = new BigDecimal(request.get("eventValue")[i]);
+						Integer month = Integer.parseInt(request.get("eventMonth")[i]);
+						Event event = new Event(eventType, month, eventValue);
+						event.setInvestment(investment);
+						investment.addEvent(event);
+					}
+				}
 			}
 		}
 		else {
 			// investment = investmentForecastService.getInvestmentByName(name);
+		}
+		for (Event event : investment.getEvents()) {
+
+			System.out.println("month: " + event.getMonth() + " type: " + event.getType() + " value: " + event.getValue());
 		}
 		investmentForecastService.save(investment);
 		return viewForecasts(request, response);
@@ -58,19 +92,21 @@ public class InvestmentForecastController {
 	}
 
 	public String forecastFixedInvestment(Map<String, String[]> request, Map<String, Object> response) {
-		if (request.isEmpty()) return "/WEB-INF/views/investment/fixed.jsp";
+		if (request.isEmpty())
+			return "/WEB-INF/views/investment/fixed.jsp";
 		List<ForecastItem> forecastItems = null;
 		Investment investment = getFixedInvestment(request);
-		forecastItems = investmentForecastService.getForecastItems(investment);
+		forecastItems = investmentForecastService.getForecastItemsByInv(investment);
 		loadInvestmentResponce(response, investment, forecastItems);
 		return "/WEB-INF/views/investment/fixed.jsp";
 	}
 
 	public String forecastMonthlyInvestment(Map<String, String[]> request, Map<String, Object> response) {
-		if (request.isEmpty()) return "/WEB-INF/views/investment/monthly.jsp";
+		if (request.isEmpty())
+			return "/WEB-INF/views/investment/monthly.jsp";
 		List<ForecastItem> forecastItems = null;
 		Investment investment = getMonthlyInvestment(request);
-		forecastItems = investmentForecastService.getForecastItems(investment);
+		forecastItems = investmentForecastService.getForecastItemsByInv(investment);
 		loadInvestmentResponce(response, investment, forecastItems);
 		return "/WEB-INF/views/investment/monthly.jsp";
 	}
@@ -78,7 +114,7 @@ public class InvestmentForecastController {
 	public String forecastInvestment(Map<String, String[]> request, Map<String, Object> response) {
 		String name = request.get("name")[0];
 		Investment investment = investmentForecastService.getInvestmentByName(name);
-		List<ForecastItem> forecastItems = investmentForecastService.getForecastItems(investment);
+		List<ForecastItem> forecastItems = investmentForecastService.getForecastItemsByInv(investment);
 		loadInvestmentResponce(response, investment, forecastItems);
 		return "/WEB-INF/views/investment/" + investment.getType() + ".jsp";
 	}
@@ -120,6 +156,17 @@ public class InvestmentForecastController {
 			Money initialAmount = new Money(doubleInitialAmount);
 			Integer months = Integer.valueOf(request.get("months")[0]);
 			investment = new Investment("temp", "fixed", initialAmount, months, rate);
+			for (int i = 0; i < request.get("eventType").length; i++) {
+				if (validateEvent(investment.getMonths(), request.get("eventType")[i], request.get("eventValue")[i],
+						request.get("eventMonth")[i])) {
+					String eventType = request.get("eventType")[i];
+					System.out.println("Event: " + i);
+					BigDecimal eventValue = new BigDecimal(request.get("eventValue")[i]);
+					int month = Integer.parseInt(request.get("eventMonth")[i]);
+					Event event = new Event(eventType, month, eventValue);
+					investment.addEvent(event);
+				}
+			}
 		}
 		else {
 			String name = request.get("name")[0];
@@ -127,4 +174,23 @@ public class InvestmentForecastController {
 		}
 		return investment;
 	}
+
+	private boolean validateEvent(Integer investmentMonths, String eventType, String eventValue, String eventMonth) {
+		if (eventMonth == null || eventType == null || eventValue == null) {
+			return false;
+		}
+		else if(eventMonth.trim().equals("") || eventType.trim().equals("") || eventValue.trim().equals("")) {
+			return false;
+		}
+		Double doubleEventValue = Double.valueOf(eventValue);
+		Integer integerEventMonth = Integer.valueOf(eventMonth);
+		if (integerEventMonth > investmentMonths || integerEventMonth < 2 || doubleEventValue <= 0) {
+			return false;
+		}
+		else if (eventType.equals(Event.RATE_CHANGE) && doubleEventValue > 100) {
+			return false;
+		}
+		return true;
+	}
+
 }
