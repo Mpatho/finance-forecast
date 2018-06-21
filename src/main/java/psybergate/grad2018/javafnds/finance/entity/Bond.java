@@ -28,14 +28,15 @@ public class Bond {
 	private Double rate;
 
 	private Integer months;
-	
+
 	private String name;
 
 	@OneToMany
 	@JoinColumn(name = "bond_id")
 	private List<Event> events = new LinkedList<>();
 
-	protected Bond() {}
+	protected Bond() {
+	}
 
 	public Bond(Long id, Money price, Money deposit, Double rate, Integer months, String name) {
 		this.id = id;
@@ -96,6 +97,16 @@ public class Bond {
 
 	public Long getId() {
 		return id;
+	}
+
+	public List<Event> getEvents(Integer months) {
+		List<Event> events = new LinkedList<>();
+		for (Event event : this.events) {
+			if (event.getMonth().equals(months)) {
+				events.add(event);
+			}
+		}
+		return events;
 	}
 
 }

@@ -86,4 +86,12 @@ public class Event implements Comparable<Event> {
 		return this.getMonth().compareTo(o.getMonth());
 	}
 
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", type=" + type + ", month=" + month + ", value=" + value + ", investment=" + investment
+				+ "]";
+	}
+	
+	
+
 }

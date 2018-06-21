@@ -37,19 +37,19 @@ public class InvestmentForecastController extends ForecastController {
 				investment = new Investment(name, type, initialAmount, months, rate);
 			}
 			for (int i = 0; i < request.get("eventType").length; i++) {
-				
+
 				if (validateEvent(investment.getMonths(), request.get("eventType")[i], request.get("eventValue")[i],
 						request.get("eventMonth")[i])) {
 					String eventType = request.get("eventType")[i];
 					System.out.println("Mahlori");
 					BigDecimal eventValue = new BigDecimal(request.get("eventValue")[i]);
 					int month = Integer.parseInt(request.get("eventMonth")[i]);
-					
+
 					Event event = new Event(eventType, month, eventValue);
 					event.setInvestment(investment);
 					investment.addEvent(event);
 				}
-				
+
 			}
 			investmentForecastService.save(investment);
 		}
@@ -117,11 +117,27 @@ public class InvestmentForecastController extends ForecastController {
 			Money initialAmount = new Money(doubleInitialAmount);
 			Integer months = Integer.valueOf(request.get("months")[0]);
 			investment = new Investment(id, "temp", "monthly", initialAmount, months, rate);
+			if (request.get("eventType") != null) {
+				for (int i = 0; i < request.get("eventType").length; i++) {
+					if (validateEvent(investment.getMonths(), request.get("eventType")[i], request.get("eventValue")[i],
+							request.get("eventMonth")[i])) {
+						String eventType = request.get("eventType")[i];
+						BigDecimal eventValue = new BigDecimal(request.get("eventValue")[i]);
+						int month = Integer.parseInt(request.get("eventMonth")[i]);
+						Event event = new Event(eventType, month, eventValue);
+						System.out.println(
+								"Event: Type" + event.getType() + " Value: " + event.getValue() + " Month: " + event.getMonth());
+						investment.addEvent(event);
+						System.out.println(event);
+					}
+				}
+			}
 		}
 		else {
 			String name = request.get("name")[0];
 			investment = investmentForecastService.getInvestmentByName(name);
 		}
+		System.out.println(investment);
 		return investment;
 	}
 
@@ -134,15 +150,18 @@ public class InvestmentForecastController extends ForecastController {
 			Money initialAmount = new Money(doubleInitialAmount);
 			Integer months = Integer.valueOf(request.get("months")[0]);
 			investment = new Investment(id, "temp", "fixed", initialAmount, months, rate);
-			for (int i = 0; i < request.get("eventType").length; i++) {
-				if (validateEvent(investment.getMonths(), request.get("eventType")[i], request.get("eventValue")[i],
-						request.get("eventMonth")[i])) {
-					String eventType = request.get("eventType")[i];
-					BigDecimal eventValue = new BigDecimal(request.get("eventValue")[i]);
-					int month = Integer.parseInt(request.get("eventMonth")[i]);
-					Event event = new Event(eventType, month, eventValue);
-					System.out.println("Event: Type" + event.getType() + " Value: " + event.getValue() + " Month: " + event.getMonth());
-					investment.addEvent(event);
+			if (request.get("eventType") != null) {
+				for (int i = 0; i < request.get("eventType").length; i++) {
+					if (validateEvent(investment.getMonths(), request.get("eventType")[i], request.get("eventValue")[i],
+							request.get("eventMonth")[i])) {
+						String eventType = request.get("eventType")[i];
+						BigDecimal eventValue = new BigDecimal(request.get("eventValue")[i]);
+						int month = Integer.parseInt(request.get("eventMonth")[i]);
+						Event event = new Event(eventType, month, eventValue);
+						System.out.println(
+								"Event: Type" + event.getType() + " Value: " + event.getValue() + " Month: " + event.getMonth());
+						investment.addEvent(event);
+					}
 				}
 			}
 		}

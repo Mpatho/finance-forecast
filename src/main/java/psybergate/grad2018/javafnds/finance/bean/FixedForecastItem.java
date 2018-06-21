@@ -6,8 +6,9 @@ public class FixedForecastItem extends ForecastItem {
 
 	private static final long serialVersionUID = 1L;
 
-	public FixedForecastItem(Money initialAmount, Double rate) {
-		super(initialAmount, rate);
+
+	public FixedForecastItem(Money initialAmount, Double rate, Money deposit, Money withdrawal) {
+		super(initialAmount, rate, deposit, withdrawal);
 	}
 
 	public FixedForecastItem() {

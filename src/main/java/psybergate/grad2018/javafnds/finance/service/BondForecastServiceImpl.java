@@ -23,8 +23,8 @@ public class BondForecastServiceImpl implements BondForecastService {
 
 	private static final double LEGAL_COST_PERCENT = 1.2;
 
-	private static final Money[] TRANSFER_DUTY_PRICES = { new Money(900_000.00), new Money(1_250_000.00), new Money(
-			1_750_000.00), new Money(2_250_000.00), new Money(10_000_000.00), };
+	private static final Money[] TRANSFER_DUTY_PRICES = { new Money(900_000.00), new Money(1_250_000.00),
+			new Money(1_750_000.00), new Money(2_250_000.00), new Money(10_000_000.00), };
 
 	private static final Double[] TRANSFER_DUTY_RATES = { 3.0, 6.0, 8.0, 11.0, 13.0, };
 
@@ -54,7 +54,7 @@ public class BondForecastServiceImpl implements BondForecastService {
 		Double rate = bond.getRate();
 		ForecastItem item;
 		for (int i = 0; i < bond.getMonths(); i++) {
-			item = new BondForecastItem(currentMoney, rate, repaymentMoney);
+			item = new BondForecastItem(currentMoney, rate, new Money(0.0), new Money(0.0), repaymentMoney);
 			forectastItems.add(item);
 			currentMoney = item.getEndAmount();
 		}
@@ -121,15 +121,16 @@ public class BondForecastServiceImpl implements BondForecastService {
 	public Money getTransferCost(Bond bond) {
 		Money price = bond.getPrice();
 		Money transerCost = new Money(0.0);
-		if (price.compareTo(TRANSFER_DUTY_PRICES[0]) <= 0) return transerCost;
+		if (price.compareTo(TRANSFER_DUTY_PRICES[0]) <= 0)
+			return transerCost;
 		for (int i = 1; i < TRANSFER_DUTY_PRICES.length; i++) {
 			if (price.compareTo(TRANSFER_DUTY_PRICES[i]) <= 0) {
 				Money cost = price.subtract(TRANSFER_DUTY_PRICES[i - 1]).percentOf(TRANSFER_DUTY_RATES[i - 1]);
 				return transerCost.add(cost);
 			}
 			else {
-				Money cost = TRANSFER_DUTY_PRICES[i].subtract(TRANSFER_DUTY_PRICES[i - 1]).percentOf(TRANSFER_DUTY_RATES[i
-						- 1]);
+				Money cost = TRANSFER_DUTY_PRICES[i].subtract(TRANSFER_DUTY_PRICES[i - 1])
+						.percentOf(TRANSFER_DUTY_RATES[i - 1]);
 				transerCost = transerCost.add(cost);
 			}
 		}

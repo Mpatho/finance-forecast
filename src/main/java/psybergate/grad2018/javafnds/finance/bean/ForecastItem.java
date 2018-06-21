@@ -16,16 +16,16 @@ public abstract class ForecastItem implements Serializable {
 
 	private Money withdrawal;
 
-	
-	public ForecastItem(Money initialAmount, Double rate) {
-		this();
-		this.initialAmount = initialAmount;
-		this.rate = rate;
-	}
-
 	public ForecastItem() {
 		this.deposit = new Money(0.0);
 		this.withdrawal = new Money(0.0);
+	}
+
+	public ForecastItem(Money initialAmount, Double rate, Money deposit, Money withdrawal) {
+		this.initialAmount = initialAmount;
+		this.rate = rate;
+		this.deposit = deposit;
+		this.withdrawal = withdrawal;
 	}
 
 	public Money getInitialAmount() {
@@ -44,16 +44,12 @@ public abstract class ForecastItem implements Serializable {
 		this.rate = rate;
 	}
 
-	public Money getMonthlyAmount() {
-		return new Money(0L);
-	}
 
 	public Money getInterest() {
 		Double monthlyRate = getRate().doubleValue() / 12;
 
 		Money sum = getInitialAmount().add(getDeposit());
 		sum = sum.subtract(getWithdrawal());
-
 		return sum.percentOf(monthlyRate);
 	}
 
@@ -108,4 +104,11 @@ public abstract class ForecastItem implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "ForecastItem [initialAmount=" + initialAmount + ", rate=" + rate + ", deposit=" + deposit + ", withdrawal="
+				+ withdrawal + "]";
+	}
+
+	
 }

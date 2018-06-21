@@ -2,7 +2,9 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -121,6 +123,16 @@ public class Investment implements Iterable<Event> {
 		return events;
 	}
 
+	public List<Event> getEvents(Integer months) {
+		List<Event> events = new LinkedList<>();
+		for (Event event : this.events) {
+			if (event.getMonth().equals(months)) {
+				events.add(event);
+			}
+		}
+		return events;
+	}
+
 	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
@@ -128,7 +140,9 @@ public class Investment implements Iterable<Event> {
 	@Override
 	public String toString() {
 		return "Investment [id=" + id + ", name=" + name + ", type=" + type + ", initialAmount=" + initialAmount
-				+ ", months=" + months + ", rate=" + rate + "]";
+				+ ", months=" + months + ", rate=" + rate + ", events=" + Arrays.deepToString(events.toArray()) + "]";
 	}
+
+
 
 }

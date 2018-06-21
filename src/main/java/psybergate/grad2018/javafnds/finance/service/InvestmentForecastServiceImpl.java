@@ -2,8 +2,6 @@ package psybergate.grad2018.javafnds.finance.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,8 +57,29 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 			Money currentAmount = investment.getInitialAmount();
 			Money monthlyAmount = currentAmount;
 			currentAmount = new Money(0.0);
-			for (int i = 0; i < investment.getMonths(); i++) {
-				ForecastItem item = new MonthlyForecastItem(currentAmount, investment.getRate(), monthlyAmount);
+			Double currentRate = investment.getRate();
+			for (int month = 1; month <= investment.getMonths(); month++) {
+				Money deposit = new Money(0.0);
+				Money withdrawal = new Money(0.0);
+				for (Event event : investment.getEvents(month)) {
+					switch (event.getType()) {
+					case Event.DEPOSIT:
+						deposit = new Money(event.getValue().doubleValue());
+						System.out.println("deposit in getMonthlyforecastItem: " + deposit);
+						break;
+					case Event.WITHDRAW:
+						withdrawal = new Money(event.getValue().doubleValue());
+						break;
+					case Event.RATE_CHANGE:
+						currentRate = event.getValue().doubleValue();
+						break;
+					case Event.AMOUNT_CHANGE:
+						monthlyAmount = new Money(event.getValue().doubleValue());
+						break;
+					}
+					
+				}
+				ForecastItem item = new MonthlyForecastItem(currentAmount, currentRate, monthlyAmount, deposit, withdrawal);
 				forecastItems.add(item);
 				currentAmount = item.getEndAmount();
 			}
@@ -77,70 +96,33 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 	}
 
 	public List<ForecastItem> getFixedForecastItems(Investment investment) {
-		System.out.println("12");
 		if (investment == null) {
-			System.out.println("11");
 			return null;
 		}
-		System.out.println("10");
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (validate(investment)) {
-			System.out.println("9");
 			Money currentAmount = investment.getInitialAmount();
 			Double currentRate = investment.getRate();
-			// Start
-			Collections.sort(investment.getEvents());
-			Iterator<Event> iterator = investment.iterator();
-			Event event = null;
-			if (iterator.hasNext()) {
-				System.out.println("8");
-				event = iterator.next();
-			}
-			System.out.println("7");
-			int month;
-			if (event == null) {
-				System.out.println("6");
-				month = 0;
-			}
-			else {
-				System.out.println("5");
-				month = event.getMonth();
-			}
-			for (int i = 0; i < investment.getMonths(); i++) {
-				System.out.println("4");
-				ForecastItem item = new FixedForecastItem(currentAmount, currentRate);
-				forecastItems.add(item);
+			for (int month = 1; month <= investment.getMonths(); month++) {
+				Money deposit = new Money(0.0);
+				Money withdrawal = new Money(0.0);
+				for (Event event : investment.getEvents(month)) {
 
-				while (i == (month - 1)) {
-					System.out.println("3");
-					System.out.println(event.getMonth());
 					switch (event.getType()) {
 					case Event.DEPOSIT:
-						Money deposit = new Money(event.getValue().doubleValue());
-						forecastItems.get(i).setDeposit(deposit);
+						deposit = new Money(event.getValue().doubleValue());
 						break;
 					case Event.WITHDRAW:
-						Money withdrawal = new Money(event.getValue().doubleValue());
-						forecastItems.get(i).setWithdrawal(withdrawal);
+						withdrawal = new Money(event.getValue().doubleValue());
 						break;
 					case Event.RATE_CHANGE:
-						Double rate = event.getValue().doubleValue();
-						forecastItems.get(i).setRate(rate);
-						currentRate = rate;
+						currentRate = event.getValue().doubleValue();
 						break;
 
 					}
-					if (iterator.hasNext()) {
-						System.out.println("2");
-						event = iterator.next();
-						month = event.getMonth();
-					}
-					else {
-						System.out.println("1");
-						--month;
-					}
 				}
-
+				ForecastItem item = new FixedForecastItem(currentAmount, currentRate, deposit, withdrawal);
+				forecastItems.add(item);
 				currentAmount = item.getEndAmount();
 			}
 		}

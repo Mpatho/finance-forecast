@@ -12,8 +12,9 @@ public class BondForecastItem extends ForecastItem {
 		super();
 	}
 
-	public BondForecastItem(Money initialAmount, Double rate, Money repayment) {
-		super(initialAmount, rate);
+	
+	public BondForecastItem(Money initialAmount, Double rate, Money deposit, Money withdrawal, Money repayment) {
+		super(initialAmount, rate, deposit, withdrawal);
 		this.repayment = repayment;
 	}
 
@@ -38,7 +39,7 @@ public class BondForecastItem extends ForecastItem {
 	@Override
 	public String toString() {
 		return "BondForecastItem [repayment=" + repayment + ", getInitialAmount()=" + getInitialAmount() + ", getRate()="
-				+ getRate() + ", getMonthlyAmount()=" + getMonthlyAmount() + ", getInterest()=" + getInterest() + "]";
+				+ getRate() + ", getInterest()=" + getInterest() + "]";
 	}
 
 }

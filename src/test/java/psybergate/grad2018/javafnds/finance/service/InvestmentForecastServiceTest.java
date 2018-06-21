@@ -28,6 +28,8 @@ public class InvestmentForecastServiceTest {
 
 	private static InvestmentForecastService ifs = new InvestmentForecastServiceImpl();
 
+	private static Money zero = new Money(0.0);
+
 	@Mock
 	private InvestmentResource investmentResource;
 
@@ -131,8 +133,8 @@ public class InvestmentForecastServiceTest {
 		List<ForecastItem> serviceForecastItems = ifs.getForecastItems(investment1);
 		List<ForecastItem> testForecastItems = getForecastItemsFixed();
 		for (int i = 0; i < getForecastItemsFixed().size(); i++) {
-			assertEquals(testForecastItems.get(i).getInitialAmount().stringValue(), serviceForecastItems.get(i)
-					.getInitialAmount().stringValue());
+			assertEquals(testForecastItems.get(i).getInitialAmount().stringValue(),
+					serviceForecastItems.get(i).getInitialAmount().stringValue());
 		}
 	}
 
@@ -146,9 +148,9 @@ public class InvestmentForecastServiceTest {
 	private List<ForecastItem> getForecastItemsFixed() {
 
 		List<ForecastItem> list = new ArrayList<>();
-		ForecastItem fi1 = new FixedForecastItem(new Money(1_000_000.00), 8.00);
-		ForecastItem fi2 = new FixedForecastItem(new Money(1_006_666.67), 8.00);
-		ForecastItem fi3 = new FixedForecastItem(new Money(1_013_377.78), 8.00);
+		ForecastItem fi1 = new FixedForecastItem(new Money(1_000_000.00), 8.00, zero, zero);
+		ForecastItem fi2 = new FixedForecastItem(new Money(1_006_666.67), 8.00, zero, zero);
+		ForecastItem fi3 = new FixedForecastItem(new Money(1_013_377.78), 8.00, zero, zero);
 
 		list.add(fi1);
 		list.add(fi2);
@@ -175,9 +177,9 @@ public class InvestmentForecastServiceTest {
 	private List<ForecastItem> getForecastItemsMonthly() {
 
 		List<ForecastItem> list = new ArrayList<>();
-		ForecastItem fi1 = new MonthlyForecastItem(new Money(0.00), 22.4, new Money(1_000.00));
-		ForecastItem fi2 = new MonthlyForecastItem(new Money(1_018.67), 22.4, new Money(1_000.00));
-		ForecastItem fi3 = new MonthlyForecastItem(new Money(2_056.35), 22.4, new Money(1_000.00));
+		ForecastItem fi1 = new MonthlyForecastItem(new Money(0.00), 22.4, new Money(1_000.00), zero, zero);
+		ForecastItem fi2 = new MonthlyForecastItem(new Money(1_018.67), 22.4, new Money(1_000.00), zero, zero);
+		ForecastItem fi3 = new MonthlyForecastItem(new Money(2_056.35), 22.4, new Money(1_000.00), zero, zero);
 
 		list.add(fi1);
 		list.add(fi2);
@@ -189,7 +191,8 @@ public class InvestmentForecastServiceTest {
 	private void assertListEquals(List<ForecastItem> expected, List<ForecastItem> actaul) {
 
 		for (int index = 0; index < expected.size(); index++) {
-			if (!expected.get(index).equals(actaul.get(index))) fail("");
+			if (!expected.get(index).equals(actaul.get(index)))
+				fail("expected " + expected.get(index) + "actaul :" + actaul.get(index));
 		}
 	}
 }
