@@ -47,7 +47,6 @@ public abstract class ForecastItem implements Serializable {
 
 	public Money getInterest() {
 		Double monthlyRate = getRate().doubleValue() / 12;
-
 		Money sum = getInitialAmount().add(getDeposit());
 		sum = sum.subtract(getWithdrawal());
 		return sum.percentOf(monthlyRate);

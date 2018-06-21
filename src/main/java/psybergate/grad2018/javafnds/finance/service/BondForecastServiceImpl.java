@@ -9,9 +9,12 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 
+import org.apache.log4j.net.ZeroConfSupport;
+
 import psybergate.grad2018.javafnds.finance.bean.BondForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Bond;
+import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.resource.ForecastResource;
 
@@ -42,7 +45,7 @@ public class BondForecastServiceImpl implements BondForecastService {
 
 	@Override
 	public List<ForecastItem> getForecastItems(Bond bond, boolean includeCashRequired) {
-		List<ForecastItem> forectastItems = new LinkedList<>();
+		List<ForecastItem> forecastItems = new LinkedList<>();
 		Money repaymentMoney = getRepayment(bond);
 		Money currentMoney;
 		if (includeCashRequired) {
@@ -53,12 +56,32 @@ public class BondForecastServiceImpl implements BondForecastService {
 		}
 		Double rate = bond.getRate();
 		ForecastItem item;
-		for (int i = 0; i < bond.getMonths(); i++) {
-			item = new BondForecastItem(currentMoney, rate, new Money(0.0), new Money(0.0), repaymentMoney);
-			forectastItems.add(item);
-			currentMoney = item.getEndAmount();
+		for (int month = 1; month <= bond.getMonths(); month++) {
+			Money deposit = new Money(0.0);
+			Money withdrawal = new Money(0.0);
+			for (Event event : bond.getEvents(month)) {
+				switch (event.getType()) {
+				case Event.DEPOSIT:
+					deposit = new Money(event.getValue().doubleValue());
+					break;
+				case Event.WITHDRAW:
+					withdrawal = new Money(event.getValue().doubleValue());
+					break;
+				case Event.RATE_CHANGE:
+					rate = event.getValue().doubleValue();
+					break;
+				case Event.AMOUNT_CHANGE:
+					repaymentMoney = new Money(event.getValue().doubleValue());
+					/// change mon
+					break;
+				}
+			}
+				item = new BondForecastItem(currentMoney, rate, deposit, withdrawal, repaymentMoney);
+				forecastItems.add(item);
+				currentMoney = item.getEndAmount();
+				repaymentMoney = getRepayment(new Bond(currentMoney, new Money(0.0), rate, bond.getMonths() - month, null));
 		}
-		return forectastItems;
+		return forecastItems;
 
 	}
 

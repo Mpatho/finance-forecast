@@ -3,6 +3,7 @@ package psybergate.grad2018.javafnds.finance.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class BondForecastServiceTest {
 	@Test
 	public void testGetForecastItems() {
 
-		Bond bond = new Bond(new Money(750000.00), new Money(100000.00), 12.00, 240, null);
+		Bond bond = new Bond(new Money(750000.00),  new Money(100000.00), 12.00, 240, null);
 		List<ForecastItem> forecastItems = fs.getForecastItems(bond);
 		assertListEquals(loadList(), forecastItems);
 	}
@@ -44,6 +45,7 @@ public class BondForecastServiceTest {
 	}
 
 	private void assertListEquals(List<ForecastItem> expected, List<ForecastItem> actual) {
+		System.out.println(Arrays.deepToString(expected.toArray()));
 		for (int index = 0; index < expected.size(); index++) {
 			if (!expected.get(index).equals(actual.get(index)))
 				fail("expected : " + expected.get(index) + ", actaul : " + actual.get(index));

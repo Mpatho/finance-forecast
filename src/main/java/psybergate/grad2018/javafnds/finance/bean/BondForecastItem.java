@@ -12,22 +12,35 @@ public class BondForecastItem extends ForecastItem {
 		super();
 	}
 
-	
 	public BondForecastItem(Money initialAmount, Double rate, Money deposit, Money withdrawal, Money repayment) {
 		super(initialAmount, rate, deposit, withdrawal);
 		this.repayment = repayment;
 	}
 
 	@Override
+	public Money getInterest() {
+		Double monthlyRate = getRate().doubleValue() / 12;
+		Money sum = getInitialAmount();
+		return sum.percentOf(monthlyRate);
+	}
+
+	@Override
 	public Money getEndAmount() {
 		Money sum = getInitialAmount().add(getInterest());
 		Money repayment = getRepayment();
-		if (repayment.percentOf(110.0).compareTo(sum) < 0)
-			return sum.subtract(repayment);
+		
+		Money netRepayment = netRepayment(repayment, getDeposit(), getWithdrawal());
+		if (netRepayment.percentOf(110.0).compareTo(sum) < 0) {
+			return sum.subtract(netRepayment);
+		}
 		setRepayment(sum);
 		return sum.subtract(sum);
 	}
 
+	private Money netRepayment(Money repayment, Money deposit, Money withdrawal) {
+		return repayment.add(deposit).subtract(withdrawal);
+	}
+	
 	public Money getRepayment() {
 		return repayment;
 	}

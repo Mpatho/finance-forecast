@@ -98,6 +98,16 @@ public class Bond {
 	public Long getId() {
 		return id;
 	}
+	
+	
+
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
 
 	public List<Event> getEvents(Integer months) {
 		List<Event> events = new LinkedList<>();
@@ -107,6 +117,10 @@ public class Bond {
 			}
 		}
 		return events;
+	}
+
+	public void addEvent(Event event) {
+		this.events.add(event);
 	}
 
 }
