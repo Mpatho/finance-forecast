@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Event implements Comparable<Event> {
@@ -29,10 +27,6 @@ public class Event implements Comparable<Event> {
 	private Integer month;
 
 	private BigDecimal value;
-
-	@ManyToOne
-	@JoinColumn(name = "investment_id", referencedColumnName = "investment_id")
-	private Investment investment;
 
 	protected Event() {
 
@@ -73,14 +67,6 @@ public class Event implements Comparable<Event> {
 		return id;
 	}
 
-	public Investment getInvestment() {
-		return investment;
-	}
-
-	public void setInvestment(Investment investment) {
-		this.investment = investment;
-	}
-
 	@Override
 	public int compareTo(Event o) {
 		return this.getMonth().compareTo(o.getMonth());
@@ -88,10 +74,7 @@ public class Event implements Comparable<Event> {
 
 	@Override
 	public String toString() {
-		return "Event [id=" + id + ", type=" + type + ", month=" + month + ", value=" + value + ", investment=" + investment
-				+ "]";
+		return "Event [id=" + id + ", type=" + type + ", month=" + month + ", value=" + value + "]";
 	}
-	
-	
 
 }

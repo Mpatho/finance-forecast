@@ -33,14 +33,29 @@
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              Initial Amount:
-              <%=investment.getInitialAmount()%></li>
+              <span class="badge badge-pill badge-light">Type</span>
+              <span class="pull-right">
+                <%=investment.getType()%>
+              </span>
+            </li>
             <li class="list-group-item">
-              Months:
-              <%=investment.getMonths()%></li>
+              <span class="badge badge-pill badge-light">Initial Amount</span>
+              <span class="pull-right">
+                <%=investment.getInitialAmount()%>
+              </span>
+            </li>
             <li class="list-group-item">
-              Interest:
-              <%=investment.getRate()%></li>
+              <span class="badge badge-pill badge-light">Months</span>
+              <span class="pull-right">
+                <%=investment.getMonths()%>
+              </span>
+            </li>
+            <li class="list-group-item">
+              <span class="badge badge-pill badge-light">Interest</span>
+              <span class="pull-right">
+                <%=investment.getRate()%>
+              </span>
+            </li>
           </ul>
           <div class="card-footer">
             <a href="/finance-1.0/investment/delete?name=<%=investment.getName()%>"
@@ -54,8 +69,6 @@
       <%
       	}
       %>
-    </div>
-    <div class="row">
       <%
       	Collection<Bond> bonds = (Collection<Bond>) request.getAttribute("bonds");
       	for (Bond bond : bonds) {
@@ -68,22 +81,35 @@
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              Price:
-              <%=bond.getPrice()%></li>
+              <span class="badge badge-pill badge-light">Price</span>
+              <span class="pull-right">
+                <%=bond.getPrice()%>
+              </span>
+            </li>
             <li class="list-group-item">
-              Deposit:
-              <%=bond.getDeposit()%></li>
+              <span class="badge badge-pill badge-light">Deposit</span>
+              <span class="pull-right">
+                <%=bond.getDeposit()%>
+              </span>
+            </li>
             <li class="list-group-item">
-              Months:
-              <%=bond.getMonths()%></li>
+              <span class="badge badge-pill badge-light">Months</span>
+              <span class="pull-right">
+                <%=bond.getMonths()%>
+              </span>
+            </li>
             <li class="list-group-item">
-              Interest:
-              <%=bond.getRate()%></li>
+              <span class="badge badge-pill badge-light">Interest</span>
+              <span class="pull-right">
+                <%=bond.getRate()%>
+              </span>
+            </li>
           </ul>
           <div class="card-footer">
             <a href="/finance-1.0/bond/delete?name=<%=bond.getName()%>"
               class="card-link btn btn-warning fa fa-trash"
-            ></a> <a href="/finance-1.0/bond/forecast?name=<%=bond.getName()%>&include_cash_required=checked"
+            ></a> <a
+              href="/finance-1.0/bond/forecast?name=<%=bond.getName()%>&include_cash_required=checked"
               class="card-link btn btn-primary fa fa-eye"
             ></a>
           </div>

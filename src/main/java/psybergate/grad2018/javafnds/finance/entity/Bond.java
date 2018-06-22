@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,12 +32,11 @@ public class Bond {
 
 	private String name;
 
-	@OneToMany
 	@JoinColumn(name = "bond_id")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Event> events = new LinkedList<>();
 
-	protected Bond() {
-	}
+	protected Bond() {}
 
 	public Bond(Long id, Money price, Money deposit, Double rate, Integer months, String name) {
 		this.id = id;
@@ -98,8 +98,6 @@ public class Bond {
 	public Long getId() {
 		return id;
 	}
-	
-	
 
 	public List<Event> getEvents() {
 		return events;

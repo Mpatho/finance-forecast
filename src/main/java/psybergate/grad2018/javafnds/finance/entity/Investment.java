@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -26,7 +27,6 @@ public class Investment implements Iterable<Event> {
 	public static final String MONTHLY = "monthly";
 
 	@Id
-	@Column(name = "investment_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
@@ -42,8 +42,9 @@ public class Investment implements Iterable<Event> {
 
 	private Double rate;
 
-	@OneToMany(mappedBy = "investment", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@OrderBy("month")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "investment_id")
 	private List<Event> events = new ArrayList<>();
 
 	protected Investment() {

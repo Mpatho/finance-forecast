@@ -46,7 +46,7 @@ public class InvestmentForecastController extends ForecastController {
 					int month = Integer.parseInt(request.get("eventMonth")[i]);
 
 					Event event = new Event(eventType, month, eventValue);
-					event.setInvestment(investment);
+//					event.setInvestment(investment);
 					investment.addEvent(event);
 				}
 

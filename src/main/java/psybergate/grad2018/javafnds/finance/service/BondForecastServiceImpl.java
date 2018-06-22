@@ -9,8 +9,6 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 
-import org.apache.log4j.net.ZeroConfSupport;
-
 import psybergate.grad2018.javafnds.finance.bean.BondForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Bond;
