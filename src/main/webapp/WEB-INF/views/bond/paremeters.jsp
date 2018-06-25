@@ -45,3 +45,13 @@
     <button form="form" type="submit" class="btn btn-primary fa">Generate</button>
   </div>
 </form>
+<div class="form-group small">
+  <label class="small">Bond Cost</label>
+  <input type="text" readonly="readonly" class="form-control" value='${bondCost}'>
+  <label class="small" >Transfer Cost</label>
+  <input type="text" readonly="readonly" class="form-control" value='${transferCost}'>
+  <label class="small">Legal Cost</label>
+  <input type="text" readonly="readonly" class="form-control" value='${legalCost}'>
+  <label class="small">Cash Required</label>
+  <input type="text" readonly="readonly" class="form-control" value='${cashRequired}'>
+</div>

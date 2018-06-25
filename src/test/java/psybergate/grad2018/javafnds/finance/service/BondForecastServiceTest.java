@@ -44,7 +44,6 @@ public class BondForecastServiceTest {
 	}
 
 	private void assertListEquals(List<ForecastItem> expected, List<ForecastItem> actual) {
-		System.out.println(Arrays.deepToString(expected.toArray()));
 		for (int index = 0; index < expected.size(); index++) {
 			if (!expected.get(index).equals(actual.get(index))) fail("expected : " + expected.get(index) + ", actaul : "
 					+ actual.get(index));

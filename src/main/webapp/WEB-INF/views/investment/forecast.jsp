@@ -8,28 +8,19 @@
 <link rel="stylesheet" href="/finance-1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="/finance-1.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="/finance-1.0/css/events.css">
+<link rel="stylesheet" href="/finance-1.0/css/forecast.css">
 </head>
 <body>
+  <jsp:include page="../template/navs.jsp"></jsp:include>
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-2 h-100 d-inline-block bg-light position-fixed">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link" href="/finance-1.0/forecast/forecasts">Forecasts</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/finance-1.0/investment/forecast">Investment</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/finance-1.0/bond/forecast">Bond</a>
-          </li>
-        </ul>
         <jsp:include page="paremeters.jsp"></jsp:include>
       </div>
-      <div class="col-sm-8 offset-sm-2 d-inline-block">
+      <div class="col-sm-7 offset-sm-2 d-inline-block bg-light">
         <jsp:include page="months.jsp"></jsp:include>
       </div>
-      <div class="col-sm-2 h-100 offset-sm-10 d-inline-block bg-info position-fixed">
+      <div class="col-sm-3 h-100 offset-sm-9 d-inline-block bg-light position-fixed">
         <jsp:include page="../template/events/list.jsp"></jsp:include>
       </div>
     </div>

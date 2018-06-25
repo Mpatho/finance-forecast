@@ -1,0 +1,6 @@
+thead.forecast {
+	position: sticky;
+	top: 57px;
+	z-index: 1020;
+	background: #eee
+}
