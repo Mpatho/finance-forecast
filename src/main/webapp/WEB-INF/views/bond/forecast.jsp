@@ -7,28 +7,31 @@
 <meta name="viewport" content="width = device-width, initial-scale = 1">
 <link rel="stylesheet" href="/finance-1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="/finance-1.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/finance-1.0/css/events.css">
 </head>
 <body>
-  <div class="row h-100">
-    <div class="col-md-2 position-fixed h-100 d-inline-block border-left">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link" href="/finance-1.0/forecast/forecasts">Forecasts</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/finance-1.0/investment/forecast">Investment</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/finance-1.0/bond/forecast">Bond</a>
-        </li>
-      </ul>
-      <jsp:include page="paremeters.jsp"></jsp:include>
-    </div>
-    <div class="col-md-8 offset-md-2">
-      <jsp:include page="months.jsp"></jsp:include>
-    </div>
-    <div class="col-md-2 offset-md-10 position-fixed h-100 d-inline-block border-right">
-      <jsp:include page="../template/events/list.jsp"></jsp:include>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2 h-100 d-inline-block bg-light position-fixed">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="/finance-1.0/forecast/forecasts">Forecasts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/finance-1.0/investment/forecast">Investment</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/finance-1.0/bond/forecast">Bond</a>
+          </li>
+        </ul>
+        <jsp:include page="paremeters.jsp"></jsp:include>
+      </div>
+      <div class="col-sm-8 offset-sm-2 d-inline-block">
+        <jsp:include page="months.jsp"></jsp:include>
+      </div>
+      <div class="col-sm-2 h-100 offset-sm-10 d-inline-block bg-info position-fixed">
+        <jsp:include page="../template/events/list.jsp"></jsp:include>
+      </div>
     </div>
   </div>
   <jsp:include page="../template/forecast/save.jsp"></jsp:include>

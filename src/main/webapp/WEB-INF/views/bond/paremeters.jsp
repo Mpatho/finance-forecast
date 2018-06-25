@@ -33,9 +33,9 @@
         <span class="input-group-text" id="basic-addon2">months</span>
       </div>
     </div>
-    <label class="input-group-text">Include cash required in bond</label>
-    <div class="form-group">
-      <input type="checkbox" form="form" class="form-control" name="include_cash_required"
+    <label for="capitalize">Include cash required in bond</label>
+    <div class="input-group">
+      <input type="checkbox" form="form" class="form-control" name="include_cash_required" id="capitalize"
         ${checked}
       >
     </div>

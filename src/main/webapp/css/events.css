@@ -1,0 +1,8 @@
+td > input {
+	size: inherit;
+	border: inherit;
+	background: inherit;
+	padding: 0em;
+	max-width: 4.5em;
+	border-top: none;
+}

@@ -3,9 +3,10 @@
   <div class="form-group">
     <label for="type">Type</label>
     <div class="input-group">
-      <input type="text" min="0" step="0.01" form="form" class="form-control" name="type" id="type"
-        value='${type}' placeholder="type"
-      >
+      <select class="form-control" name="type" id="type" data-type="${type}">
+        <option value="fixed">fixed</option>
+        <option value="monthly">monthly</option>
+      </select>
     </div>
     <label for="amount">Amount</label>
     <div class="input-group">

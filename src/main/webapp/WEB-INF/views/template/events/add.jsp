@@ -11,8 +11,7 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label for="month" class="badge badge-pill badge-light">Month</label>
-          <input type="number" min="0" form="form" class="form-control" id="month" name="eventMonth">
+          <input type="hidden" min="0" form="form" class="form-control" id="month" name="eventMonth">
           <label for="eventType" class="badge badge-pill badge-light">Event Type</label>
           <select name="eventType" form="form" class="form-control" id="eventType">
             <option value="">Select</option>

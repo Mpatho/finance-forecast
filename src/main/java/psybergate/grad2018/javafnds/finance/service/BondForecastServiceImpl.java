@@ -24,8 +24,8 @@ public class BondForecastServiceImpl implements BondForecastService {
 
 	private static final double LEGAL_COST_PERCENT = 1.2;
 
-	private static final Money[] TRANSFER_DUTY_PRICES = { new Money(900_000.00), new Money(1_250_000.00),
-			new Money(1_750_000.00), new Money(2_250_000.00), new Money(10_000_000.00), };
+	private static final Money[] TRANSFER_DUTY_PRICES = { new Money(900_000.00), new Money(1_250_000.00), new Money(
+			1_750_000.00), new Money(2_250_000.00), new Money(10_000_000.00), };
 
 	private static final Double[] TRANSFER_DUTY_RATES = { 3.0, 6.0, 8.0, 11.0, 13.0, };
 
@@ -59,25 +59,25 @@ public class BondForecastServiceImpl implements BondForecastService {
 			Money withdrawal = new Money(0.0);
 			for (Event event : bond.getEvents(month)) {
 				switch (event.getType()) {
-				case Event.DEPOSIT:
-					deposit = new Money(event.getValue().doubleValue());
-					break;
-				case Event.WITHDRAW:
-					withdrawal = new Money(event.getValue().doubleValue());
-					break;
-				case Event.RATE_CHANGE:
-					rate = event.getValue().doubleValue();
-					break;
-				case Event.AMOUNT_CHANGE:
-					repaymentMoney = new Money(event.getValue().doubleValue());
-					/// change mon
-					break;
+					case Event.DEPOSIT:
+						deposit = new Money(event.getValue().doubleValue());
+						break;
+					case Event.WITHDRAW:
+						System.out.println();
+						withdrawal = new Money(event.getValue().doubleValue());
+						break;
+					case Event.RATE_CHANGE:
+						rate = event.getValue().doubleValue();
+						break;
+					case Event.AMOUNT_CHANGE:
+						repaymentMoney = new Money(event.getValue().doubleValue());
+						break;
 				}
 			}
-				item = new BondForecastItem(currentMoney, rate, deposit, withdrawal, repaymentMoney);
-				forecastItems.add(item);
-				currentMoney = item.getEndAmount();
-				repaymentMoney = getRepayment(new Bond(currentMoney, new Money(0.0), rate, bond.getMonths() - month, null));
+			item = new BondForecastItem(currentMoney, rate, deposit, withdrawal, repaymentMoney);
+			forecastItems.add(item);
+			currentMoney = item.getEndAmount();
+			repaymentMoney = getRepayment(new Bond(currentMoney, new Money(0.0), rate, bond.getMonths() - month, null));
 		}
 		return forecastItems;
 
@@ -142,16 +142,15 @@ public class BondForecastServiceImpl implements BondForecastService {
 	public Money getTransferCost(Bond bond) {
 		Money price = bond.getPrice();
 		Money transerCost = new Money(0.0);
-		if (price.compareTo(TRANSFER_DUTY_PRICES[0]) <= 0)
-			return transerCost;
+		if (price.compareTo(TRANSFER_DUTY_PRICES[0]) <= 0) return transerCost;
 		for (int i = 1; i < TRANSFER_DUTY_PRICES.length; i++) {
 			if (price.compareTo(TRANSFER_DUTY_PRICES[i]) <= 0) {
 				Money cost = price.subtract(TRANSFER_DUTY_PRICES[i - 1]).percentOf(TRANSFER_DUTY_RATES[i - 1]);
 				return transerCost.add(cost);
 			}
 			else {
-				Money cost = TRANSFER_DUTY_PRICES[i].subtract(TRANSFER_DUTY_PRICES[i - 1])
-						.percentOf(TRANSFER_DUTY_RATES[i - 1]);
+				Money cost = TRANSFER_DUTY_PRICES[i].subtract(TRANSFER_DUTY_PRICES[i - 1]).percentOf(TRANSFER_DUTY_RATES[i
+						- 1]);
 				transerCost = transerCost.add(cost);
 			}
 		}

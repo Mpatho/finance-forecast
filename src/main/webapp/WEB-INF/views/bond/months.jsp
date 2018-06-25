@@ -12,7 +12,7 @@
   <label class="input-group-text">Cash Required</label>
   <input type="text" readonly="readonly" class="form-control" value='${cashRequired}'>
 </div>
-<table class="table">
+<table class="table table-hover">
   <thead>
     <tr>
       <th>Month</th>
@@ -33,7 +33,7 @@
       		for (ForecastItem forecastItem : forecastItems) {
       			monthCount++;
       %>
-      <tr data-rate="<%=forecastItem.getRate()%>"
+      <tr class="event" data-rate="<%=forecastItem.getRate()%>"
         data-withdrawal="<%=forecastItem.getWithdrawal().doubleValue()%>"
         data-deposit="<%=forecastItem.getDeposit().doubleValue()%>" data-month="<%=monthCount%>"
       >

@@ -20,12 +20,12 @@ function getEvents() {
 			list.push(new Event(month, "RATE_CHANGE", rate));
 		}
 
-		if (deposit != 0) {
+		if (deposit	&& deposit != 0) {
 			list.push(new Event(month, "DEPOSIT", deposit));
 		}
 
-		if (withdrawal != 0) {
-			list.push(new Event(month, "WITHDRAWAL", withdrawal));
+		if (withdrawal && withdrawal != 0) {
+			list.push(new Event(month, "WITHDRAW", withdrawal));
 		}
 		row = row.next();
 	}
@@ -33,14 +33,14 @@ function getEvents() {
 }
 
 function viewEvents(events) {
-	var template = $("#events").find("li:first");
+	var template = $("#events").find("tr:first");
 	for ( var index in events) {
 		var month = events[index].month;
 		var type = events[index].type;
 		var value = events[index].value;
 		var item = template.clone().appendTo("#events");
 		item.find("#month").val(month);
-		item.find("#eventType > option").html(type).val(type);
+		item.find("#eventType").val(type);
 		item.find("#value").val(value);
 	}
 	template.hide();
