@@ -42,7 +42,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 	public boolean save(Investment investment) {
 		if (!validate(investment))
 			return false;
-		moneyResource.save(investment.getInitialAmount());
+		moneyResource.save(investment.getAmount());
 		investmentResource.save(investment);
 		return true;
 	}
@@ -54,7 +54,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (validate(investment)) {
 
-			Money currentAmount = investment.getInitialAmount();
+			Money currentAmount = investment.getAmount();
 			Money monthlyAmount = currentAmount;
 			currentAmount = new Money(0.0);
 			Double currentRate = investment.getRate();
@@ -65,7 +65,6 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 					switch (event.getType()) {
 					case Event.DEPOSIT:
 						deposit = new Money(event.getValue().doubleValue());
-						System.out.println("deposit in getMonthlyforecastItem: " + deposit);
 						break;
 					case Event.WITHDRAW:
 						withdrawal = new Money(event.getValue().doubleValue());
@@ -101,7 +100,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 		}
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (validate(investment)) {
-			Money currentAmount = investment.getInitialAmount();
+			Money currentAmount = investment.getAmount();
 			Double currentRate = investment.getRate();
 			for (int month = 1; month <= investment.getMonths(); month++) {
 				Money deposit = new Money(0.0);
@@ -162,7 +161,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 		if (investment.getType().equals(Investment.FIXED)) {
 			return getFixedForecastItems(investment);
 		}
-		else if (investment.getType().equals(Investment.MONTHLY)) {
+		if (investment.getType().equals(Investment.MONTHLY)) {
 			return getMonthlyForecastItems(investment);
 		}
 		return new LinkedList<>();
@@ -170,22 +169,22 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 
 	private boolean validate(Investment investment) {
 		String name = investment.getName();
-		Money initialAmount = investment.getInitialAmount();
+		Money initialAmount = investment.getAmount();
 		Integer months = investment.getMonths();
 		Double rate = investment.getRate();
 		if (name == null || name.isEmpty())
 			return false;
-		else if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0)
+		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0)
 			return false;
-		else if (months == null || months <= 0)
+		if (months == null || months <= 0)
 			return false;
-		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100)
+		if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100)
 			return false;
 		if (name == null || name.isEmpty())
 			return false;
-		else if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0)
+		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0)
 			return false;
-		else if (months == null || months <= 0)
+		if (months == null || months <= 0)
 			return false;
 		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100)
 			return false;

@@ -25,7 +25,7 @@ public class InvestmentResource extends AbstractResource<Investment> implements 
 			super.save(entity);
 		} else {
 			Investment investment = getById(entity.getId());
-			investment.setInitialAmount(entity.getInitialAmount());
+			investment.setAmount(entity.getAmount());
 			investment.setMonths(entity.getMonths());
 			investment.setName(entity.getName());
 			investment.setRate(entity.getRate());

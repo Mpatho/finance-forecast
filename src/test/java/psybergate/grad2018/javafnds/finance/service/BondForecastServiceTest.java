@@ -22,8 +22,7 @@ public class BondForecastServiceTest {
 
 	@Test
 	public void testGetForecastItems() {
-
-		Bond bond = new Bond(new Money(750000.00),  new Money(100000.00), 12.00, 240, null);
+		Bond bond = new Bond(new Money(750000.00), new Money(100000.00), 12.00, 240, null);
 		List<ForecastItem> forecastItems = fs.getForecastItems(bond);
 		assertListEquals(loadList(), forecastItems);
 	}
@@ -47,8 +46,8 @@ public class BondForecastServiceTest {
 	private void assertListEquals(List<ForecastItem> expected, List<ForecastItem> actual) {
 		System.out.println(Arrays.deepToString(expected.toArray()));
 		for (int index = 0; index < expected.size(); index++) {
-			if (!expected.get(index).equals(actual.get(index)))
-				fail("expected : " + expected.get(index) + ", actaul : " + actual.get(index));
+			if (!expected.get(index).equals(actual.get(index))) fail("expected : " + expected.get(index) + ", actaul : "
+					+ actual.get(index));
 		}
 	}
 
@@ -114,37 +113,79 @@ public class BondForecastServiceTest {
 
 	@Test
 	public void testGetTransferCostIfPriceEqual1750K() {
-		Bond bond = new Bond(new Money(1_750_000.00), new Money(100000.00), 12.00, 240, null);
+		// when
+		Money price = new Money(1_750_000.00);
+		Money deposit = new Money(100000.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		// then
 		assertEquals(new Money(40_500.0), fs.getTransferCost(bond));
 	}
 
 	@Test
 	public void testGetTransferCostIfPriceGreaterThan1750KAndLessThan2250K() {
-		Bond bond = new Bond(new Money(2_200_000.00), new Money(100000.00), 12.00, 240, null);
+		// given
+		Money price = new Money(2_200_000.00);
+		Money deposit = new Money(100000.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		// then
 		assertEquals(new Money(76_500.0), fs.getTransferCost(bond));
 	}
 
 	@Test
 	public void testGetTransferCostIfPriceEqual2250K() {
-		Bond bond = new Bond(new Money(2_250_000.00), new Money(100000.00), 12.00, 240, null);
+		// given
+		Money price = new Money(2_250_000.00);
+		Money deposit = new Money(100000.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		// then
 		assertEquals(new Money(80_500.0), fs.getTransferCost(bond));
 	}
 
 	@Test
 	public void testGetTransferCostIfPriceGreaterThan2250KAndLessThan10M() {
-		Bond bond = new Bond(new Money(5_000_000.00), new Money(100000.00), 12.00, 240, null);
+		// given
+		Money price = new Money(5_000_000.00);
+		Money deposit = new Money(100000.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		// then
 		assertEquals(new Money(383_000.0), fs.getTransferCost(bond));
 	}
 
 	@Test
 	public void testGetTransferCostIfPriceEqual10M() {
-		Bond bond = new Bond(new Money(10_000_000.00), new Money(100000.00), 12.00, 240, null);
+		// given
+		Money price = new Money(10_000_000.00);
+		Money deposit = new Money(100000.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		// then
 		assertEquals(new Money(933_000.0), fs.getTransferCost(bond));
 	}
 
 	@Test
 	public void testGetTransferCostIfPriceGreaterThan10M() {
-		Bond bond = new Bond(new Money(11_000_000.00), new Money(100000.00), 12.00, 240, null);
+		// given
+		Money price = new Money(11_000_000.00);
+		Money deposit = new Money(100000.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		// then
 		assertEquals(new Money(1_063_000.00), fs.getTransferCost(bond));
 	}
 

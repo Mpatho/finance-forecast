@@ -36,7 +36,7 @@ public class Investment implements Iterable<Event> {
 	private String type;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private Money initialAmount;
+	private Money amount;
 
 	private Integer months;
 
@@ -50,21 +50,17 @@ public class Investment implements Iterable<Event> {
 	protected Investment() {
 	}
 
-	public Investment(Long id, String name, String type, Money initialAmount, Integer months, Double rate) {
+	public Investment(Long id, String name, String type, Money amount, Integer months, Double rate) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
-		this.initialAmount = initialAmount;
+		this.amount = amount;
 		this.months = months;
 		this.rate = rate;
 	}
 
 	public Investment(String name, String type, Money initialAmount, Integer months, Double rate) {
-		this.name = name;
-		this.type = type;
-		this.initialAmount = initialAmount;
-		this.months = months;
-		this.rate = rate;
+		this(null, name, type, initialAmount, months, rate);
 	}
 
 	public String getName() {
@@ -83,12 +79,12 @@ public class Investment implements Iterable<Event> {
 		this.type = type;
 	}
 
-	public Money getInitialAmount() {
-		return initialAmount;
+	public Money getAmount() {
+		return amount;
 	}
 
-	public void setInitialAmount(Money initailAmount) {
-		this.initialAmount = initailAmount;
+	public void setAmount(Money amount) {
+		this.amount = amount;
 	}
 
 	public Integer getMonths() {
@@ -140,7 +136,7 @@ public class Investment implements Iterable<Event> {
 
 	@Override
 	public String toString() {
-		return "Investment [id=" + id + ", name=" + name + ", type=" + type + ", initialAmount=" + initialAmount
+		return "Investment [id=" + id + ", name=" + name + ", type=" + type + ", initialAmount=" + amount
 				+ ", months=" + months + ", rate=" + rate + ", events=" + Arrays.deepToString(events.toArray()) + "]";
 	}
 
