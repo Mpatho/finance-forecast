@@ -12,7 +12,7 @@
 </head>
 <body>
   <jsp:include page="../template/navs.jsp"></jsp:include>
-  <div class="container-fluid">
+  <div class="container-fluid" id="bond-body">
     <div class="row">
       <div class="col-sm-2 h-100 d-inline-block position-fixed bg-light">
         <jsp:include page="paremeters.jsp"></jsp:include>

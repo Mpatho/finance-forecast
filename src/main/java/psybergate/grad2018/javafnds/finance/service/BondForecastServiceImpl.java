@@ -55,6 +55,7 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 		}
 		Double rate = bond.getRate();
 		ForecastItem item;
+		boolean isUserDefinedRepayment = false;
 		for (int month = 1; month <= bond.getMonths(); month++) {
 			Money deposit = new Money(0.0);
 			Money withdrawal = new Money(0.0);
@@ -72,13 +73,18 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 						break;
 					case Event.AMOUNT_CHANGE:
 						repaymentMoney = new Money(event.getValue().doubleValue());
+						isUserDefinedRepayment = true;
 						break;
 				}
 			}
 			item = new BondForecastItem(currentMoney, rate, deposit, withdrawal, repaymentMoney);
 			forecastItems.add(item);
 			currentMoney = item.getEndAmount();
-			repaymentMoney = getRepayment(new Bond(currentMoney, new Money(0.0), rate, bond.getMonths() - month, null));
+			if(!isUserDefinedRepayment)
+				repaymentMoney = getRepayment(new Bond(currentMoney, new Money(0.0), rate, bond.getMonths() - month, null));
+			if (currentMoney.doubleValue() <= 0) {
+				return forecastItems;
+			}
 		}
 		return forecastItems;
 

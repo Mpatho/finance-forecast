@@ -18,6 +18,7 @@
             <option value="DEPOSIT">Deposit</option>
             <option value="WITHDRAW">Withdrawal</option>
             <option value="RATE_CHANGE">Change Rate</option>
+            <option value="AMOUNT_CHANGE">Amount CHANGE</option>
           </select>
           <label for="value" class="badge badge-pill badge-light">Value</label>
           <input type="number" min="0" step="0.01" form="form" class="form-control" id="value"
