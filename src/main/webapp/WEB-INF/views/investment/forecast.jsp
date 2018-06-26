@@ -13,14 +13,14 @@
 <body>
   <jsp:include page="../template/navs.jsp"></jsp:include>
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-2 h-100 d-inline-block bg-light position-fixed">
+    <div class="row  bg-light">
+      <div class="col-sm-2 h-100 d-inline-block position-fixed">
         <jsp:include page="paremeters.jsp"></jsp:include>
       </div>
-      <div class="col-sm-7 offset-sm-2 d-inline-block bg-light">
+      <div class="col-sm-7 offset-sm-2 d-inline-block">
         <jsp:include page="months.jsp"></jsp:include>
       </div>
-      <div class="col-sm-3 h-100 offset-sm-9 d-inline-block bg-light position-fixed">
+      <div class="col-sm-3 h-100 offset-sm-9 d-inline-block position-fixed">
         <jsp:include page="../template/events/list.jsp"></jsp:include>
       </div>
     </div>
