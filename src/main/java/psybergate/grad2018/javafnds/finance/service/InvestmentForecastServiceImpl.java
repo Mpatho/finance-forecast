@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -40,16 +41,14 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean save(Investment investment) {
-		if (!validate(investment))
-			return false;
+		if (!validate(investment)) return false;
 		moneyResource.save(investment.getAmount());
 		investmentResource.save(investment);
 		return true;
 	}
 
 	public List<ForecastItem> getMonthlyForecastItems(Investment investment) {
-		if (investment == null)
-			return null;
+		if (investment == null) return null;
 
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (validate(investment)) {
@@ -63,20 +62,20 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 				Money withdrawal = new Money(0.0);
 				for (Event event : investment.getEvents(month)) {
 					switch (event.getType()) {
-					case Event.DEPOSIT:
-						deposit = new Money(event.getValue().doubleValue());
-						break;
-					case Event.WITHDRAW:
-						withdrawal = new Money(event.getValue().doubleValue());
-						break;
-					case Event.RATE_CHANGE:
-						currentRate = event.getValue().doubleValue();
-						break;
-					case Event.AMOUNT_CHANGE:
-						monthlyAmount = new Money(event.getValue().doubleValue());
-						break;
+						case Event.DEPOSIT:
+							deposit = new Money(event.getValue().doubleValue());
+							break;
+						case Event.WITHDRAW:
+							withdrawal = new Money(event.getValue().doubleValue());
+							break;
+						case Event.RATE_CHANGE:
+							currentRate = event.getValue().doubleValue();
+							break;
+						case Event.AMOUNT_CHANGE:
+							monthlyAmount = new Money(event.getValue().doubleValue());
+							break;
 					}
-					
+
 				}
 				ForecastItem item = new MonthlyForecastItem(currentAmount, currentRate, monthlyAmount, deposit, withdrawal);
 				forecastItems.add(item);
@@ -95,9 +94,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 	}
 
 	public List<ForecastItem> getFixedForecastItems(Investment investment) {
-		if (investment == null) {
-			return null;
-		}
+		if (investment == null) { return null; }
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (validate(investment)) {
 			Money currentAmount = investment.getAmount();
@@ -108,15 +105,15 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 				for (Event event : investment.getEvents(month)) {
 
 					switch (event.getType()) {
-					case Event.DEPOSIT:
-						deposit = new Money(event.getValue().doubleValue());
-						break;
-					case Event.WITHDRAW:
-						withdrawal = new Money(event.getValue().doubleValue());
-						break;
-					case Event.RATE_CHANGE:
-						currentRate = event.getValue().doubleValue();
-						break;
+						case Event.DEPOSIT:
+							deposit = new Money(event.getValue().doubleValue());
+							break;
+						case Event.WITHDRAW:
+							withdrawal = new Money(event.getValue().doubleValue());
+							break;
+						case Event.RATE_CHANGE:
+							currentRate = event.getValue().doubleValue();
+							break;
 
 					}
 				}
@@ -134,8 +131,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean delete(Investment investment) {
-		if (!investmentResource.contains(investment))
-			return false;
+		if (!investmentResource.contains(investment)) return false;
 		investmentResource.remove(investment);
 		return true;
 	}
@@ -158,12 +154,8 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 
 	@Override
 	public List<ForecastItem> getForecastItems(Investment investment) {
-		if (investment.getType().equals(Investment.FIXED)) {
-			return getFixedForecastItems(investment);
-		}
-		if (investment.getType().equals(Investment.MONTHLY)) {
-			return getMonthlyForecastItems(investment);
-		}
+		if (investment.getType().equals(Investment.FIXED)) { return getFixedForecastItems(investment); }
+		if (investment.getType().equals(Investment.MONTHLY)) { return getMonthlyForecastItems(investment); }
 		return new LinkedList<>();
 	}
 
@@ -172,27 +164,24 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 		Money initialAmount = investment.getAmount();
 		Integer months = investment.getMonths();
 		Double rate = investment.getRate();
-		if (name == null || name.isEmpty())
-			return false;
-		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0)
-			return false;
-		if (months == null || months <= 0)
-			return false;
-		if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100)
-			return false;
-		if (name == null || name.isEmpty())
-			return false;
-		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0)
-			return false;
-		if (months == null || months <= 0)
-			return false;
-		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100)
-			return false;
+		if (name == null || name.isEmpty()) return false;
+		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0) return false;
+		if (months == null || months <= 0) return false;
+		if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
+		if (name == null || name.isEmpty()) return false;
+		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0) return false;
+		if (months == null || months <= 0) return false;
+		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
 		return true;
 	}
 
 	@Override
 	public Investment getInvestmentById(Long id) {
 		return investmentResource.getById(id);
+	}
+
+	@Override
+	public Map<String, String> getSummary() {
+		return null;
 	}
 }
