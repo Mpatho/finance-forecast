@@ -174,7 +174,7 @@ public class BondForecastServiceImpl implements BondForecastService {
 	}
 
 	@Override
-	public Map<String, String> getSummary() {
+	public Map<String, String> getSummary(Bond bond) {
 		return null;
 	}
 

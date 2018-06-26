@@ -15,6 +15,6 @@ public interface ForecastService<T> {
 
 	boolean delete(T entity);
 
-	Map<String, String> getSummary();
+	Map<String, String> getSummary(T entity);
 
 }

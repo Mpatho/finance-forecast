@@ -2,6 +2,7 @@ package psybergate.grad2018.javafnds.finance.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -181,7 +182,9 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 	}
 
 	@Override
-	public Map<String, String> getSummary() {
+	public Map<String, String> getSummary(Investment investment) {
+		Map<String, String> summary = new HashMap<>();
+//		totalInterest = 
 		return null;
 	}
 }
