@@ -6,8 +6,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +20,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.MonthlyForecastItem;
+import psybergate.grad2018.javafnds.finance.entity.Bond;
+import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
@@ -168,10 +172,76 @@ public class InvestmentForecastServiceTest {
 		assertListEquals(getForecastItemsMonthly(), serviceForecastItems);
 	}
 
+	@Test
 	public void testFixedItemsSizeEqualnumberOfMonthsInGetForecastItemsMonthly() {
 		Investment investment1 = new Investment("Sizwe", Investment.MONTHLY, new Money(1_000_000.00), 50, 8.0);
 		List<ForecastItem> forecastItems = ifs.getForecastItems(investment1);
 		assertEquals(50, forecastItems.size());
+	}
+
+	@Test
+	public void testGetSummaryForFixedInvestment() {
+		// given
+		Money initialAmount = new Money(1_000_000.00);
+		double rate = 8.00;
+		int months = 60;
+		// when
+		Investment investment = new Investment("temp", Investment.FIXED, initialAmount, months, rate);
+		Map<String, Money> summary = ifs.getSummary(investment);
+		// then
+		Money totalDeposits = new Money(0.0);
+		Money totalWithdrawals = new Money(0.0);
+		Money totalInterest = new Money(489_845.69);
+		Money endBalance = new Money(1_489_845.69);
+		Money totalContributions = new Money(1_000_000.0);
+		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
+	}
+	
+	@Test
+	public void testGetSummaryForFixedInvestmentWithDeposit() {
+		// given
+		Money initialAmount = new Money(1_000_000.00);
+		double rate = 8.00;
+		int months = 60;
+		// when
+		Investment investment = new Investment("temp", Investment.FIXED, initialAmount, months, rate);
+		investment.addEvent(new Event(Event.DEPOSIT, 15, new BigDecimal(100_000)));
+		Map<String, Money> summary = ifs.getSummary(investment);
+		// then
+		Money totalDeposits = new Money(100_000.0);
+		Money totalWithdrawals = new Money(0.0);
+		Money totalInterest = new Money(525_596.28);
+		Money endBalance = new Money(1_625_596.28);
+		Money totalContributions = new Money(1_000_000.0);
+		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
+	}
+	
+	@Test
+	public void testGetSummaryForFixedInvestmentWithWithdrawal() {
+		// given
+		Money initialAmount = new Money(1_000_000.00);
+		double rate = 8.00;
+		int months = 60;
+		// when
+		Investment investment = new Investment("temp", Investment.FIXED, initialAmount, months, rate);
+		investment.addEvent(new Event(Event.WITHDRAW, 15, new BigDecimal(100_000)));
+		Map<String, Money> summary = ifs.getSummary(investment);
+		// then
+		Money totalWithdrawals = new Money(100_000.0);
+		Money totalDeposits = new Money(0.0);
+		Money totalInterest = new Money(454_095.14);
+		Money endBalance = new Money(1_354_095.14);
+		Money totalContributions = new Money(1_000_000.0);
+		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
+	}
+	
+	private void assertSummary(Map<String, Money> summary, Money totalDeposits, Money totalWithdrawals,
+			Money totalInterest, Money totalContributions, Money endBalance) {
+		assertEquals(totalDeposits, summary.get(ForecastService.TOTAL_DEPOSITS));
+		assertEquals(totalWithdrawals, summary.get(ForecastService.TOTAL_WITHDRAWALS));
+		assertEquals(totalInterest, summary.get(ForecastService.TOTAL_INTEREST));
+		assertEquals(totalContributions, summary.get(ForecastService.TOTAL_CONTRIBUTION));
+		assertEquals(endBalance, summary.get(ForecastService.END_BALANCE));
 	}
 
 	private List<ForecastItem> getForecastItemsMonthly() {
@@ -195,4 +265,6 @@ public class InvestmentForecastServiceTest {
 				fail("expected " + expected.get(index) + "actaul :" + actaul.get(index));
 		}
 	}
+	
+	
 }

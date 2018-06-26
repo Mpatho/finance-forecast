@@ -26,21 +26,13 @@ public class BondForecastItem extends ForecastItem {
 
 	@Override
 	public Money getEndAmount() {
-		Money sum = getInitialAmount().add(getInterest());
+		Money sum = getInitialAmount().add(getInterest()).add(getWithdrawal()).subtract(getDeposit());
 		Money repayment = getRepayment();
-		
-		Money netRepayment = netRepayment(repayment, getDeposit(), getWithdrawal());
-		if (netRepayment.percentOf(110.0).compareTo(sum) < 0) {
-			return sum.subtract(netRepayment);
-		}
+		if (repayment.percentOf(110.0).compareTo(sum) < 0) return sum.subtract(repayment);
 		setRepayment(sum);
 		return sum.subtract(sum);
 	}
 
-	private Money netRepayment(Money repayment, Money deposit, Money withdrawal) {
-		return repayment.add(deposit).subtract(withdrawal);
-	}
-	
 	public Money getRepayment() {
 		return repayment;
 	}

@@ -50,11 +50,7 @@ public class Bond {
 	}
 
 	public Bond(Money price, Money deposit, Double rate, Integer months, String name) {
-		this.price = price;
-		this.deposit = deposit;
-		this.rate = rate;
-		this.months = months;
-		this.name = name;
+		this(null, price, deposit, rate, months, name);
 	}
 
 	public Money getPrice() {
@@ -120,7 +116,7 @@ public class Bond {
 	}
 
 	public void addEvent(Event event) {
-		this.events.add(event);
+		this.events.add(event); 
 	}
 
 }

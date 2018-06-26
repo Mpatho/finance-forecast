@@ -3,15 +3,17 @@ package psybergate.grad2018.javafnds.finance.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
 import psybergate.grad2018.javafnds.finance.bean.BondForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Bond;
+import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
 public class BondForecastServiceTest {
@@ -112,7 +114,7 @@ public class BondForecastServiceTest {
 
 	@Test
 	public void testGetTransferCostIfPriceEqual1750K() {
-		// when
+		// given
 		Money price = new Money(1_750_000.00);
 		Money deposit = new Money(100000.00);
 		double rate = 12.00;
@@ -188,4 +190,110 @@ public class BondForecastServiceTest {
 		assertEquals(new Money(1_063_000.00), fs.getTransferCost(bond));
 	}
 
+	@Test
+	public void testGetSummaryWith10K() {
+		// given
+		Money price = new Money(10_000.00);
+		Money deposit = new Money(0.00);
+		double rate = 12.00;
+		int months = 12;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		Map<String, Money> summary = fs.getSummary(bond);
+		// then
+		Money totalDeposits = new Money(0.0);
+		Money totalWithdrawals = new Money(0.0);
+		Money totalInterest = new Money(661.86);
+		Money totalContributions = new Money(10_661.86);
+		Money endBalance = new Money(0.0);
+		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
+	}
+
+	@Test
+	public void testGetSummaryWith1M() {
+		// given
+		Money price = new Money(1_000_000.00);
+		Money deposit = new Money(0.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		Map<String, Money> summary = fs.getSummary(bond);
+		// then
+		Money totalDeposits = new Money(0.0);
+		Money totalWithdrawals = new Money(0.0);
+		Money totalInterest = new Money(1_642_607.06);
+		Money totalContributions = new Money(2_642_607.06);
+		Money endBalance = new Money(0.0);
+		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
+	}
+
+	@Test
+	public void testGetSummaryWithDeposit() {
+		// given
+		Money price = new Money(1_000_000.00);
+		Money deposit = new Money(0.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		bond.addEvent(new Event(Event.DEPOSIT, 10, new BigDecimal(100_000)));
+		Map<String, Money> summary = fs.getSummary(bond);
+		// then
+		Money totalDeposits = new Money(100_000.0);
+		Money totalWithdrawals = new Money(0.0);
+		Money totalInterest = new Money(1_486_649.86);
+		Money totalContributions = new Money(2_386_649.86);
+		Money endBalance = new Money(0.0);
+		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
+	}
+
+	@Test
+	public void testGetSummaryWithWithdrawal() {
+		// given
+		Money price = new Money(1_000_000.00);
+		Money deposit = new Money(0.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		bond.addEvent(new Event(Event.WITHDRAW, 10, new BigDecimal(100_000)));
+		Map<String, Money> summary = fs.getSummary(bond);
+		// then
+		Money totalDeposits = new Money(0.0);
+		Money totalWithdrawals = new Money(100_000.0);
+		Money totalInterest = new Money(1_798_563.37);
+		Money totalContributions = new Money(2_898_563.37);
+		Money endBalance = new Money(0.0);
+		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
+	}
+
+//	@Test
+	public void testGetSummaryWithRateChange() {
+		// given
+		Money price = new Money(1_000_000.00);
+		Money deposit = new Money(0.00);
+		double rate = 12.00;
+		int months = 240;
+		// when
+		Bond bond = new Bond(price, deposit, rate, months, null);
+		bond.addEvent(new Event(Event.RATE_CHANGE, 15, new BigDecimal(9)));
+		Map<String, Money> summary = fs.getSummary(bond);
+		// then
+		Money totalDeposits = new Money(0.0);
+		Money totalWithdrawals = new Money(0.0);
+		Money totalInterest = new Money(1_201_889.41);
+		Money totalContributions = new Money(2_201_889.41);
+		Money endBalance = new Money(0.0);
+		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
+	}
+
+	private void assertSummary(Map<String, Money> summary, Money totalDeposits, Money totalWithdrawals,
+			Money totalInterest, Money totalContributions, Money endBalance) {
+		assertEquals(totalDeposits, summary.get(ForecastService.TOTAL_DEPOSITS));
+		assertEquals(totalWithdrawals, summary.get(ForecastService.TOTAL_WITHDRAWALS));
+		assertEquals(totalInterest, summary.get(ForecastService.TOTAL_INTEREST));
+		assertEquals(totalContributions, summary.get(ForecastService.TOTAL_CONTRIBUTION));
+		assertEquals(endBalance, summary.get(ForecastService.END_BALANCE));
+	}
 }

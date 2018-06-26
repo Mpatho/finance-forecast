@@ -2,7 +2,6 @@ package psybergate.grad2018.javafnds.finance.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,8 @@ import psybergate.grad2018.javafnds.finance.resource.Resource;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class InvestmentForecastServiceImpl implements InvestmentForecastService {
+public class InvestmentForecastServiceImpl extends AbstractForecastService<Investment> implements
+		InvestmentForecastService {
 
 	@Inject
 	private ForecastResource<Investment> investmentResource;
@@ -95,7 +95,7 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 	}
 
 	public List<ForecastItem> getFixedForecastItems(Investment investment) {
-		if (investment == null) { return null; }
+		if (investment == null) return null;
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (validate(investment)) {
 			Money currentAmount = investment.getAmount();
@@ -182,9 +182,24 @@ public class InvestmentForecastServiceImpl implements InvestmentForecastService 
 	}
 
 	@Override
-	public Map<String, String> getSummary(Investment investment) {
-		Map<String, String> summary = new HashMap<>();
-//		totalInterest = 
-		return null;
+	public Map<String, Money> getSummary(Investment investment) {
+		List<ForecastItem> forecastItems = getForecastItems(investment);
+		Money totalInterest = new Money(0.0);
+		Money totalDeposits = new Money(0.0);
+		Money totalWithdrawals = new Money(0.0);
+		Money totalContribution = new Money(0.0);
+		Money endBalance = forecastItems.get(forecastItems.size() - 1).getEndAmount();
+		for (ForecastItem forecastItem : forecastItems) {
+			totalInterest = totalInterest.add(forecastItem.getInterest());
+			totalDeposits = totalDeposits.add(forecastItem.getDeposit());
+			totalWithdrawals = totalWithdrawals.add(forecastItem.getWithdrawal());
+			if (investment.getType().equals(Investment.MONTHLY)) {
+				totalContribution = totalContribution.add(((MonthlyForecastItem) forecastItem).getMonthlyAmount());
+			}
+		}
+		if (investment.getType().equals(Investment.FIXED)) {
+			totalContribution = investment.getAmount();
+		}
+		return getSummary(totalInterest, totalDeposits, totalWithdrawals, totalContribution, endBalance);
 	}
 }

@@ -19,7 +19,7 @@ import psybergate.grad2018.javafnds.finance.resource.ForecastResource;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class BondForecastServiceImpl implements BondForecastService {
+public class BondForecastServiceImpl extends AbstractForecastService<Bond> implements BondForecastService {
 
 	private static final double BOND_COST_PERCENT = 1.0;
 
@@ -64,11 +64,11 @@ public class BondForecastServiceImpl implements BondForecastService {
 						deposit = new Money(event.getValue().doubleValue());
 						break;
 					case Event.WITHDRAW:
-						System.out.println();
 						withdrawal = new Money(event.getValue().doubleValue());
 						break;
 					case Event.RATE_CHANGE:
 						rate = event.getValue().doubleValue();
+						repaymentMoney = getRepayment(new Bond(currentMoney, new Money(0.0), rate, bond.getMonths() - month, null));
 						break;
 					case Event.AMOUNT_CHANGE:
 						repaymentMoney = new Money(event.getValue().doubleValue());
@@ -174,8 +174,20 @@ public class BondForecastServiceImpl implements BondForecastService {
 	}
 
 	@Override
-	public Map<String, String> getSummary(Bond bond) {
-		return null;
+	public Map<String, Money> getSummary(Bond bond) {
+		List<ForecastItem> forecastItems = getForecastItems(bond);
+		Money totalInterest = new Money(0.0);
+		Money totalDeposits = new Money(0.0);
+		Money totalWithdrawals = new Money(0.0); 
+		Money totalContribution = new Money(0.0);
+		Money endBalance = forecastItems.get(forecastItems.size() - 1).getEndAmount();
+		for (ForecastItem forecastItem : forecastItems) {
+			totalInterest = totalInterest.add(forecastItem.getInterest());
+			totalDeposits = totalDeposits.add(forecastItem.getDeposit());
+			totalWithdrawals = totalWithdrawals.add(forecastItem.getWithdrawal());
+			totalContribution = totalContribution.add(((BondForecastItem) forecastItem).getRepayment());
+		}
+		return getSummary(totalInterest, totalDeposits, totalWithdrawals, totalContribution, endBalance);
 	}
 
 }

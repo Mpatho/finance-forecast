@@ -31,7 +31,7 @@ public final class Money implements Comparable<Money> {
 
 	public Money(Long cents) {
 		if (!isValid(cents.doubleValue())) throw new IllegalArgumentException();
-		this.cents = cents;
+		this.cents = cents; 
 	}
 
 	private static boolean isValid(double rands) {
