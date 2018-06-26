@@ -3,6 +3,7 @@ package psybergate.grad2018.javafnds.finance.service;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
@@ -136,7 +137,9 @@ public class BondForecastServiceImpl implements BondForecastService {
 	}
 
 	private boolean validate(Bond bond) {
-		return true;
+		if (bond.getMonths() == null || bond.getPrice() == null || bond.getRate() == null) return false;
+		if (bond.getMonths() > 0 && bond.getPrice().compareTo(new Money(0.0)) != 0 && bond.getRate() > 0) return true;
+		return false;
 	}
 
 	@Override
@@ -174,6 +177,11 @@ public class BondForecastServiceImpl implements BondForecastService {
 	@Override
 	public Money getCashRequired(Bond bond) {
 		return getBondCost(bond).add(getLegalCost(bond)).add(getTransferCost(bond));
+	}
+
+	@Override
+	public Map<String, String> getSummary(Bond bond) {
+		return null;
 	}
 
 }
