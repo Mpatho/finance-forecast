@@ -4,9 +4,6 @@
 		JNDIName="java:module/Investment">
 		<method name="save" invoke="save" />
 		<method name="delete" invoke="delete" />
-		<method name="forecasts" invoke="viewForecasts" />
-		<method name="monthly" invoke="forecastMonthlyInvestment" />
-		<method name="fixed" invoke="forecastFixedInvestment" />
 		<method name="forecast" invoke="forecastInvestment" />
 	</controller>
 	<controller name="bond"

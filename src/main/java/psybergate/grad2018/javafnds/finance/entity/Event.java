@@ -33,7 +33,6 @@ public class Event implements Comparable<Event> {
 	}
 
 	public Event(String type, Integer month, BigDecimal value) {
-		super();
 		this.type = type;
 		this.month = month;
 		this.value = value;

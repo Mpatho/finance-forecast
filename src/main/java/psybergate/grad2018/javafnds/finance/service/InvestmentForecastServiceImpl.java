@@ -42,6 +42,8 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean save(Investment investment) {
+		String name = investment.getName();
+		if (name == null || name.isEmpty()) return false;
 		if (!validate(investment)) return false;
 		moneyResource.save(investment.getAmount());
 		investmentResource.save(investment);
@@ -50,7 +52,6 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 
 	public List<ForecastItem> getMonthlyForecastItems(Investment investment) {
 		if (investment == null) return null;
-
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (validate(investment)) {
 			Money currentAmount = new Money(0.0);
@@ -135,25 +136,21 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		return new LinkedList<>();
 	}
 
+	@Override
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public Investment getInvestmentById(Long id) {
+		return investmentResource.getById(id);
+	}
+
 	private boolean validate(Investment investment) {
-		String name = investment.getName();
 		Money initialAmount = investment.getAmount();
 		Integer months = investment.getMonths();
 		Double rate = investment.getRate();
-		if (name == null || name.isEmpty()) return false;
-		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0) return false;
-		if (months == null || months <= 0) return false;
 		if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
-		if (name == null || name.isEmpty()) return false;
 		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0) return false;
 		if (months == null || months <= 0) return false;
-		else if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
 		return true;
-	}
-
-	@Override
-	public Investment getInvestmentById(Long id) {
-		return investmentResource.getById(id);
 	}
 
 	@Override
