@@ -33,70 +33,31 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	@Inject
 	private ForecastResource<Bond> bondResource;
 
-	protected Money getRepayment(Bond bond) {
-		Double one = 1.00;
-		Double rate = bond.getRate() / 1200;
-		Double fraction = Math.pow((one / (one + rate)), bond.getMonths());
-		Double factor = rate / (one - (fraction));
-		Money subtract = bond.getPrice().subtract(bond.getDeposit());
-		return subtract.multiply(factor);
-	}
-
 	@Override
 	public List<ForecastItem> getForecastItems(Bond bond, boolean includeCashRequired) {
 		List<ForecastItem> forecastItems = new LinkedList<>();
-		boolean updateRepayment = true;
-		Money currentRepayment = getRepayment(bond);
 		Money currentMoney = bond.getPrice().subtract(bond.getDeposit());
 		Double currentRate = bond.getRate();
+		Money fixedRepayment = null;
+		int months = bond.getMonths();
+		int month = 1;
 		if (includeCashRequired) {
 			currentMoney = currentMoney.add(getCashRequired(bond));
 		}
-		for (int month = 1; month <= bond.getMonths(); month++) {
-			BondForecastItem item = new BondForecastItem(currentMoney, currentRate);
-			item.setRepayment(currentRepayment);
+		while (months > 0) {
+			BondForecastItem item = new BondForecastItem(currentMoney, currentRate, months);
+			item.setFixedRepayment(fixedRepayment);
 			forecastItems.add(item);
 			for (Event event : bond.getEvents(month)) {
-				updateRepayment = processEvent(bond, bond.getMonths() - month + 1, item, event, updateRepayment);
+				item.addEvent(event);
 			}
+			month++;
+			months = item.getRemainingMonths() - 1;
 			currentRate = item.getRate();
 			currentMoney = item.getEndAmount();
-			System.out.println(" Month: " + month + "current rate: " + currentRate + "current amount: " + currentMoney);
-			if (updateRepayment) {
-				currentRepayment = updateRepayment(currentMoney, currentRate, bond.getMonths() - month);
-			}
+			fixedRepayment = item.getFixedRepayment();
 		}
 		return forecastItems;
-
-	}
-
-	private boolean processEvent(Bond bond, int month, BondForecastItem item, Event event, boolean updateRepayment) {
-		switch (event.getType()) {
-			case Event.DEPOSIT:
-				Money deposit = new Money(event.getValue().doubleValue());
-				item.setDeposit(deposit);
-				System.out.println("deposit" + deposit.stringValue());
-				break;
-			case Event.WITHDRAW:
-				Money withdrawal = new Money(event.getValue().doubleValue());
-				item.setWithdrawal(withdrawal);
-				System.out.println("withdrawal" + withdrawal.stringValue());
-				break;
-			case Event.RATE_CHANGE:
-				Double rate = event.getValue().doubleValue();
-				item.setRate(rate);
-				item.setRepayment(updateRepayment(item.getInitialAmount(), item.getRate(), month));
-				break;
-			case Event.AMOUNT_CHANGE:
-				Money repayment = new Money(event.getValue().doubleValue());
-				item.setRepayment(repayment);
-		}
-		return updateRepayment;
-	}
-
-	private Money updateRepayment(Money currentMoney, Double rate, int month) {
-		Money repayment = getRepayment(new Bond(currentMoney, new Money(0.0), rate, month));
-		return repayment;
 	}
 
 	@Override

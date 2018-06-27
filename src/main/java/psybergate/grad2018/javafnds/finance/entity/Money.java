@@ -72,7 +72,7 @@ public final class Money implements Comparable<Money> {
 		if (obj == this) return true;
 		if (!obj.getClass().equals(this.getClass())) return false;
 		Money money = (Money) obj;
-		return money.stringValue().equals(this.stringValue());
+		return Math.abs(money.cents - this.cents) < 5;
 	}
 
 	public double doubleValue() {

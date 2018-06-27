@@ -53,37 +53,20 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (validate(investment)) {
-			Money currentAmount = investment.getAmount();
-			Money monthlyAmount = currentAmount;
-			currentAmount = new Money(0.0);
+			Money currentAmount = new Money(0.0);
 			Double currentRate = investment.getRate();
+			Money fixedRepayment = investment.getAmount();
 			for (int month = 1; month <= investment.getMonths(); month++) {
-				MonthlyForecastItem item = new MonthlyForecastItem(currentAmount, currentRate, monthlyAmount);
+				ForecastItem item = new MonthlyForecastItem(currentAmount, currentRate, investment.getMonths(), month);
 				forecastItems.add(item);
+				item.setFixedRepayment(fixedRepayment);
 				for (Event event : investment.getEvents(month)) {
-					switch (event.getType()) {
-						case Event.DEPOSIT:
-							Money deposit = new Money(event.getValue().doubleValue());
-							item.setDeposit(deposit);
-							break;
-						case Event.WITHDRAW:
-							Money withdrawal = new Money(event.getValue().doubleValue());
-							item.setWithdrawal(withdrawal);
-							break;
-						case Event.RATE_CHANGE:
-							currentRate = event.getValue().doubleValue();
-							item.setRate(currentRate);
-							break;
-						case Event.AMOUNT_CHANGE:
-							monthlyAmount = new Money(event.getValue().doubleValue());
-//							item.set
-							break;
-					}
-
+					item.addEvent(event);
 				}
+				currentRate = item.getRate();
 				currentAmount = item.getEndAmount();
+				fixedRepayment = item.getFixedRepayment();
 			}
-
 		}
 		else {
 			throw new RuntimeException("Invalid investment");
@@ -102,30 +85,17 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		if (validate(investment)) {
 			Money currentAmount = investment.getAmount();
 			Double currentRate = investment.getRate();
+			Money fixedRepayment = currentAmount;
 			for (int month = 1; month <= investment.getMonths(); month++) {
-				ForecastItem item = new FixedForecastItem(currentAmount, currentRate);
+				ForecastItem item = new FixedForecastItem(currentAmount, currentRate, investment.getMonths());
 				forecastItems.add(item);
-				Money deposit = new Money(0.0);
-				Money withdrawal = new Money(0.0);
+				item.setFixedRepayment(fixedRepayment);
 				for (Event event : investment.getEvents(month)) {
-
-					switch (event.getType()) {
-						case Event.DEPOSIT:
-							deposit = new Money(event.getValue().doubleValue());
-							item.setDeposit(deposit);
-							break;
-						case Event.WITHDRAW:
-							withdrawal = new Money(event.getValue().doubleValue());
-							item.setWithdrawal(withdrawal);
-							break;
-						case Event.RATE_CHANGE:
-							currentRate = event.getValue().doubleValue();
-							item.setRate(currentRate);
-							break;
-
-					}
+					item.addEvent(event);
 				}
+				currentRate = item.getRate();
 				currentAmount = item.getEndAmount();
+				fixedRepayment = item.getFixedRepayment();
 			}
 		}
 		else {

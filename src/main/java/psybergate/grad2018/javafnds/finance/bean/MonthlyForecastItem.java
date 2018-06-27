@@ -6,18 +6,12 @@ public class MonthlyForecastItem extends ForecastItem {
 
 	private static final long serialVersionUID = 1L;
 
-	private Money monthlyAmount;
-
-	public MonthlyForecastItem() {
-	}
-
-	public MonthlyForecastItem(Money initialAmount, Double rate, Money monthlyAmount) {
-		super(initialAmount, rate);
-		this.monthlyAmount = monthlyAmount;
+	public MonthlyForecastItem(Money currentAmount, Double rate, Integer months, int month) {
+		super(currentAmount, rate, months);
 	}
 
 	public Money getMonthlyAmount() {
-		return monthlyAmount;
+		return getFixedRepayment();
 	}
 
 	@Override
@@ -28,7 +22,7 @@ public class MonthlyForecastItem extends ForecastItem {
 		sum = sum.add(getMonthlyAmount());
 		return sum.percentOf(monthlyRate);
 	}
-	
+
 	@Override
 	public Money getEndAmount() {
 		Money endAmount = getInitialAmount().add(getDeposit());
@@ -36,10 +30,5 @@ public class MonthlyForecastItem extends ForecastItem {
 		endAmount = endAmount.add(getInterest());
 		endAmount = endAmount.add(getMonthlyAmount());
 		return endAmount;
-	}
-
-	@Override
-	public void setDeposit(Money deposit) {
-		super.setDeposit(deposit);
 	}
 }

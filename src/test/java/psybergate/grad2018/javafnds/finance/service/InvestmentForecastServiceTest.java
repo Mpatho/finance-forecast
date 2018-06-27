@@ -31,8 +31,6 @@ public class InvestmentForecastServiceTest {
 
 	private static InvestmentForecastService ifs = new InvestmentForecastServiceImpl();
 
-	private static Money zero = new Money(0.0);
-
 	@Mock
 	private InvestmentResource investmentResource;
 
@@ -151,9 +149,9 @@ public class InvestmentForecastServiceTest {
 	private List<ForecastItem> getForecastItemsFixed() {
 
 		List<ForecastItem> list = new ArrayList<>();
-		ForecastItem fi1 = new FixedForecastItem(new Money(1_000_000.00), 8.00);
-		ForecastItem fi2 = new FixedForecastItem(new Money(1_006_666.67), 8.00);
-		ForecastItem fi3 = new FixedForecastItem(new Money(1_013_377.78), 8.00);
+		ForecastItem fi1 = new FixedForecastItem(new Money(1_000_000.00), 8.00, 3);
+		ForecastItem fi2 = new FixedForecastItem(new Money(1_006_666.67), 8.00, 2);
+		ForecastItem fi3 = new FixedForecastItem(new Money(1_013_377.78), 8.00, 1);
 
 		list.add(fi1);
 		list.add(fi2);
@@ -164,11 +162,9 @@ public class InvestmentForecastServiceTest {
 
 	@Test
 	public void testIfReturnsCorrectAmountsinGetForecastItemsMonthly() {
-
 		Investment investment1 = new Investment("Sizwe", Investment.MONTHLY, new Money(1_000.00), 3, 22.4);
 		List<ForecastItem> serviceForecastItems = ifs.getForecastItems(investment1);
-
-		assertListEquals(getForecastItemsMonthly(), serviceForecastItems);
+		assertListEquals(getForecastItemsMonthly(3), serviceForecastItems);
 	}
 
 	@Test
@@ -352,7 +348,7 @@ public class InvestmentForecastServiceTest {
 		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
 	}
 
-//	@Test
+	// @Test
 	public void testGetSummaryForMonthlyInvestmentWithChangeInMonthlyContribution() {
 		// given
 		Money initialAmount = new Money(1_000.00);
@@ -404,12 +400,14 @@ public class InvestmentForecastServiceTest {
 		assertEquals(endBalance, summary.get(ForecastService.END_BALANCE));
 	}
 
-	private List<ForecastItem> getForecastItemsMonthly() {
+	private List<ForecastItem> getForecastItemsMonthly(int months) {
 
 		List<ForecastItem> list = new ArrayList<>();
-		ForecastItem fi1 = new MonthlyForecastItem(new Money(0.00), 22.4, new Money(1_000.00));
-		ForecastItem fi2 = new MonthlyForecastItem(new Money(1_018.67), 22.4, new Money(1_000.00));
-		ForecastItem fi3 = new MonthlyForecastItem(new Money(2_056.35), 22.4, new Money(1_000.00));
+		MonthlyForecastItem fi1 = new MonthlyForecastItem(new Money(0.00), 22.4, months, 1);
+		fi1.setFixedRepayment(new Money(1_000.00));
+		ForecastItem fi2 = new MonthlyForecastItem(new Money(1_018.67), 22.4, months, 2);
+		fi2.setFixedRepayment(new Money(1_000.00));
+		ForecastItem fi3 = new MonthlyForecastItem(new Money(2_056.35), 22.4, months, 3);
 
 		list.add(fi1);
 		list.add(fi2);
