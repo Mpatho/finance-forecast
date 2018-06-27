@@ -17,15 +17,14 @@ public abstract class ForecastItem implements Serializable {
 	private Money withdrawal;
 
 	public ForecastItem() {
-		this.deposit = new Money(0.0);
-		this.withdrawal = new Money(0.0);
+		this(new Money(0.0), 0.0);
 	}
 
-	public ForecastItem(Money initialAmount, Double rate, Money deposit, Money withdrawal) {
+	public ForecastItem(Money initialAmount, Double rate) {
 		this.initialAmount = initialAmount;
 		this.rate = rate;
-		this.deposit = deposit;
-		this.withdrawal = withdrawal;
+		this.deposit = new Money(0.0);
+		this.withdrawal = new Money(0.0);
 	}
 
 	public Money getInitialAmount() {
@@ -44,13 +43,13 @@ public abstract class ForecastItem implements Serializable {
 		this.rate = rate;
 	}
 
-
-	public Money getInterest() {
-		Double monthlyRate = getRate().doubleValue() / 12;
-		Money sum = getInitialAmount().add(getDeposit());
-		sum = sum.subtract(getWithdrawal());
-		return sum.percentOf(monthlyRate);
-	}
+	public abstract Money getInterest();
+//	{
+//		Double monthlyRate = getRate().doubleValue() / 12;
+//		Money sum = getInitialAmount().add(getDeposit());
+//		sum = sum.subtract(getWithdrawal());
+//		return sum.percentOf(monthlyRate);
+//	}
 
 	public Money getDeposit() {
 		return deposit;
@@ -81,25 +80,18 @@ public abstract class ForecastItem implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
 		ForecastItem other = (ForecastItem) obj;
 		if (initialAmount == null) {
-			if (other.initialAmount != null)
-				return false;
+			if (other.initialAmount != null) return false;
 		}
-		else if (!initialAmount.equals(other.initialAmount))
-			return false;
+		else if (!initialAmount.equals(other.initialAmount)) return false;
 		if (rate == null) {
-			if (other.rate != null)
-				return false;
+			if (other.rate != null) return false;
 		}
-		else if (!rate.equals(other.rate))
-			return false;
+		else if (!rate.equals(other.rate)) return false;
 		return true;
 	}
 
@@ -109,5 +101,4 @@ public abstract class ForecastItem implements Serializable {
 				+ withdrawal + "]";
 	}
 
-	
 }

@@ -45,49 +45,58 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	@Override
 	public List<ForecastItem> getForecastItems(Bond bond, boolean includeCashRequired) {
 		List<ForecastItem> forecastItems = new LinkedList<>();
-		Money repaymentMoney = getRepayment(bond);
-		Money currentMoney;
+		boolean updateRepayment = true;
+		Money currentRepayment = getRepayment(bond);
+		Money currentMoney = bond.getPrice().subtract(bond.getDeposit());
+		Double currentRate = bond.getRate();
 		if (includeCashRequired) {
-			currentMoney = bond.getPrice().subtract(bond.getDeposit()).add(getCashRequired(bond));
+			currentMoney = currentMoney.add(getCashRequired(bond));
 		}
-		else {
-			currentMoney = bond.getPrice().subtract(bond.getDeposit());
-		}
-		Double rate = bond.getRate();
-		ForecastItem item;
-		boolean isUserDefinedRepayment = false;
 		for (int month = 1; month <= bond.getMonths(); month++) {
-			Money deposit = new Money(0.0);
-			Money withdrawal = new Money(0.0);
-			for (Event event : bond.getEvents(month)) {
-				switch (event.getType()) {
-					case Event.DEPOSIT:
-						deposit = new Money(event.getValue().doubleValue());
-						break;
-					case Event.WITHDRAW:
-						withdrawal = new Money(event.getValue().doubleValue());
-						break;
-					case Event.RATE_CHANGE:
-						rate = event.getValue().doubleValue();
-						repaymentMoney = getRepayment(new Bond(currentMoney, new Money(0.0), rate, bond.getMonths() - month, null));
-						break;
-					case Event.AMOUNT_CHANGE:
-						repaymentMoney = new Money(event.getValue().doubleValue());
-						isUserDefinedRepayment = true;
-						break;
-				}
-			}
-			item = new BondForecastItem(currentMoney, rate, deposit, withdrawal, repaymentMoney);
+			BondForecastItem item = new BondForecastItem(currentMoney, currentRate);
+			item.setRepayment(currentRepayment);
 			forecastItems.add(item);
+			for (Event event : bond.getEvents(month)) {
+				updateRepayment = processEvent(bond, bond.getMonths() - month + 1, item, event, updateRepayment);
+			}
+			currentRate = item.getRate();
 			currentMoney = item.getEndAmount();
-			if(!isUserDefinedRepayment)
-				repaymentMoney = getRepayment(new Bond(currentMoney, new Money(0.0), rate, bond.getMonths() - month, null));
-			if (currentMoney.doubleValue() <= 0) {
-				return forecastItems;
+			System.out.println(" Month: " + month + "current rate: " + currentRate + "current amount: " + currentMoney);
+			if (updateRepayment) {
+				currentRepayment = updateRepayment(currentMoney, currentRate, bond.getMonths() - month);
 			}
 		}
 		return forecastItems;
 
+	}
+
+	private boolean processEvent(Bond bond, int month, BondForecastItem item, Event event, boolean updateRepayment) {
+		switch (event.getType()) {
+			case Event.DEPOSIT:
+				Money deposit = new Money(event.getValue().doubleValue());
+				item.setDeposit(deposit);
+				System.out.println("deposit" + deposit.stringValue());
+				break;
+			case Event.WITHDRAW:
+				Money withdrawal = new Money(event.getValue().doubleValue());
+				item.setWithdrawal(withdrawal);
+				System.out.println("withdrawal" + withdrawal.stringValue());
+				break;
+			case Event.RATE_CHANGE:
+				Double rate = event.getValue().doubleValue();
+				item.setRate(rate);
+				item.setRepayment(updateRepayment(item.getInitialAmount(), item.getRate(), month));
+				break;
+			case Event.AMOUNT_CHANGE:
+				Money repayment = new Money(event.getValue().doubleValue());
+				item.setRepayment(repayment);
+		}
+		return updateRepayment;
+	}
+
+	private Money updateRepayment(Money currentMoney, Double rate, int month) {
+		Money repayment = getRepayment(new Bond(currentMoney, new Money(0.0), rate, month));
+		return repayment;
 	}
 
 	@Override
@@ -184,7 +193,7 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 		List<ForecastItem> forecastItems = getForecastItems(bond);
 		Money totalInterest = new Money(0.0);
 		Money totalDeposits = new Money(0.0);
-		Money totalWithdrawals = new Money(0.0); 
+		Money totalWithdrawals = new Money(0.0);
 		Money totalContribution = new Money(0.0);
 		Money endBalance = forecastItems.get(forecastItems.size() - 1).getEndAmount();
 		for (ForecastItem forecastItem : forecastItems) {

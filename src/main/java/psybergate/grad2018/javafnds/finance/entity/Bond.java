@@ -1,5 +1,6 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,6 +54,10 @@ public class Bond {
 		this(null, price, deposit, rate, months, name);
 	}
 
+	public Bond(Money price, Money deposit, Double rate, Integer months) {
+		this(null, price, deposit, rate, months, null);
+	}
+	
 	public Money getPrice() {
 		return price;
 	}
@@ -119,4 +124,11 @@ public class Bond {
 		this.events.add(event); 
 	}
 
+	@Override
+	public String toString() {
+		return "Bond [id=" + id + ", price=" + price + ", deposit=" + deposit + ", rate=" + rate + ", months=" + months
+				+ ", name=" + name + ", events=" + Arrays.toString(events.toArray()) + "]";
+	}
+
+	
 }

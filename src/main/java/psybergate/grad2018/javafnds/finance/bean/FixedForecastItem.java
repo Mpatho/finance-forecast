@@ -6,21 +6,26 @@ public class FixedForecastItem extends ForecastItem {
 
 	private static final long serialVersionUID = 1L;
 
-
-	public FixedForecastItem(Money initialAmount, Double rate, Money deposit, Money withdrawal) {
-		super(initialAmount, rate, deposit, withdrawal);
+	public FixedForecastItem(Money initialAmount, Double rate) {
+		super(initialAmount, rate);
 	}
 
-	public FixedForecastItem() {
-	}
+	public FixedForecastItem() {}
 
 	@Override
 	public Money getEndAmount() {
 		Money endAmount = getInitialAmount().add(getDeposit());
 		endAmount = endAmount.subtract(getWithdrawal());
 		endAmount = endAmount.add(getInterest());
-
 		return endAmount;
+	}
+
+	@Override
+	public Money getInterest() {
+		Double monthlyRate = getRate().doubleValue() / 12;
+		Money sum = getInitialAmount().add(getDeposit());
+		sum = sum.subtract(getWithdrawal());
+		return sum.percentOf(monthlyRate);
 	}
 
 }

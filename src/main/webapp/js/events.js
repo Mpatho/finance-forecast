@@ -30,10 +30,10 @@ function getEvents() {
 			list.push(new Event(month, "WITHDRAW", withdrawal));
 		}
 		
-		if (amount_change && amount_change != currentAmount) {
-			currentAmount = amount_change;
-			list.push(new Event(month, "AMOUNT_CHANGE", amount_change));
-		}
+//		if (amount_change && amount_change != currentAmount) {
+//			currentAmount = amount_change;
+//			list.push(new Event(month, "AMOUNT_CHANGE", amount_change));
+//		}
 		row = row.next();
 	}
 	return list;

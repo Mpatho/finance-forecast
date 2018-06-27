@@ -20,8 +20,6 @@ public class BondForecastServiceTest {
 
 	private static BondForecastServiceImpl fs = new BondForecastServiceImpl();
 
-	private static Money zero = new Money(0.0);
-
 	@Test
 	public void testGetForecastItems() {
 		Bond bond = new Bond(new Money(750000.00), new Money(100000.00), 12.00, 240, null);
@@ -37,11 +35,11 @@ public class BondForecastServiceTest {
 
 	private List<ForecastItem> loadList() {
 		List<ForecastItem> forecastItems = new LinkedList<>();
-		forecastItems.add(new BondForecastItem(new Money(650_000.00), 12.00, new Money(7157.06), zero, zero));
-		forecastItems.add(new BondForecastItem(new Money(649_342.94), 12.00, new Money(7157.06), zero, zero));
-		forecastItems.add(new BondForecastItem(new Money(648_679.31), 12.00, new Money(7157.06), zero, zero));
-		forecastItems.add(new BondForecastItem(new Money(648_009.04), 12.00, new Money(7157.06), zero, zero));
-		forecastItems.add(new BondForecastItem(new Money(647_332.07), 12.00, new Money(7157.06), zero, zero));
+		forecastItems.add(new BondForecastItem(new Money(650_000.00), 12.00));
+		forecastItems.add(new BondForecastItem(new Money(649_342.94), 12.00));
+		forecastItems.add(new BondForecastItem(new Money(648_679.31), 12.00));
+		forecastItems.add(new BondForecastItem(new Money(648_009.04), 12.00));
+		forecastItems.add(new BondForecastItem(new Money(647_332.07), 12.00));
 		return forecastItems;
 	}
 
@@ -217,7 +215,7 @@ public class BondForecastServiceTest {
 		double rate = 12.00;
 		int months = 240;
 		// when
-		Bond bond = new Bond(price, deposit, rate, months, null);
+		Bond bond = new Bond(price, deposit, rate, months);
 		Map<String, Money> summary = fs.getSummary(bond);
 		// then
 		Money totalDeposits = new Money(0.0);
@@ -258,6 +256,7 @@ public class BondForecastServiceTest {
 		// when
 		Bond bond = new Bond(price, deposit, rate, months, null);
 		bond.addEvent(new Event(Event.WITHDRAW, 10, new BigDecimal(100_000)));
+		System.out.println(bond);
 		Map<String, Money> summary = fs.getSummary(bond);
 		// then
 		Money totalDeposits = new Money(0.0);
@@ -268,7 +267,7 @@ public class BondForecastServiceTest {
 		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
 	}
 
-//	@Test
+	@Test
 	public void testGetSummaryWithRateChange() {
 		// given
 		Money price = new Money(1_000_000.00);
@@ -282,8 +281,8 @@ public class BondForecastServiceTest {
 		// then
 		Money totalDeposits = new Money(0.0);
 		Money totalWithdrawals = new Money(0.0);
-		Money totalInterest = new Money(1_201_889.41);
-		Money totalContributions = new Money(2_201_889.41);
+		Money totalInterest = new Money(1_201_889.44);
+		Money totalContributions = new Money(2_201_889.44);
 		Money endBalance = new Money(0.0);
 		assertSummary(summary, totalDeposits, totalWithdrawals, totalInterest, totalContributions, endBalance);
 	}

@@ -9,11 +9,10 @@ public class MonthlyForecastItem extends ForecastItem {
 	private Money monthlyAmount;
 
 	public MonthlyForecastItem() {
-		super();
 	}
 
-	public MonthlyForecastItem(Money initialAmount, Double rate, Money monthlyAmount, Money deposit, Money withdrawal) {
-		super(initialAmount, rate, deposit, withdrawal);
+	public MonthlyForecastItem(Money initialAmount, Double rate, Money monthlyAmount) {
+		super(initialAmount, rate);
 		this.monthlyAmount = monthlyAmount;
 	}
 
@@ -24,7 +23,6 @@ public class MonthlyForecastItem extends ForecastItem {
 	@Override
 	public Money getInterest() {
 		Double monthlyRate = getRate().doubleValue() / 12;
-
 		Money sum = getInitialAmount().add(getDeposit());
 		sum = sum.subtract(getWithdrawal());
 		sum = sum.add(getMonthlyAmount());
@@ -40,4 +38,8 @@ public class MonthlyForecastItem extends ForecastItem {
 		return endAmount;
 	}
 
+	@Override
+	public void setDeposit(Money deposit) {
+		super.setDeposit(deposit);
+	}
 }

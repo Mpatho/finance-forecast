@@ -1,8 +1,6 @@
 thead.forecast {
 	position: sticky;
-	position: -webkit-sticky;
 	top: 57px;
 	z-index: 1020;
 	background: #eee;
-	top: -1px;
 }

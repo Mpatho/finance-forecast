@@ -12,9 +12,8 @@ public class BondForecastItem extends ForecastItem {
 		super();
 	}
 
-	public BondForecastItem(Money initialAmount, Double rate, Money deposit, Money withdrawal, Money repayment) {
-		super(initialAmount, rate, deposit, withdrawal);
-		this.repayment = repayment;
+	public BondForecastItem(Money initialAmount, Double rate) {
+		super(initialAmount, rate);
 	}
 
 	@Override
