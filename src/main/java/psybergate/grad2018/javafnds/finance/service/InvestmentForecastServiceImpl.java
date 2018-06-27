@@ -80,7 +80,6 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 	}
 
 	public List<ForecastItem> getFixedForecastItems(Investment investment) {
-		if (investment == null) return null;
 		List<ForecastItem> forecastItems = new ArrayList<>();
 		if (validate(investment)) {
 			Money currentAmount = investment.getAmount();
@@ -130,6 +129,7 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 
 	@Override
 	public List<ForecastItem> getForecastItems(Investment investment) {
+		if (investment == null) return new LinkedList<>();
 		if (investment.getType().equals(Investment.FIXED)) { return getFixedForecastItems(investment); }
 		if (investment.getType().equals(Investment.MONTHLY)) { return getMonthlyForecastItems(investment); }
 		return new LinkedList<>();
@@ -163,7 +163,7 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		Money totalDeposits = new Money(0.0);
 		Money totalWithdrawals = new Money(0.0);
 		Money totalContribution = new Money(0.0);
-		Money endBalance = forecastItems.get(forecastItems.size() - 1).getEndAmount();
+		Money endBalance = new Money(0.0);
 		for (ForecastItem forecastItem : forecastItems) {
 			totalInterest = totalInterest.add(forecastItem.getInterest());
 			totalDeposits = totalDeposits.add(forecastItem.getDeposit());
@@ -172,7 +172,10 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 				totalContribution = totalContribution.add(((MonthlyForecastItem) forecastItem).getMonthlyAmount());
 			}
 		}
-		if (investment.getType().equals(Investment.FIXED)) {
+		if (!forecastItems.isEmpty()) {
+			endBalance = forecastItems.get(forecastItems.size() - 1).getEndAmount();
+		}
+		if (investment != null && investment.getType().equals(Investment.FIXED)) {
 			totalContribution = investment.getAmount();
 		}
 		return getSummary(totalInterest, totalDeposits, totalWithdrawals, totalContribution, endBalance);

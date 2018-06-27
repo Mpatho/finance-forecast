@@ -13,7 +13,7 @@ public abstract class ForecastItem implements Serializable {
 
 	private Double rate;
 
-	private int months;
+	private int remainingMonths;
 
 	private Money deposit;
 
@@ -23,10 +23,10 @@ public abstract class ForecastItem implements Serializable {
 
 	private boolean changeRepayment = false;
 
-	public ForecastItem(Money initialAmount, Double rate, int months) {
+	public ForecastItem(Money initialAmount, Double rate, int remainingMonths) {
 		this.initialAmount = initialAmount;
 		this.rate = rate;
-		this.months = months;
+		this.remainingMonths = remainingMonths;
 		this.deposit = new Money(0.0);
 		this.withdrawal = new Money(0.0);
 	}
@@ -80,7 +80,11 @@ public abstract class ForecastItem implements Serializable {
 	}
 
 	public int getRemainingMonths() {
-		return months;
+		return remainingMonths;
+	}
+
+	public void setRemainingMonths(int remainingMonths) {
+		this.remainingMonths = remainingMonths;
 	}
 
 	public abstract Money getInterest();
@@ -89,9 +93,9 @@ public abstract class ForecastItem implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ForecastItem [initialAmount=" + initialAmount + ", rate=" + rate + ", months=" + months + ", deposit="
-				+ deposit + ", withdrawal=" + withdrawal + ", fixedRepayment=" + fixedRepayment + ", changeRepayment="
-				+ changeRepayment + "]";
+		return "ForecastItem [initialAmount=" + initialAmount + ", rate=" + rate + ", months=" + remainingMonths
+				+ ", deposit=" + deposit + ", withdrawal=" + withdrawal + ", fixedRepayment=" + fixedRepayment
+				+ ", changeRepayment=" + changeRepayment + "]";
 	}
 
 	@Override

@@ -36,6 +36,7 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	@Override
 	public List<ForecastItem> getForecastItems(Bond bond, boolean includeCashRequired) {
 		List<ForecastItem> forecastItems = new LinkedList<>();
+		if (bond == null) return forecastItems;
 		Money currentMoney = bond.getPrice().subtract(bond.getDeposit());
 		Double currentRate = bond.getRate();
 		Money fixedRepayment = null;
@@ -51,11 +52,11 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 			for (Event event : bond.getEvents(month)) {
 				item.addEvent(event);
 			}
-			month++;
-			months = item.getRemainingMonths() - 1;
-			currentRate = item.getRate();
 			currentMoney = item.getEndAmount();
+			currentRate = item.getRate();
 			fixedRepayment = item.getFixedRepayment();
+			months = item.getRemainingMonths() - 1;
+			month++;
 		}
 		return forecastItems;
 	}
@@ -156,12 +157,15 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 		Money totalDeposits = new Money(0.0);
 		Money totalWithdrawals = new Money(0.0);
 		Money totalContribution = new Money(0.0);
-		Money endBalance = forecastItems.get(forecastItems.size() - 1).getEndAmount();
+		Money endBalance = new Money(0.0);
 		for (ForecastItem forecastItem : forecastItems) {
 			totalInterest = totalInterest.add(forecastItem.getInterest());
 			totalDeposits = totalDeposits.add(forecastItem.getDeposit());
 			totalWithdrawals = totalWithdrawals.add(forecastItem.getWithdrawal());
 			totalContribution = totalContribution.add(((BondForecastItem) forecastItem).getRepayment());
+		}
+		if (!forecastItems.isEmpty()) {
+			endBalance = forecastItems.get(forecastItems.size() - 1).getEndAmount();
 		}
 		return getSummary(totalInterest, totalDeposits, totalWithdrawals, totalContribution, endBalance);
 	}

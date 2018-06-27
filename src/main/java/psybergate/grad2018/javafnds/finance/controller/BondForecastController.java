@@ -67,14 +67,16 @@ public class BondForecastController extends ForecastController {
 	}
 
 	public String forecastBond(Map<String, String[]> request, Map<String, Object> response) {
+		Bond bond = null;
 		if (validInput(request)) {
-			Bond bond = getBond(request);
+			bond = getBond(request);
 			forecastBond(request, response, bond);
 		}
 		else if (request.get("name") != null) {
-			Bond bond = bondForecastService.getBondByName(request.get("name")[0]);
+			bond = bondForecastService.getBondByName(request.get("name")[0]);
 			forecastBond(request, response, bond);
 		}
+		response.put("summary", bondForecastService.getSummary(bond));
 		return "/WEB-INF/views/bond/forecast.jsp";
 	}
 

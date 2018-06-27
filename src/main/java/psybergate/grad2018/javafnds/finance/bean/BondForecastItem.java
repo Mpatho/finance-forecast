@@ -28,9 +28,11 @@ public class BondForecastItem extends ForecastItem {
 	public Money getRepayment() {
 		Money amount = getInitialAmount().add(getWithdrawal()).subtract(getDeposit());
 		Double rate = getRate() / 1200;
-		if (getFixedRepayment() != null) {
-			double a = Math.log(1 - amount.multiply(rate).doubleValue() / getFixedRepayment().doubleValue());
-			double b = Math.log(1 - rate);
+		if (getFixedRepayment() != null && getRemainingMonths() > 1) {
+			double log1 = Math.log(1 - amount.multiply(rate).doubleValue() / getFixedRepayment().doubleValue());
+			double log2 = Math.log(1 + rate);
+			int months = (int) Math.ceil(-1 * log1 / log2);
+			setRemainingMonths(months);
 			return getFixedRepayment();
 		}
 		Double one = 1.00;

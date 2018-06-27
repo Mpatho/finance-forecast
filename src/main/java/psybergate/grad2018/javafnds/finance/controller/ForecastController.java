@@ -20,7 +20,6 @@ public class ForecastController {
 	@EJB
 	private BondForecastService bondForecastService;
 
-
 	public String viewForecasts(Map<String, String[]> request, Map<String, Object> response) {
 		Collection<Investment> investments = investmentForecastService.getInvestments();
 		Collection<Bond> bonds = bondForecastService.getBonds();

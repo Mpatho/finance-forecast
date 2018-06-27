@@ -26,7 +26,6 @@ public class InvestmentForecastController extends ForecastController {
 			Money amount = new Money(Double.valueOf(request.get("amount")[0]));
 			Double rate = Double.valueOf(request.get("rate")[0]);
 			Integer months = new Integer(request.get("months")[0]);
-
 			String type = request.get("type")[0];
 
 			if (request.get("id")[0].length() != 0) {
@@ -55,12 +54,8 @@ public class InvestmentForecastController extends ForecastController {
 	}
 
 	public String delete(Map<String, String[]> request, Map<String, Object> response) {
-		Long id = Long.valueOf(request.get("id")[0]);
-		Investment investment = investmentForecastService.getInvestmentById(id);
-		if (investment != null && investmentForecastService.delete(investment)) {
-			response.put("message", "deleted successfully");
-			response.put("investment", investment);
-		}
+		String name = request.get("name")[0];
+		investmentForecastService.deleteInvestmentByName(name);
 		return viewForecasts(request, response);
 	}
 
@@ -85,18 +80,21 @@ public class InvestmentForecastController extends ForecastController {
 			if (request.get("type")[0].equals("fixed")) return forecastFixedInvestment(request, response);
 			if (request.get("type")[0].equals("monthly")) return forecastMonthlyInvestment(request, response);
 		}
+		Investment investment = null;
 		if (request.get("name") != null && !request.get("name")[0].trim().equals("")) {
 			String name = request.get("name")[0];
-			Investment investment = investmentForecastService.getInvestmentByName(name);
+			investment = investmentForecastService.getInvestmentByName(name);
 			List<ForecastItem> forecastItems = investmentForecastService.getForecastItems(investment);
 			loadInvestmentResponce(response, investment, forecastItems);
 			return "/WEB-INF/views/investment/forecast.jsp";
 		}
+		response.put("summary", investmentForecastService.getSummary(investment));
 		return "/WEB-INF/views/investment/forecast.jsp";
 	}
 
 	private void loadInvestmentResponce(Map<String, Object> response, Investment investment,
 			List<ForecastItem> forecastItems) {
+		response.put("summary", investmentForecastService.getSummary(investment));
 		response.put("id", investment.getId());
 		response.put("type", investment.getType());
 		response.put("rate", investment.getRate().doubleValue());
