@@ -61,7 +61,10 @@ $('.forecast , .event').css('cursor', 'pointer');
 $(".forecast").click(function() {
 	var that = $(this);
 	var month = that.attr("data-month");
+	currentEvent = null;
 	$(".modal-body input#month").val(month);
+	$(".modal-body [name=eventType]").val(null);
+	$(".modal-body [name=eventValue]").val(null);
 	$(".modal-footer #delete").hide();
 });
 
@@ -70,6 +73,10 @@ $(".modal-footer > #delete").click(function() {
 	$(".modal-body [name=eventMonth]").val(null);
 	$(".modal-body [name=eventType]").val(null);
 	$(".modal-body [name=eventValue]").val(null);
+});
+
+$(".modal-footer > #generate").click(function() {
+	$(currentEvent).remove();
 });
 
 $(".event").click(function() {
