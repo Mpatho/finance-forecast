@@ -16,8 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Bond {
-
+public class Bond implements ForecastEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -39,10 +38,9 @@ public class Bond {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Event> events = new LinkedList<>();
 
-	protected Bond() {}
+	public Bond() {}
 
-	public Bond(Long id, Money price, Money deposit, Double rate, Integer months, String name) {
-		this.id = id;
+	public Bond(Money price, Money deposit, Double rate, Integer months, String name) {
 		this.price = price;
 		this.deposit = deposit;
 		this.rate = rate;
@@ -50,14 +48,10 @@ public class Bond {
 		this.name = name;
 	}
 
-	public Bond(Money price, Money deposit, Double rate, Integer months, String name) {
-		this(null, price, deposit, rate, months, name);
+	public Bond(Money price, Money deposit, Double rate, Integer months) {
+		this(price, deposit, rate, months, null);
 	}
 
-	public Bond(Money price, Money deposit, Double rate, Integer months) {
-		this(null, price, deposit, rate, months, null);
-	}
-	
 	public Money getPrice() {
 		return price;
 	}
@@ -120,8 +114,9 @@ public class Bond {
 		return events;
 	}
 
-	public void addEvent(Event event) {
-		this.events.add(event); 
+	@Override
+	public boolean addEvent(Event event) {
+		return this.events.add(event);
 	}
 
 	@Override
@@ -130,5 +125,4 @@ public class Bond {
 				+ ", name=" + name + ", events=" + Arrays.toString(events.toArray()) + "]";
 	}
 
-	
 }

@@ -19,19 +19,19 @@ function getEvents() {
 
 		if (rate != currentRate) {
 			currentRate = rate;
-			list.push(new Event(month, "RATE_CHANGE", rate));
+			list.push(new Event(month, "Rate change", rate));
 		}
 
 		if (deposit && deposit != 0) {
-			list.push(new Event(month, "DEPOSIT", deposit));
+			list.push(new Event(month, "Deposit", deposit));
 		}
 
 		if (withdrawal && withdrawal != 0) {
-			list.push(new Event(month, "WITHDRAW", withdrawal));
+			list.push(new Event(month, "Withdraw", withdrawal));
 		}
 
 		if (repaymentChange && repaymentChange == "true") {
-			list.push(new Event(month, "AMOUNT_CHANGE", repayment));
+			list.push(new Event(month, "Amount change", repayment));
 		}
 		row = row.next();
 	}

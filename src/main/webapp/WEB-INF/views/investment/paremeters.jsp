@@ -1,4 +1,4 @@
-<form action="forecast" id="form" class="small">
+<form action="forecast" id="form" class="small" method="post">
   <input type="hidden" name="id" value="${id}" />
   <div class="form-group">
     <label for="type">Type</label>

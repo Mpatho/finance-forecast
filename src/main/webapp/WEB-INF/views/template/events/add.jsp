@@ -15,10 +15,10 @@
           <label for="eventType" class="badge badge-pill badge-light">Event Type</label>
           <select name="eventType" form="form" class="form-control" id="eventType">
             <option value="">Select</option>
-            <option value="DEPOSIT">Deposit</option>
-            <option value="WITHDRAW">Withdrawal</option>
-            <option value="RATE_CHANGE">Change Rate</option>
-            <option value="AMOUNT_CHANGE">Amount CHANGE</option>
+            <option value="Deposit">Deposit</option>
+            <option value="Withdraw">Withdraw</option>
+            <option value="Rate change">Rate change</option>
+            <option value="Amount change">Amount change</option>
           </select>
           <label for="value" class="badge badge-pill badge-light">Value</label>
           <input type="number" min="0" step="0.01" form="form" class="form-control" id="value"

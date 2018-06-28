@@ -26,6 +26,10 @@ public interface ForecastService<T> {
 
 	boolean delete(T entity);
 
+	T getByName(String name);
+
+	T getById(Long id);
+
 	Map<String, Money> getSummary(T entity);
 
 }

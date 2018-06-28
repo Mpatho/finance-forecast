@@ -20,7 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 @Entity
-public class Investment implements Iterable<Event> {
+public class Investment implements Iterable<Event>, ForecastEntity {
 
 	public static final String FIXED = "fixed";
 
@@ -47,11 +47,9 @@ public class Investment implements Iterable<Event> {
 	@JoinColumn(name = "investment_id")
 	private List<Event> events = new ArrayList<>();
 
-	protected Investment() {
-	}
+	public Investment() {}
 
-	public Investment(Long id, String name, String type, Money amount, Integer months, Double rate) {
-		this.id = id;
+	public Investment(String name, String type, Money amount, Integer months, Double rate) {
 		this.name = name;
 		this.type = type;
 		this.amount = amount;
@@ -59,8 +57,8 @@ public class Investment implements Iterable<Event> {
 		this.rate = rate;
 	}
 
-	public Investment(String name, String type, Money initialAmount, Integer months, Double rate) {
-		this(null, name, type, initialAmount, months, rate);
+	public Investment(String type, Money initialAmount, Integer months, Double rate) {
+		this(null, type, initialAmount, months, rate);
 	}
 
 	public String getName() {
@@ -99,10 +97,12 @@ public class Investment implements Iterable<Event> {
 		return rate;
 	}
 
+	@Override
 	public void setRate(Double rate) {
 		this.rate = rate;
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -112,14 +112,17 @@ public class Investment implements Iterable<Event> {
 		return events.iterator();
 	}
 
+	@Override
 	public boolean addEvent(Event event) {
 		return events.add(event);
 	}
 
+	@Override
 	public List<Event> getEvents() {
 		return events;
 	}
 
+	@Override
 	public List<Event> getEvents(Integer months) {
 		List<Event> events = new LinkedList<>();
 		for (Event event : this.events) {
@@ -136,10 +139,8 @@ public class Investment implements Iterable<Event> {
 
 	@Override
 	public String toString() {
-		return "Investment [id=" + id + ", name=" + name + ", type=" + type + ", initialAmount=" + amount
-				+ ", months=" + months + ", rate=" + rate + ", events=" + Arrays.deepToString(events.toArray()) + "]";
+		return "Investment [id=" + id + ", name=" + name + ", type=" + type + ", initialAmount=" + amount + ", months="
+				+ months + ", rate=" + rate + ", events=" + Arrays.deepToString(events.toArray()) + "]";
 	}
-
-
 
 }

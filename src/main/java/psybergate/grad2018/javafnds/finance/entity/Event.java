@@ -10,13 +10,13 @@ import javax.persistence.Id;
 @Entity
 public class Event implements Comparable<Event> {
 
-	public static final String RATE_CHANGE = "RATE_CHANGE";
+	public static final String RATE_CHANGE = "Rate change";
 
-	public static final String WITHDRAW = "WITHDRAW";
+	public static final String WITHDRAW = "Withdraw";
 
-	public static final String DEPOSIT = "DEPOSIT";
+	public static final String DEPOSIT = "Deposit";
 
-	public static final String AMOUNT_CHANGE = "AMOUNT_CHANGE";
+	public static final String AMOUNT_CHANGE = "Amount change";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +33,6 @@ public class Event implements Comparable<Event> {
 	}
 
 	public Event(String type, Integer month, BigDecimal value) {
-		super();
 		this.type = type;
 		this.month = month;
 		this.value = value;

@@ -93,13 +93,13 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	}
 
 	@Override
-	public Bond getBondByName(String name) {
+	public Bond getByName(String name) {
 		return bondResource.getByName(name);
 	}
 
 	@Override
 	public boolean deleteBondByName(String name) {
-		Bond bond = getBondByName(name);
+		Bond bond = getByName(name);
 		if (bond != null) {
 			bondResource.remove(bond);
 			return true;
@@ -168,6 +168,11 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 			endBalance = forecastItems.get(forecastItems.size() - 1).getEndAmount();
 		}
 		return getSummary(totalInterest, totalDeposits, totalWithdrawals, totalContribution, endBalance);
+	}
+
+	@Override
+	public Bond getById(Long id) {
+		return bondResource.getById(id);
 	}
 
 }
