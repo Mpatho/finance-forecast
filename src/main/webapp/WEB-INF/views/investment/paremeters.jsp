@@ -4,7 +4,7 @@
     <label for="type">Type</label>
     <div class="input-group">
       <select class="form-control" name="type" id="type" data-type="${type}">
-        <option value="fixed">fixed</option>
+        <option value="fixed" selected>fixed</option>
         <option value="monthly">monthly</option>
       </select>
     </div>
