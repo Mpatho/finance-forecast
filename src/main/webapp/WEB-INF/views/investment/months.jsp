@@ -5,21 +5,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <table class="table table-hover table-bordered">
   <thead class="forecast">
-    <%
-      Map<String, Money> summary = (Map<String, Money>) request.getAttribute("summary");
-    %>
-    <tr>
-      <th class="text-center">Summary</th>
-      <th class="text-center"><%=summary.get(ForecastService.TOTAL_CONTRIBUTION)%></th>
-      <th class="text-center"><%=summary.get(ForecastService.TOTAL_DEPOSITS)%></th>
-      <th class="text-center"><%=summary.get(ForecastService.TOTAL_WITHDRAWALS)%></th>
-      <th class="text-center"><%=summary.get(ForecastService.TOTAL_INTEREST)%></th>
-      <th class="text-center"></th>
-      <th class="text-center"><%=summary.get(ForecastService.END_BALANCE)%></th>
-    </tr>
     <tr>
       <th class="text-center">Month</th>
       <th class="text-center">Opening Balance</th>
+      <th class="text-center monthly">Monthly Amount</th>
       <th class="text-center">Deposit</th>
       <th class="text-center">Withdrawal</th>
       <th class="text-center">Interest</th>
@@ -45,6 +34,14 @@
       >
         <td class="text-right"><%=monthCount%></td>
         <td class="text-right"><%=forecastItem.getInitialAmount().stringValue()%></td>
+        <%
+        	if (forecastItem instanceof MonthlyForecastItem) {
+        %>
+        <td class="text-right"><%=((MonthlyForecastItem) forecastItem).getMonthlyAmount().stringValue()%>
+        </td>
+        <%
+        	}
+        %>
         <td class="text-right"><%=forecastItem.getDeposit().stringValue()%></td>
         <td class="text-right"><%=forecastItem.getWithdrawal().stringValue()%></td>
         <td class="text-right"><%=forecastItem.getInterest().stringValue()%></td>

@@ -17,7 +17,7 @@
     </div>
     <label for="rate">Interest Rate</label>
     <div class="input-group">
-      <input type="number" min="0" step="0.01" form="form" class="form-control" id="rate"
+      <input type="number" min="0" step="0.01" max="100" form="form" class="form-control" id="rate"
         name="rate" value='${rate}' placeholder="0.0"
       >
       <div class="input-group-append">
@@ -26,7 +26,7 @@
     </div>
     <label for="months">Investment Term</label>
     <div class="input-group">
-      <input type="number" min="0" form="form" class="form-control" id="months" name="months"
+      <input type="number" min="1" form="form" class="form-control" id="months" name="months"
         value='${months}' placeholder="0"
       >
       <div class="input-group-append">

@@ -3,7 +3,6 @@ package psybergate.grad2018.javafnds.finance.entity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 @Entity
-public class Investment implements Iterable<Event>, ForecastEntity {
+public class Investment implements ForecastEntity {
 
 	public static final String FIXED = "fixed";
 
@@ -105,11 +104,6 @@ public class Investment implements Iterable<Event>, ForecastEntity {
 	@Override
 	public Long getId() {
 		return id;
-	}
-
-	@Override
-	public Iterator<Event> iterator() {
-		return events.iterator();
 	}
 
 	@Override

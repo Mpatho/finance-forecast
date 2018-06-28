@@ -18,6 +18,7 @@
         <jsp:include page="paremeters.jsp"></jsp:include>
       </div>
       <div class="col-sm-7 h-100 offset-sm-2 d-inline-block bg-light">
+        <jsp:include page="../template/forecast/summary.jsp"></jsp:include>
         <jsp:include page="months.jsp"></jsp:include>
       </div>
       <div class="col-sm-3 h-100 offset-sm-9 d-inline-block position-fixed bg-light">
