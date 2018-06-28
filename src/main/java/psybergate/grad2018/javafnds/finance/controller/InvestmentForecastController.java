@@ -44,15 +44,11 @@ public class InvestmentForecastController extends ForecastController {
 	}
 
 	private Investment getInvestmentById(Map<String, String[]> request) {
-		Investment investment = null;
 		if (request.get("id") != null && !request.get("id")[0].trim().equals("")) {
 			Long id = Long.valueOf(request.get("id")[0]);
-			investment = investmentForecastService.getById(id);
+			return investmentForecastService.getById(id);
 		}
-		if (investment == null) {
-			investment = new Investment();
-		}
-		return investment;
+		return new Investment();
 	}
 
 	private void updateInvestment(Investment investment, Map<String, String[]> request) {

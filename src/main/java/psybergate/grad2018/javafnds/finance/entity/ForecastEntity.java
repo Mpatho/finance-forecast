@@ -16,4 +16,6 @@ public interface ForecastEntity {
 
 	List<Event> getEvents(Integer months);
 
+	void setEvents(List<Event> arrayList);
+
 }

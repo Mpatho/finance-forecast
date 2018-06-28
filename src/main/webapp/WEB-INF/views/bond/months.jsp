@@ -24,7 +24,7 @@
       		for (ForecastItem forecastItem : forecastItems) {
       			monthCount++;
       %>
-      <tr class="event" data-toggle="modal" data-target="#eventModal"
+      <tr class="forecast" data-toggle="modal" data-target="#eventModal"
         data-rate="<%=forecastItem.getRate()%>"
         data-withdrawal="<%=forecastItem.getWithdrawal().doubleValue()%>"
         data-deposit="<%=forecastItem.getDeposit().doubleValue()%>" data-month="<%=monthCount%>"

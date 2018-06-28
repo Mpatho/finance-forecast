@@ -14,6 +14,7 @@ $("select").change(function() {
 });
 
 toggleAmountChange();
+
 if ($("[value=fixed]").is(":selected") || $("type").attr("data-type") == "") {
 	$(".monthly").hide();
 } else if ($("[value=monthly]").is(":selected")) {

@@ -24,8 +24,8 @@ public class BondForecastController extends ForecastController {
 			return "/WEB-INF/views/bond/forecast.jsp";
 		}
 		Bond bond = getBondById(request);
-		boolean required = request.get("include_cash_required") != null;
 		updateBond(bond, request);
+		boolean required = request.get("include_cash_required") != null;
 		List<ForecastItem> forecastItems = bondForecastService.getForecastItems(bond, required);
 		loadBondResponce(response, bond, forecastItems, required);
 		return "/WEB-INF/views/bond/forecast.jsp";
@@ -33,8 +33,8 @@ public class BondForecastController extends ForecastController {
 
 	public String save(Map<String, String[]> request, Map<String, Object> response) {
 		Bond bond = getBondById(request);
-		updateBond(bond, request);
 		bond.setName(request.get("name")[0]);
+		updateBond(bond, request);
 		bondForecastService.save(bond);
 		return viewForecasts(request, response);
 	}

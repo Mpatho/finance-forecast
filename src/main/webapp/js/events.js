@@ -1,3 +1,5 @@
+var currentEvent;
+
 function Event(month, type, value) {
 	this.month = month;
 	this.type = type;
@@ -5,7 +7,7 @@ function Event(month, type, value) {
 }
 
 function getEvents() {
-	var row = $("tbody > tr");
+	var row = $("tbody > tr.forecast");
 	var list = [];
 	var currentRate = row.attr("data-rate");
 
@@ -45,11 +47,39 @@ function viewEvents(events) {
 		var type = events[index].type;
 		var value = events[index].value;
 		var item = template.clone().appendTo("#events");
-		item.find("#month").val(month);
-		item.find("#eventType").val(type);
-		item.find("#value").val(value);
+		item.find("#month").val(month).parent().append(month);
+		item.find("#eventType").val(type).parent().append(type);
+		item.find("#value").val(value).parent().append(value);
 	}
 	template.hide();
 }
 
 viewEvents(getEvents())
+
+$('.forecast , .event').css('cursor', 'pointer');
+
+$(".forecast").click(function() {
+	var that = $(this);
+	var month = that.attr("data-month");
+	$(".modal-body input#month").val(month);
+	$(".modal-footer #delete").hide();
+});
+
+$(".modal-footer > #delete").click(function() {
+	$(currentEvent).remove();
+	$(".modal-body [name=eventMonth]").val(null);
+	$(".modal-body [name=eventType]").val(null);
+	$(".modal-body [name=eventValue]").val(null);
+});
+
+$(".event").click(function() {
+	currentEvent = this;
+	$(".modal-footer #delete").show();
+	var that = $(this);
+	var month = that.find("[name=eventMonth]").val();
+	var type = that.find("[name=eventType]").val();
+	var value = that.find("[name=eventValue]").val();
+	$(".modal-body [name=eventMonth]").val(month);
+	$(".modal-body [name=eventType]").val(type);
+	$(".modal-body [name=eventValue]").val(value);
+});

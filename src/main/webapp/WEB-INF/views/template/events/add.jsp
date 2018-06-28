@@ -27,6 +27,7 @@
         </div>
       </div>
       <div class="modal-footer">
+        <button form="form" type="submit" class="btn btn-primary fa fa-trash" id="delete"></button>
         <button form="form" type="submit" class="btn btn-primary fa fa-save" id="generate"></button>
       </div>
     </div>
