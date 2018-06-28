@@ -11,16 +11,14 @@ public interface BondForecastService extends ForecastService<Bond> {
 
 	Collection<Bond> getBonds();
 
-	Bond getBondByName(String name);
-
 	boolean deleteBondByName(String name);
 
 	Money getBondCost(Bond bond);
-	
+
 	Money getTransferCost(Bond bond);
-	
+
 	Money getLegalCost(Bond bond);
-	
+
 	Money getCashRequired(Bond bond);
 
 	List<ForecastItem> getForecastItems(Bond bond, boolean includeCashRequired);

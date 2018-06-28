@@ -113,7 +113,7 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 	}
 
 	@Override
-	public Investment getInvestmentByName(String name) {
+	public Investment getByName(String name) {
 		return investmentResource.getByName(name);
 	}
 
@@ -137,9 +137,8 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 	}
 
 	@Override
-
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Investment getInvestmentById(Long id) {
+	public Investment getById(Long id) {
 		return investmentResource.getById(id);
 	}
 

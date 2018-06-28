@@ -20,7 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 @Entity
-public class Investment implements Iterable<Event> {
+public class Investment implements Iterable<Event>, ForecastEntity {
 
 	public static final String FIXED = "fixed";
 
@@ -97,10 +97,12 @@ public class Investment implements Iterable<Event> {
 		return rate;
 	}
 
+	@Override
 	public void setRate(Double rate) {
 		this.rate = rate;
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -110,14 +112,17 @@ public class Investment implements Iterable<Event> {
 		return events.iterator();
 	}
 
+	@Override
 	public boolean addEvent(Event event) {
 		return events.add(event);
 	}
 
+	@Override
 	public List<Event> getEvents() {
 		return events;
 	}
 
+	@Override
 	public List<Event> getEvents(Integer months) {
 		List<Event> events = new LinkedList<>();
 		for (Event event : this.events) {
