@@ -3,9 +3,9 @@ $("[value=" + type + "]").attr("selected", "selected");
 
 function toggleAmountChange() {
 	if ($("[value=fixed]").is(":selected") || $("type").attr("data-type") == "") {
-		$("[value=AMOUNT_CHANGE]").hide();
+		$("[value='Amount change']").hide();
 	} else if ($("[value=monthly]").is(":selected")) {
-		$("[value=AMOUNT_CHANGE]").show();
+		$("[value='Amount change']").show();
 	}
 }
 

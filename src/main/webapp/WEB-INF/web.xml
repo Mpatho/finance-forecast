@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/ http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd"
 	version="3.1">
 	<welcome-file-list>
-		<welcome-file>/investment/forecasts</welcome-file>
+		<welcome-file>/forecast/forecasts</welcome-file>
 	</welcome-file-list>
 	
 	<context-param>
