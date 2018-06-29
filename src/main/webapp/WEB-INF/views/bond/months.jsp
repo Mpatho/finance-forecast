@@ -27,6 +27,7 @@
       <tr class="forecast" data-toggle="modal" data-target="#eventModal"
         data-rate="<%=forecastItem.getRate()%>"
         data-withdrawal="<%=forecastItem.getWithdrawal().doubleValue()%>"
+        data-end-amount="<%=forecastItem.getEndAmount().doubleValue()%>"
         data-deposit="<%=forecastItem.getDeposit().doubleValue()%>" data-month="<%=monthCount%>"
         <%if (forecastItem.getFixedRepayment() != null) {%>
         data-repayment="<%=forecastItem.getFixedRepayment().doubleValue()%>"

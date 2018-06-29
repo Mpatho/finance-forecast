@@ -43,6 +43,7 @@
       data-target="#saveModal"
     ></button>
     <button form="form" type="submit" class="btn btn-primary fa">Generate</button>
+    <button type="button" class="btn btn-primary fa fa-line-chart"></button>
   </div>
 </form>
 <div class="form-group small">

@@ -26,12 +26,14 @@
       </div>
     </div>
   </div>
+  <jsp:include page="../template/graph.jsp"></jsp:include>
   <jsp:include page="../template/forecast/save.jsp"></jsp:include>
   <jsp:include page="../template/events/add.jsp"></jsp:include>
   <script src="/finance-1.0/js/jquery-3.3.1.min.js"></script>
   <script src="/finance-1.0/js/bootstrap.bundle.min.js"></script>
-  <script src="/finance-1.0/js/app.js"></script>
+  <script src="/finance-1.0/js/d3.min.js"></script>
   <script src="/finance-1.0/js/events.js"></script>
+  <script src="/finance-1.0/js/graph.js"></script>
   <script src="/finance-1.0/js/investment.js"></script>
 </body>
 </html>
