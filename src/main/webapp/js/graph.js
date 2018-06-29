@@ -38,16 +38,17 @@ function getLastMonth() {
 	return $("tbody > tr.forecast").last().attr("data-month");
 }
 
-function getEndAmounts() {
+function getMaxEndAmount() {
 	var row = $("tbody > tr.forecast");
-	var list = [];
-	
+	var amount = 0;
 	while (row.is("tr")) {
-		var endAmount = row.attr("data-end-amount");
-		list.push(endAmount);
+		var endAmount = row.attr("data-end-amount") * 1;
+		if (endAmount > amount) {
+			amount = endAmount
+		}
 		row = row.next();
 	}
-	return list;
+	return amount;
 }
 
 $(".fa-line-chart").click(function() {
@@ -64,11 +65,12 @@ $(".fa-line-chart").click(function() {
     .attr("transform", "translate(0,280)")
     .call(axis);
 
+	var amount = getMaxEndAmount();
 	var y = d3.scaleLinear()
-    .domain(d3.extent(data, function(d) { return d.endAmount; }))
+    .domain([0, amount])
     .range([280, 0]);
 	axis = d3.axisLeft(y);
-	axis.tickValues(d3.range(0, d3.max(getEndAmounts()), d3.max(getEndAmounts()) / 20))
+	axis.tickValues(d3.range(0, amount, amount / 20));
 	graph.append("g")
     .attr("transform", "translate(50,0)")
     .call(axis);
@@ -78,8 +80,7 @@ $(".fa-line-chart").click(function() {
 	}).y(function(d) {
 		return y(d.endAmount);
 	});
-// graph.data(data);
-	 graph.append("path")
+	graph.append("path")
 	 .attr("d", line(data))
 	 .attr("stroke", "blue")
 	 .attr("stroke-width", 2)
