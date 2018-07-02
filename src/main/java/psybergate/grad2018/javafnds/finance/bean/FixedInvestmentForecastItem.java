@@ -2,11 +2,11 @@ package psybergate.grad2018.javafnds.finance.bean;
 
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
-public class FixedForecastItem extends ForecastItem {
+public class FixedInvestmentForecastItem extends ForecastItem {
 
 	private static final long serialVersionUID = 1L;
 
-	public FixedForecastItem(Money currentAmount, Double rate, Integer months) {
+	public FixedInvestmentForecastItem(Money currentAmount, Double rate, Integer months) {
 		super(currentAmount, rate, months);
 	}
 

@@ -2,16 +2,22 @@
 package psybergate.grad2018.javafnds.finance.service;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Local;
 
+import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
+import psybergate.grad2018.javafnds.finance.entity.Money;
 
 @Local
 public interface InvestmentForecastService extends ForecastService<Investment> {
 
 	Collection<Investment> getInvestments();
 
-	Investment getById(Long id);
+	List<ForecastItem> getForecastItems(Investment entity);
+
+	Map<String, Money> getSummary(Investment entity);
 
 }

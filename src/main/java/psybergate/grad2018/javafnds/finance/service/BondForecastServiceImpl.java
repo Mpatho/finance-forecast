@@ -58,12 +58,6 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<ForecastItem> getForecastItems(Bond bond) {
-		return getForecastItems(bond, false);
-	}
-
-	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean save(Bond bond) {
 		if (validate(bond)) {
@@ -131,8 +125,8 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Map<String, Money> getSummary(Bond bond) {
-		List<ForecastItem> forecastItems = getForecastItems(bond);
+	public Map<String, Money> getSummary(Bond bond, boolean includeCashRequired) {
+		List<ForecastItem> forecastItems = getForecastItems(bond, includeCashRequired);
 		Money totalInterest = new Money(0.0);
 		Money totalDeposits = new Money(0.0);
 		Money totalWithdrawals = new Money(0.0);

@@ -18,14 +18,14 @@ public class BondForecastController extends AbstractForecastController {
 
 	@EJB
 	private BondForecastService bondForecastService;
-	
+
 	@Inject
 	private ForecastsController forecasts;
 
 	@Override
 	public String forecast(Map<String, String[]> request, Map<String, Object> response) {
 		if (request.isEmpty()) {
-			response.put("summary", bondForecastService.getSummary(null));
+			response.put("summary", bondForecastService.getSummary(null, false));
 			return "/WEB-INF/views/bond/forecast.jsp";
 		}
 		Bond bond = getBond(request);
@@ -77,7 +77,7 @@ public class BondForecastController extends AbstractForecastController {
 	private void loadBondResponce(Map<String, Object> response, Bond bond, List<ForecastItem> forecastItems,
 			boolean required) {
 		response.put("checked", required ? "checked" : "");
-		response.put("summary", bondForecastService.getSummary(bond));
+		response.put("summary", bondForecastService.getSummary(bond, required));
 		response.put("id", bond.getId());
 		response.put("price", bond.getPrice().doubleValue());
 		response.put("deposit", bond.getDeposit().doubleValue());

@@ -23,7 +23,7 @@ public class BondForecastServiceTest {
 	@Test
 	public void testGetForecastItems() {
 		Bond bond = new Bond(new Money(750000.00), new Money(100000.00), 12.00, 240);
-		List<ForecastItem> forecastItems = fs.getForecastItems(bond);
+		List<ForecastItem> forecastItems = fs.getForecastItems(bond, false);
 		assertListEquals(loadList(240), forecastItems);
 	}
 
@@ -197,7 +197,7 @@ public class BondForecastServiceTest {
 		int months = 12;
 		// when
 		Bond bond = new Bond(price, deposit, rate, months, null);
-		Map<String, Money> summary = fs.getSummary(bond);
+		Map<String, Money> summary = fs.getSummary(bond, false);
 		// then
 		Money totalDeposits = new Money(0.0);
 		Money totalWithdrawals = new Money(0.0);
@@ -216,7 +216,7 @@ public class BondForecastServiceTest {
 		int months = 240;
 		// when
 		Bond bond = new Bond(price, deposit, rate, months);
-		Map<String, Money> summary = fs.getSummary(bond);
+		Map<String, Money> summary = fs.getSummary(bond, false);
 		// then
 		Money totalDeposits = new Money(0.0);
 		Money totalWithdrawals = new Money(0.0);
@@ -236,7 +236,7 @@ public class BondForecastServiceTest {
 		// when
 		Bond bond = new Bond(price, deposit, rate, months, null);
 		bond.addEvent(new Event(Event.DEPOSIT, 10, new BigDecimal(100_000)));
-		Map<String, Money> summary = fs.getSummary(bond);
+		Map<String, Money> summary = fs.getSummary(bond, false);
 		// then
 		Money totalDeposits = new Money(100_000.0);
 		Money totalWithdrawals = new Money(0.0);
@@ -256,7 +256,7 @@ public class BondForecastServiceTest {
 		// when
 		Bond bond = new Bond(price, deposit, rate, months, null);
 		bond.addEvent(new Event(Event.WITHDRAW, 10, new BigDecimal(100_000)));
-		Map<String, Money> summary = fs.getSummary(bond);
+		Map<String, Money> summary = fs.getSummary(bond, false);
 		// then
 		Money totalDeposits = new Money(0.0);
 		Money totalWithdrawals = new Money(100_000.0);
@@ -282,7 +282,7 @@ public class BondForecastServiceTest {
 		bond.addEvent(new Event(Event.WITHDRAW, 43, new BigDecimal(50_000)));
 		bond.addEvent(new Event(Event.RATE_CHANGE, 54, new BigDecimal(9)));
 
-		Map<String, Money> summary = fs.getSummary(bond);
+		Map<String, Money> summary = fs.getSummary(bond, false);
 		// then
 		Money totalDeposits = new Money(105_000.0);
 		Money totalWithdrawals = new Money(150_000.0);
@@ -302,7 +302,7 @@ public class BondForecastServiceTest {
 		// when
 		Bond bond = new Bond(price, deposit, rate, months, null);
 		bond.addEvent(new Event(Event.RATE_CHANGE, 15, new BigDecimal(9)));
-		Map<String, Money> summary = fs.getSummary(bond);
+		Map<String, Money> summary = fs.getSummary(bond, false);
 		// then
 		Money totalDeposits = new Money(0.0);
 		Money totalWithdrawals = new Money(0.0);

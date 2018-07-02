@@ -1,4 +1,3 @@
-<%@ page import="psybergate.grad2018.javafnds.finance.bean.*, java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>

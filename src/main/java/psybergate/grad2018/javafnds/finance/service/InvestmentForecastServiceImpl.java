@@ -12,9 +12,9 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 
-import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
+import psybergate.grad2018.javafnds.finance.bean.FixedInvestmentForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
-import psybergate.grad2018.javafnds.finance.bean.MonthlyForecastItem;
+import psybergate.grad2018.javafnds.finance.bean.MonthlyInvestmentForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
@@ -87,7 +87,7 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 			totalDeposits = totalDeposits.add(forecastItem.getDeposit());
 			totalWithdrawals = totalWithdrawals.add(forecastItem.getWithdrawal());
 			if (investment.getType().equals(Investment.MONTHLY)) {
-				totalContribution = totalContribution.add(((MonthlyForecastItem) forecastItem).getMonthlyAmount());
+				totalContribution = totalContribution.add(((MonthlyInvestmentForecastItem) forecastItem).getMonthlyAmount());
 			}
 		}
 		if (!forecastItems.isEmpty()) {
@@ -104,7 +104,7 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		Double currentRate = investment.getRate();
 		Money fixedRepayment = investment.getAmount();
 		for (int month = 1; month <= investment.getMonths(); month++) {
-			ForecastItem item = new MonthlyForecastItem(currentAmount, currentRate, investment.getMonths(), month);
+			ForecastItem item = new MonthlyInvestmentForecastItem(currentAmount, currentRate, investment.getMonths(), month);
 			forecastItems.add(item);
 			item.setFixedRepayment(fixedRepayment);
 			for (Event event : investment.getEvents(month)) {
@@ -121,7 +121,7 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		Double currentRate = investment.getRate();
 		Money fixedRepayment = currentAmount;
 		for (int month = 1; month <= investment.getMonths(); month++) {
-			ForecastItem item = new FixedForecastItem(currentAmount, currentRate, investment.getMonths());
+			ForecastItem item = new FixedInvestmentForecastItem(currentAmount, currentRate, investment.getMonths());
 			forecastItems.add(item);
 			item.setFixedRepayment(fixedRepayment);
 			for (Event event : investment.getEvents(month)) {

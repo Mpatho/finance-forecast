@@ -17,9 +17,9 @@ import org.mockito.Mock;
 import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
+import psybergate.grad2018.javafnds.finance.bean.FixedInvestmentForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
-import psybergate.grad2018.javafnds.finance.bean.MonthlyForecastItem;
+import psybergate.grad2018.javafnds.finance.bean.MonthlyInvestmentForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
@@ -134,9 +134,9 @@ public class InvestmentForecastServiceTest {
 	private List<ForecastItem> getForecastItemsFixed() {
 
 		List<ForecastItem> list = new ArrayList<>();
-		ForecastItem fi1 = new FixedForecastItem(new Money(1_000_000.00), 8.00, 3);
-		ForecastItem fi2 = new FixedForecastItem(new Money(1_006_666.67), 8.00, 2);
-		ForecastItem fi3 = new FixedForecastItem(new Money(1_013_377.78), 8.00, 1);
+		ForecastItem fi1 = new FixedInvestmentForecastItem(new Money(1_000_000.00), 8.00, 3);
+		ForecastItem fi2 = new FixedInvestmentForecastItem(new Money(1_006_666.67), 8.00, 2);
+		ForecastItem fi3 = new FixedInvestmentForecastItem(new Money(1_013_377.78), 8.00, 1);
 
 		list.add(fi1);
 		list.add(fi2);
@@ -388,11 +388,11 @@ public class InvestmentForecastServiceTest {
 	private List<ForecastItem> getForecastItemsMonthly(int months) {
 
 		List<ForecastItem> list = new ArrayList<>();
-		MonthlyForecastItem fi1 = new MonthlyForecastItem(new Money(0.00), 22.4, months, 1);
+		MonthlyInvestmentForecastItem fi1 = new MonthlyInvestmentForecastItem(new Money(0.00), 22.4, months, 1);
 		fi1.setFixedRepayment(new Money(1_000.00));
-		ForecastItem fi2 = new MonthlyForecastItem(new Money(1_018.67), 22.4, months, 2);
+		ForecastItem fi2 = new MonthlyInvestmentForecastItem(new Money(1_018.67), 22.4, months, 2);
 		fi2.setFixedRepayment(new Money(1_000.00));
-		ForecastItem fi3 = new MonthlyForecastItem(new Money(2_056.35), 22.4, months, 3);
+		ForecastItem fi3 = new MonthlyInvestmentForecastItem(new Money(2_056.35), 22.4, months, 3);
 
 		list.add(fi1);
 		list.add(fi2);

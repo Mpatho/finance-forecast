@@ -1,11 +1,5 @@
 package psybergate.grad2018.javafnds.finance.service;
 
-import java.util.List;
-import java.util.Map;
-
-import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
-import psybergate.grad2018.javafnds.finance.entity.Money;
-
 public interface ForecastService<T> {
 
 	String END_BALANCE = "endBalance";
@@ -18,14 +12,10 @@ public interface ForecastService<T> {
 
 	String TOTAL_INTEREST = "totalInterest";
 
-	List<ForecastItem> getForecastItems(T entity);
-
 	boolean save(T entity);
 
 	boolean delete(T entity);
 
 	T getById(Long id);
-
-	Map<String, Money> getSummary(T entity);
 
 }

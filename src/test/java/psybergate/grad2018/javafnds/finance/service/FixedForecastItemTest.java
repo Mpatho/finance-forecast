@@ -6,14 +6,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import psybergate.grad2018.javafnds.finance.bean.FixedForecastItem;
+import psybergate.grad2018.javafnds.finance.bean.FixedInvestmentForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FixedForecastItemTest {
 
-	private ForecastItem ffi = new FixedForecastItem(new Money(0.0), 0.0, 1);
+	private ForecastItem ffi = new FixedInvestmentForecastItem(new Money(0.0), 0.0, 1);
 
 	@Test
 	public void testGetInterestCalculation() {

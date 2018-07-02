@@ -36,9 +36,9 @@
         <td class="text-right"><%=monthCount%></td>
         <td class="text-right"><%=forecastItem.getInitialAmount().stringValue()%></td>
         <%
-        	if (forecastItem instanceof MonthlyForecastItem) {
+        	if (forecastItem instanceof MonthlyInvestmentForecastItem) {
         %>
-        <td class="text-right"><%=((MonthlyForecastItem) forecastItem).getMonthlyAmount().stringValue()%>
+        <td class="text-right"><%=((MonthlyInvestmentForecastItem) forecastItem).getMonthlyAmount().stringValue()%>
         </td>
         <%
         	}
