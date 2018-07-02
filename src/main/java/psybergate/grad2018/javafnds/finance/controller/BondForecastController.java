@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Bond;
@@ -13,17 +14,21 @@ import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.service.BondForecastService;
 
 @ManagedBean("Bond")
-public class BondForecastController extends ForecastController {
+public class BondForecastController extends AbstractForecastController {
 
 	@EJB
 	private BondForecastService bondForecastService;
+	
+	@Inject
+	private ForecastsController forecasts;
 
-	public String forecastBond(Map<String, String[]> request, Map<String, Object> response) {
+	@Override
+	public String forecast(Map<String, String[]> request, Map<String, Object> response) {
 		if (request.isEmpty()) {
 			response.put("summary", bondForecastService.getSummary(null));
 			return "/WEB-INF/views/bond/forecast.jsp";
 		}
-		Bond bond = getBondById(request);
+		Bond bond = getBond(request);
 		updateBond(bond, request);
 		boolean required = request.get("include_cash_required") != null;
 		List<ForecastItem> forecastItems = bondForecastService.getForecastItems(bond, required);
@@ -31,18 +36,20 @@ public class BondForecastController extends ForecastController {
 		return "/WEB-INF/views/bond/forecast.jsp";
 	}
 
+	@Override
 	public String save(Map<String, String[]> request, Map<String, Object> response) {
-		Bond bond = getBondById(request);
+		Bond bond = getBond(request);
 		bond.setName(request.get("name")[0]);
 		updateBond(bond, request);
 		bondForecastService.save(bond);
-		return viewForecasts(request, response);
+		return forecasts.viewForecasts(request, response);
 	}
 
+	@Override
 	public String delete(Map<String, String[]> request, Map<String, Object> response) {
-		Bond bond = getBondById(request);
+		Bond bond = getBond(request);
 		bondForecastService.delete(bond);
-		return viewForecasts(request, response);
+		return forecasts.viewForecasts(request, response);
 	}
 
 	private void updateBond(Bond bond, Map<String, String[]> request) {
@@ -59,7 +66,7 @@ public class BondForecastController extends ForecastController {
 		getEvents(request, bond);
 	}
 
-	private Bond getBondById(Map<String, String[]> request) {
+	private Bond getBond(Map<String, String[]> request) {
 		if (request.get("id") != null && request.get("id")[0].trim().length() != 0) {
 			Long id = Long.valueOf(request.get("id")[0]);
 			return bondForecastService.getById(id);

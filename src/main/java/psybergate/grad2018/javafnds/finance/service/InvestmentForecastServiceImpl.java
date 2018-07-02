@@ -2,7 +2,6 @@ package psybergate.grad2018.javafnds.finance.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,7 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 	private Resource<Investment> investmentResource;
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NEVER)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Collection<Investment> getInvestments() {
 		return investmentResource.getAll();
 	}
@@ -45,55 +44,6 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		return true;
 	}
 
-	public List<ForecastItem> getMonthlyForecastItems(Investment investment) {
-		if (investment == null) return null;
-		List<ForecastItem> forecastItems = new ArrayList<>();
-		if (validate(investment)) {
-			Money currentAmount = new Money(0.0);
-			Double currentRate = investment.getRate();
-			Money fixedRepayment = investment.getAmount();
-			for (int month = 1; month <= investment.getMonths(); month++) {
-				ForecastItem item = new MonthlyForecastItem(currentAmount, currentRate, investment.getMonths(), month);
-				forecastItems.add(item);
-				item.setFixedRepayment(fixedRepayment);
-				for (Event event : investment.getEvents(month)) {
-					item.addEvent(event);
-				}
-				currentRate = item.getRate();
-				currentAmount = item.getEndAmount();
-				fixedRepayment = item.getFixedRepayment();
-			}
-		}
-		else {
-			throw new RuntimeException("Invalid investment");
-		}
-		return forecastItems;
-	}
-
-	public List<ForecastItem> getFixedForecastItems(Investment investment) {
-		List<ForecastItem> forecastItems = new ArrayList<>();
-		if (validate(investment)) {
-			Money currentAmount = investment.getAmount();
-			Double currentRate = investment.getRate();
-			Money fixedRepayment = currentAmount;
-			for (int month = 1; month <= investment.getMonths(); month++) {
-				ForecastItem item = new FixedForecastItem(currentAmount, currentRate, investment.getMonths());
-				forecastItems.add(item);
-				item.setFixedRepayment(fixedRepayment);
-				for (Event event : investment.getEvents(month)) {
-					item.addEvent(event);
-				}
-				currentRate = item.getRate();
-				currentAmount = item.getEndAmount();
-				fixedRepayment = item.getFixedRepayment();
-			}
-		}
-		else {
-			throw new RuntimeException("Invalid investment");
-		}
-		return forecastItems;
-	}
-
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean delete(Investment investment) {
@@ -103,11 +53,18 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<ForecastItem> getForecastItems(Investment investment) {
-		if (investment == null) return new LinkedList<>();
-		if (investment.getType().equals(Investment.FIXED)) { return getFixedForecastItems(investment); }
-		if (investment.getType().equals(Investment.MONTHLY)) { return getMonthlyForecastItems(investment); }
-		return new LinkedList<>();
+		List<ForecastItem> forecastItems = new ArrayList<>();
+		if (investment == null) return forecastItems;
+		if (!validate(investment)) throw new RuntimeException("Invalid investment");
+		if (investment.getType().equals(Investment.FIXED)) {
+			loadFixedForecastItems(investment, forecastItems);
+		}
+		else if (investment.getType().equals(Investment.MONTHLY)) {
+			loadMonthlyForecastItems(investment, forecastItems);
+		}
+		return forecastItems;
 	}
 
 	@Override
@@ -116,17 +73,8 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		return investmentResource.getById(id);
 	}
 
-	private boolean validate(Investment investment) {
-		Money initialAmount = investment.getAmount();
-		Integer months = investment.getMonths();
-		Double rate = investment.getRate();
-		if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
-		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0) return false;
-		if (months == null || months <= 0) return false;
-		return true;
-	}
-
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Map<String, Money> getSummary(Investment investment) {
 		List<ForecastItem> forecastItems = getForecastItems(investment);
 		Money totalInterest = new Money(0.0);
@@ -150,4 +98,49 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		}
 		return getSummary(totalInterest, totalDeposits, totalWithdrawals, totalContribution, endBalance);
 	}
+
+	private void loadMonthlyForecastItems(Investment investment, List<ForecastItem> forecastItems) {
+		Money currentAmount = new Money(0.0);
+		Double currentRate = investment.getRate();
+		Money fixedRepayment = investment.getAmount();
+		for (int month = 1; month <= investment.getMonths(); month++) {
+			ForecastItem item = new MonthlyForecastItem(currentAmount, currentRate, investment.getMonths(), month);
+			forecastItems.add(item);
+			item.setFixedRepayment(fixedRepayment);
+			for (Event event : investment.getEvents(month)) {
+				item.addEvent(event);
+			}
+			currentRate = item.getRate();
+			currentAmount = item.getEndAmount();
+			fixedRepayment = item.getFixedRepayment();
+		}
+	}
+
+	private void loadFixedForecastItems(Investment investment, List<ForecastItem> forecastItems) {
+		Money currentAmount = investment.getAmount();
+		Double currentRate = investment.getRate();
+		Money fixedRepayment = currentAmount;
+		for (int month = 1; month <= investment.getMonths(); month++) {
+			ForecastItem item = new FixedForecastItem(currentAmount, currentRate, investment.getMonths());
+			forecastItems.add(item);
+			item.setFixedRepayment(fixedRepayment);
+			for (Event event : investment.getEvents(month)) {
+				item.addEvent(event);
+			}
+			currentRate = item.getRate();
+			currentAmount = item.getEndAmount();
+			fixedRepayment = item.getFixedRepayment();
+		}
+	}
+
+	private boolean validate(Investment investment) {
+		Money initialAmount = investment.getAmount();
+		Integer months = investment.getMonths();
+		Double rate = investment.getRate();
+		if (rate == null || rate.doubleValue() <= 0 || rate.doubleValue() > 100) return false;
+		if (initialAmount == null || initialAmount.compareTo(new Money(0.0)) <= 0) return false;
+		if (months == null || months <= 0) return false;
+		return true;
+	}
+
 }

@@ -4,13 +4,13 @@
 		JNDIName="java:module/Investment">
 		<method name="save" invoke="save" />
 		<method name="delete" invoke="delete" />
-		<method name="forecast" invoke="forecastInvestment" />
+		<method name="forecast" invoke="forecast" />
 	</controller>
 	<controller name="bond"
 		JNDIName="java:module/Bond">
 		<method name="save" invoke="save" />
 		<method name="delete" invoke="delete" />
-		<method name="forecast" invoke="forecastBond" />
+		<method name="forecast" invoke="forecast" />
 	</controller>
 	<controller name="forecast"
 		JNDIName="java:module/Forecast">

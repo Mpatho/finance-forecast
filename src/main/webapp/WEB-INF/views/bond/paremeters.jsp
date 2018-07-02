@@ -24,7 +24,7 @@
         <span class="input-group-text" id="basic-addon2">%</span>
       </div>
     </div>
-    <label>Investment Term</label>
+    <label>Bond Term</label>
     <div class="input-group">
       <input type="number" min="1" form="form" class="form-control" id="months" name="months"
         value='${months}' placeholder="0"

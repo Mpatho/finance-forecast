@@ -47,35 +47,18 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	private Resource<Bond> bondResource;
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NEVER)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<ForecastItem> getForecastItems(Bond bond, boolean includeCashRequired) {
-		List<ForecastItem> forecastItems = new LinkedList<>();
-		if (bond == null) return forecastItems;
-		Money currentMoney = bond.getPrice().subtract(bond.getDeposit());
-		Double currentRate = bond.getRate();
-		Money fixedRepayment = null;
-		int months = bond.getMonths();
-		int month = 1;
+		if (bond == null) return new LinkedList<>();
+		Money balance = bond.getPrice().subtract(bond.getDeposit());
 		if (includeCashRequired) {
-			currentMoney = currentMoney.add(getCashRequired(bond));
+			balance = balance.add(getCashRequired(bond));
 		}
-		while (months > 0) {
-			BondForecastItem item = new BondForecastItem(currentMoney, currentRate, months);
-			item.setFixedRepayment(fixedRepayment);
-			forecastItems.add(item);
-			for (Event event : bond.getEvents(month)) {
-				item.addEvent(event);
-			}
-			currentMoney = item.getEndAmount();
-			currentRate = item.getRate();
-			fixedRepayment = item.getFixedRepayment();
-			months = item.getRemainingMonths() - 1;
-			month++;
-		}
-		return forecastItems;
+		return getBondForecastItems(bond, balance);
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<ForecastItem> getForecastItems(Bond bond) {
 		return getForecastItems(bond, false);
 	}
@@ -93,30 +76,27 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean delete(Bond bond) {
-		bondResource.remove(bond);
-		return true;
-	}
-
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NEVER)
-	public Collection<Bond> getBonds() {
-		return bondResource.getAll();
-	}
-
-	private boolean validate(Bond bond) {
-		if (bond.getMonths() == null || bond.getPrice() == null || bond.getRate() == null) return false;
-		if (bond.getMonths() > 0 && bond.getPrice().compareTo(new Money(0.0)) != 0 && bond.getRate() > 0) return true;
+		if (bondResource.contains(bond)) {
+			bondResource.remove(bond);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NEVER)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public Collection<Bond> getBonds() {
+		return bondResource.getAll();
+	}
+
+	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Money getBondCost(Bond bond) {
 		return bond.getPrice().percentOf(BOND_COST_PERCENT);
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NEVER)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Money getTransferCost(Bond bond) {
 		Money price = bond.getPrice();
 		Money transerCost = new Money(0.0);
@@ -132,26 +112,25 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 				transerCost = transerCost.add(cost);
 			}
 		}
-
 		int last = TRANSFER_DUTY_PRICES.length - 1;
 		Money cost = price.subtract(TRANSFER_DUTY_PRICES[last]).percentOf(TRANSFER_DUTY_RATES[last]);
 		return transerCost.add(cost);
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NEVER)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Money getLegalCost(Bond bond) {
 		return bond.getPrice().percentOf(LEGAL_COST_PERCENT);
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NEVER)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Money getCashRequired(Bond bond) {
 		return getBondCost(bond).add(getLegalCost(bond)).add(getTransferCost(bond));
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NEVER)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Map<String, Money> getSummary(Bond bond) {
 		List<ForecastItem> forecastItems = getForecastItems(bond);
 		Money totalInterest = new Money(0.0);
@@ -172,9 +151,37 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.NEVER)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Bond getById(Long id) {
 		return bondResource.getById(id);
+	}
+
+	private boolean validate(Bond bond) {
+		if (bond.getMonths() == null || bond.getPrice() == null || bond.getRate() == null) return false;
+		if (bond.getMonths() > 0 && bond.getPrice().compareTo(new Money(0.0)) != 0 && bond.getRate() > 0) return true;
+		return false;
+	}
+
+	private List<ForecastItem> getBondForecastItems(Bond bond, Money currentBalance) {
+		List<ForecastItem> forecastItems = new LinkedList<>();
+		Money fixedRepayment = null;
+		Double currentRate = bond.getRate();
+		int months = bond.getMonths();
+		int month = 1;
+		while (months > 0) {
+			BondForecastItem item = new BondForecastItem(currentBalance, currentRate, months);
+			item.setFixedRepayment(fixedRepayment);
+			forecastItems.add(item);
+			for (Event event : bond.getEvents(month)) {
+				item.addEvent(event);
+			}
+			currentBalance = item.getEndAmount();
+			currentRate = item.getRate();
+			fixedRepayment = item.getFixedRepayment();
+			months = item.getRemainingMonths() - 1;
+			month++;
+		}
+		return forecastItems;
 	}
 
 }

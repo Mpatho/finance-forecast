@@ -8,12 +8,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
-public abstract class AbstractResource<T> implements Resource<T> {
+import psybergate.grad2018.javafnds.finance.entity.ForecastEntity;
+
+public abstract class AbstractResource<T extends ForecastEntity> implements Resource<T> {
 
 	@PersistenceContext(unitName = "financeDB")
 	protected EntityManager em;
 
-	public AbstractResource() {}
+	protected AbstractResource() {}
 
 	@Override
 	public void removeById(Long id) {
@@ -31,13 +33,16 @@ public abstract class AbstractResource<T> implements Resource<T> {
 
 	@Override
 	public void remove(T entity) {
-		if (!contains(entity)) {
+		if (!em.contains(entity)) {
 			entity = em.merge(entity);
 		}
 		em.remove(entity);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({
+			"unchecked",
+			"rawtypes"
+	})
 	protected Collection<T> getAll(Class<T> clazz) {
 		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
 		cq.select(cq.from(clazz));
@@ -52,6 +57,10 @@ public abstract class AbstractResource<T> implements Resource<T> {
 
 	@Override
 	public boolean contains(T entity) {
-		return em.contains(entity);
+		if (entity.getId() == null) return false;
+		for (T t : this) {
+			if (entity.getId().equals(t.getId())) return true;
+		}
+		return false;
 	}
 }

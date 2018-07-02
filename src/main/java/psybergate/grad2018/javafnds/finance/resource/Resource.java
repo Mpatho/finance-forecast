@@ -2,7 +2,9 @@ package psybergate.grad2018.javafnds.finance.resource;
 
 import java.util.Collection;
 
-public interface Resource<T> extends Iterable<T> {
+import psybergate.grad2018.javafnds.finance.entity.ForecastEntity;
+
+public interface Resource<T extends ForecastEntity> extends Iterable<T> {
 
 	Collection<T> getAll();
 
