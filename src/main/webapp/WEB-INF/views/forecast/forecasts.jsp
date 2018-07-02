@@ -45,7 +45,7 @@
             </li>
           </ul>
           <div class="card-footer">
-            <a href="/finance-1.0/investment/delete?name=<%=investment.getName()%>"
+            <a href="/finance-1.0/investment/delete?id=<%=investment.getId()%>"
               class="card-link btn btn-warning fa fa-trash"
             ></a> <a href="/finance-1.0/investment/forecast?id=<%=investment.getId()%>"
               class="card-link btn btn-primary fa fa-eye"
@@ -93,7 +93,7 @@
             </li>
           </ul>
           <div class="card-footer">
-            <a href="/finance-1.0/bond/delete?name=<%=bond.getName()%>"
+            <a href="/finance-1.0/bond/delete?id=<%=bond.getId()%>&include_cash_required=checked"
               class="card-link btn btn-warning fa fa-trash"
             ></a> <a
               href="/finance-1.0/bond/forecast?id=<%=bond.getId()%>&include_cash_required=checked"

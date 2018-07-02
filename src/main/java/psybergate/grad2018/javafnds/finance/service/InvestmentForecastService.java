@@ -12,10 +12,6 @@ public interface InvestmentForecastService extends ForecastService<Investment> {
 
 	Collection<Investment> getInvestments();
 
-	Investment getByName(String name);
-
 	Investment getById(Long id);
 
-	boolean deleteInvestmentByName(String name);
-	
 }

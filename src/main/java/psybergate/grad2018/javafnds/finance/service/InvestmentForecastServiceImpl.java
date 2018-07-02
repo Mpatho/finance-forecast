@@ -19,7 +19,6 @@ import psybergate.grad2018.javafnds.finance.bean.MonthlyForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
-import psybergate.grad2018.javafnds.finance.resource.ForecastResource;
 import psybergate.grad2018.javafnds.finance.resource.Resource;
 
 @Stateless
@@ -28,10 +27,7 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		InvestmentForecastService {
 
 	@Inject
-	private ForecastResource<Investment> investmentResource;
-
-	@Inject
-	private Resource<Money> moneyResource;
+	private Resource<Investment> investmentResource;
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.NEVER)
@@ -45,7 +41,6 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		String name = investment.getName();
 		if (name == null || name.isEmpty()) return false;
 		if (!validate(investment)) return false;
-		moneyResource.save(investment.getAmount());
 		investmentResource.save(investment);
 		return true;
 	}
@@ -73,11 +68,6 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 			throw new RuntimeException("Invalid investment");
 		}
 		return forecastItems;
-	}
-
-	public List<ForecastItem> getForecastItemsByName(String name) {
-		Investment investment = investmentResource.getByName(name);
-		return getForecastItems(investment);
 	}
 
 	public List<ForecastItem> getFixedForecastItems(Investment investment) {
@@ -110,22 +100,6 @@ public class InvestmentForecastServiceImpl extends AbstractForecastService<Inves
 		if (!investmentResource.contains(investment)) return false;
 		investmentResource.remove(investment);
 		return true;
-	}
-
-	@Override
-	public Investment getByName(String name) {
-		return investmentResource.getByName(name);
-	}
-
-	@Override
-	public boolean deleteInvestmentByName(String name) {
-		for (Investment investment : investmentResource) {
-			if (investment.getName().equals(name)) {
-				investmentResource.remove(investment);
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@Override

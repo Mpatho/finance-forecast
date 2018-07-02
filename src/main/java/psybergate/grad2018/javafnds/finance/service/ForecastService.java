@@ -20,13 +20,9 @@ public interface ForecastService<T> {
 
 	List<ForecastItem> getForecastItems(T entity);
 
-	List<ForecastItem> getForecastItemsByName(String name);
-
 	boolean save(T entity);
 
 	boolean delete(T entity);
-
-	T getByName(String name);
 
 	T getById(Long id);
 

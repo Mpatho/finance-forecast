@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
@@ -15,7 +17,7 @@ import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Bond;
 import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Money;
-import psybergate.grad2018.javafnds.finance.resource.ForecastResource;
+import psybergate.grad2018.javafnds.finance.resource.Resource;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -25,15 +27,27 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 
 	private static final double LEGAL_COST_PERCENT = 1.2;
 
-	private static final Money[] TRANSFER_DUTY_PRICES = { new Money(900_000.00), new Money(1_250_000.00), new Money(
-			1_750_000.00), new Money(2_250_000.00), new Money(10_000_000.00), };
+	private static final Money[] TRANSFER_DUTY_PRICES = {
+			new Money(900_000.00),
+			new Money(1_250_000.00),
+			new Money(1_750_000.00),
+			new Money(2_250_000.00),
+			new Money(10_000_000.00),
+	};
 
-	private static final Double[] TRANSFER_DUTY_RATES = { 3.0, 6.0, 8.0, 11.0, 13.0, };
+	private static final Double[] TRANSFER_DUTY_RATES = {
+			3.0,
+			6.0,
+			8.0,
+			11.0,
+			13.0,
+	};
 
 	@Inject
-	private ForecastResource<Bond> bondResource;
+	private Resource<Bond> bondResource;
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NEVER)
 	public List<ForecastItem> getForecastItems(Bond bond, boolean includeCashRequired) {
 		List<ForecastItem> forecastItems = new LinkedList<>();
 		if (bond == null) return forecastItems;
@@ -67,12 +81,7 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	}
 
 	@Override
-	public List<ForecastItem> getForecastItemsByName(String name) {
-		Bond bond = bondResource.getByName(name);
-		return getForecastItems(bond);
-	}
-
-	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean save(Bond bond) {
 		if (validate(bond)) {
 			bondResource.save(bond);
@@ -82,29 +91,16 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean delete(Bond bond) {
 		bondResource.remove(bond);
 		return true;
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NEVER)
 	public Collection<Bond> getBonds() {
 		return bondResource.getAll();
-	}
-
-	@Override
-	public Bond getByName(String name) {
-		return bondResource.getByName(name);
-	}
-
-	@Override
-	public boolean deleteBondByName(String name) {
-		Bond bond = getByName(name);
-		if (bond != null) {
-			bondResource.remove(bond);
-			return true;
-		}
-		return false;
 	}
 
 	private boolean validate(Bond bond) {
@@ -114,11 +110,13 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NEVER)
 	public Money getBondCost(Bond bond) {
 		return bond.getPrice().percentOf(BOND_COST_PERCENT);
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NEVER)
 	public Money getTransferCost(Bond bond) {
 		Money price = bond.getPrice();
 		Money transerCost = new Money(0.0);
@@ -141,16 +139,19 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NEVER)
 	public Money getLegalCost(Bond bond) {
 		return bond.getPrice().percentOf(LEGAL_COST_PERCENT);
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NEVER)
 	public Money getCashRequired(Bond bond) {
 		return getBondCost(bond).add(getLegalCost(bond)).add(getTransferCost(bond));
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NEVER)
 	public Map<String, Money> getSummary(Bond bond) {
 		List<ForecastItem> forecastItems = getForecastItems(bond);
 		Money totalInterest = new Money(0.0);
@@ -171,6 +172,7 @@ public class BondForecastServiceImpl extends AbstractForecastService<Bond> imple
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NEVER)
 	public Bond getById(Long id) {
 		return bondResource.getById(id);
 	}

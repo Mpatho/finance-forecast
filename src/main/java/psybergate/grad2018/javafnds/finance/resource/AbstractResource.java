@@ -23,11 +23,17 @@ public abstract class AbstractResource<T> implements Resource<T> {
 
 	@Override
 	public void save(T entity) {
+		if (!contains(entity)) {
+			entity = em.merge(entity);
+		}
 		em.persist(entity);
 	}
 
 	@Override
 	public void remove(T entity) {
+		if (!contains(entity)) {
+			entity = em.merge(entity);
+		}
 		em.remove(entity);
 	}
 

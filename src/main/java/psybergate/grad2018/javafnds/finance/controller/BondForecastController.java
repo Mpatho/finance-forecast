@@ -40,8 +40,8 @@ public class BondForecastController extends ForecastController {
 	}
 
 	public String delete(Map<String, String[]> request, Map<String, Object> response) {
-		String name = request.get("name")[0];
-		bondForecastService.deleteBondByName(name);
+		Bond bond = getBondById(request);
+		bondForecastService.delete(bond);
 		return viewForecasts(request, response);
 	}
 

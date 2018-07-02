@@ -26,8 +26,8 @@ public class InvestmentForecastController extends ForecastController {
 	}
 
 	public String delete(Map<String, String[]> request, Map<String, Object> response) {
-		String name = request.get("name")[0];
-		investmentForecastService.deleteInvestmentByName(name);
+		Investment investment = getInvestmentById(request);
+		investmentForecastService.delete(investment);
 		return viewForecasts(request, response);
 	}
 
