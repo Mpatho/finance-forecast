@@ -20,7 +20,7 @@ public class BondForecastController extends AbstractForecastController {
 	private BondForecastService bondForecastService;
 
 	@Inject
-	private ForecastsController forecasts;
+	private ForecastsController forecastsController;
 
 	@Override
 	public String forecast(Map<String, String[]> request, Map<String, Object> response) {
@@ -30,9 +30,9 @@ public class BondForecastController extends AbstractForecastController {
 		}
 		Bond bond = getBond(request);
 		updateBond(bond, request);
-		boolean required = request.get("include_cash_required") != null;
-		List<ForecastItem> forecastItems = bondForecastService.getForecastItems(bond, required);
-		loadBondResponce(response, bond, forecastItems, required);
+		boolean includeCashRequired = request.get("include_cash_required") != null;
+		List<ForecastItem> forecastItems = bondForecastService.getForecastItems(bond, includeCashRequired);
+		loadBondResponce(response, bond, forecastItems, includeCashRequired);
 		return "/WEB-INF/views/bond/forecast.jsp";
 	}
 
@@ -42,14 +42,14 @@ public class BondForecastController extends AbstractForecastController {
 		bond.setName(request.get("name")[0]);
 		updateBond(bond, request);
 		bondForecastService.save(bond);
-		return forecasts.viewForecasts(request, response);
+		return forecastsController.viewForecasts(request, response);
 	}
 
 	@Override
 	public String delete(Map<String, String[]> request, Map<String, Object> response) {
 		Bond bond = getBond(request);
 		bondForecastService.delete(bond);
-		return forecasts.viewForecasts(request, response);
+		return forecastsController.viewForecasts(request, response);
 	}
 
 	private void updateBond(Bond bond, Map<String, String[]> request) {
@@ -75,9 +75,9 @@ public class BondForecastController extends AbstractForecastController {
 	}
 
 	private void loadBondResponce(Map<String, Object> response, Bond bond, List<ForecastItem> forecastItems,
-			boolean required) {
-		response.put("checked", required ? "checked" : "");
-		response.put("summary", bondForecastService.getSummary(bond, required));
+			boolean includeCashRequired) {
+		response.put("checked", includeCashRequired ? "checked" : "");
+		response.put("summary", bondForecastService.getSummary(bond, includeCashRequired));
 		response.put("id", bond.getId());
 		response.put("price", bond.getPrice().doubleValue());
 		response.put("deposit", bond.getDeposit().doubleValue());
