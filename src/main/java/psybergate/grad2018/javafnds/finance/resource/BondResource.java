@@ -16,7 +16,7 @@ public class BondResource extends AbstractResource<Bond> implements Resource<Bon
 
 	@Override
 	public Bond getById(Long id) {
-		return em.find(Bond.class, id);
+		return getEntityManager().find(Bond.class, id);
 	}
 
 }

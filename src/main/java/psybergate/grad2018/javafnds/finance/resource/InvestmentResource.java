@@ -11,7 +11,7 @@ public class InvestmentResource extends AbstractResource<Investment> implements 
 
 	@Override
 	public Investment getById(Long id) {
-		return em.find(Investment.class, id);
+		return getEntityManager().find(Investment.class, id);
 	}
 
 	@Override
