@@ -1,8 +1,10 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,7 +38,7 @@ public class Bond implements ForecastEntity {
 
 	@JoinColumn(name = "bond_id")
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<Event> events = new LinkedList<>();
+	private Set<Event> events = new HashSet<>();
 
 	public Bond() {}
 
@@ -96,11 +98,11 @@ public class Bond implements ForecastEntity {
 		return id;
 	}
 
-	public List<Event> getEvents() {
+	public Set<Event> getEvents() {
 		return events;
 	}
 
-	public void setEvents(List<Event> events) {
+	public void setEvents(Set<Event> events) {
 		this.events = events;
 	}
 

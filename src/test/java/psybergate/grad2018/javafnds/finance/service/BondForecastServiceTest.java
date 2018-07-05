@@ -15,6 +15,7 @@ import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Bond;
 import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Money;
+import psybergate.grad2018.javafnds.finance.service.internal.BondForecastServiceImpl;
 
 public class BondForecastServiceTest {
 

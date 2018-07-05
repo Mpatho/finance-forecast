@@ -24,6 +24,7 @@ import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.resource.InvestmentResource;
+import psybergate.grad2018.javafnds.finance.service.internal.InvestmentForecastServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InvestmentForecastServiceTest {

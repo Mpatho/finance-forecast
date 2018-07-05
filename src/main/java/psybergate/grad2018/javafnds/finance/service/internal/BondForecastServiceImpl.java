@@ -1,4 +1,4 @@
-package psybergate.grad2018.javafnds.finance.service;
+package psybergate.grad2018.javafnds.finance.service.internal;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -10,17 +10,24 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.transaction.Transactional;
 
 import psybergate.grad2018.javafnds.finance.bean.BondForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Bond;
 import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Money;
+import psybergate.grad2018.javafnds.finance.interceptor.LoggerInterceptor;
 import psybergate.grad2018.javafnds.finance.resource.Resource;
+import psybergate.grad2018.javafnds.finance.service.AbstractForecastService;
+import psybergate.grad2018.javafnds.finance.service.BondForecastService;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
+@Interceptors({LoggerInterceptor.class})
 public class BondForecastServiceImpl extends AbstractForecastService<Bond> implements BondForecastService {
 
 	private static final double BOND_COST_PERCENT = 1.0;

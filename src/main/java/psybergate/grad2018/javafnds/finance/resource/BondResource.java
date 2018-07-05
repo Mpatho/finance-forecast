@@ -2,11 +2,13 @@ package psybergate.grad2018.javafnds.finance.resource;
 
 import java.util.Collection;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 import psybergate.grad2018.javafnds.finance.entity.Bond;
 
-@RequestScoped
+@Dependent
 public class BondResource extends AbstractResource<Bond> implements Resource<Bond> {
 
 	@Override

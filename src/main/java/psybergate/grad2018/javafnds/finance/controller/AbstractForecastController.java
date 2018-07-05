@@ -1,7 +1,7 @@
 package psybergate.grad2018.javafnds.finance.controller;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 import psybergate.grad2018.javafnds.finance.entity.Event;
@@ -22,7 +22,7 @@ public abstract class AbstractForecastController implements ForecastController {
 
 	protected void getEvents(Map<String, String[]> request, ForecastEntity entity) {
 		if (request.get("eventType") != null) {
-			entity.setEvents(new ArrayList<>());
+			entity.setEvents(new HashSet<>());
 			for (int i = 0; i < request.get("eventType").length; i++) {
 				addEvent(request, entity, i);
 			}
@@ -38,6 +38,4 @@ public abstract class AbstractForecastController implements ForecastController {
 		if (eventType.equals(Event.RATE_CHANGE) && doubleEventValue > 100) return false;
 		return true;
 	}
-
-
 }

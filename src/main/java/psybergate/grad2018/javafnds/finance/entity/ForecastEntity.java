@@ -1,6 +1,7 @@
 package psybergate.grad2018.javafnds.finance.entity;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ForecastEntity {
 
@@ -12,10 +13,10 @@ public interface ForecastEntity {
 
 	boolean addEvent(Event event);
 
-	List<Event> getEvents();
+	Set<Event> getEvents();
 
 	List<Event> getEvents(Integer months);
 
-	void setEvents(List<Event> arrayList);
+	void setEvents(Set<Event> arrayList);
 
 }

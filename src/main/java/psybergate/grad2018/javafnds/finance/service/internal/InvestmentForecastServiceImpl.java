@@ -1,4 +1,4 @@
-package psybergate.grad2018.javafnds.finance.service;
+package psybergate.grad2018.javafnds.finance.service.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +10,10 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.transaction.Transactional;
 
 import psybergate.grad2018.javafnds.finance.bean.FixedInvestmentForecastItem;
 import psybergate.grad2018.javafnds.finance.bean.ForecastItem;
@@ -18,10 +21,14 @@ import psybergate.grad2018.javafnds.finance.bean.MonthlyInvestmentForecastItem;
 import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.Investment;
 import psybergate.grad2018.javafnds.finance.entity.Money;
+import psybergate.grad2018.javafnds.finance.interceptor.LoggerInterceptor;
 import psybergate.grad2018.javafnds.finance.resource.Resource;
+import psybergate.grad2018.javafnds.finance.service.AbstractForecastService;
+import psybergate.grad2018.javafnds.finance.service.InvestmentForecastService;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
+@Interceptors({LoggerInterceptor.class})
 public class InvestmentForecastServiceImpl extends AbstractForecastService<Investment> implements
 		InvestmentForecastService {
 

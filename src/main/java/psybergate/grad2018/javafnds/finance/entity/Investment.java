@@ -3,8 +3,10 @@ package psybergate.grad2018.javafnds.finance.entity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -44,7 +46,7 @@ public class Investment implements ForecastEntity {
 	@OrderBy("month")
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "investment_id")
-	private List<Event> events = new ArrayList<>();
+	private Set<Event> events = new HashSet<>();
 
 	public Investment() {}
 
@@ -112,7 +114,7 @@ public class Investment implements ForecastEntity {
 	}
 
 	@Override
-	public List<Event> getEvents() {
+	public Set<Event> getEvents() {
 		return events;
 	}
 
@@ -127,7 +129,7 @@ public class Investment implements ForecastEntity {
 		return events;
 	}
 
-	public void setEvents(List<Event> events) {
+	public void setEvents(Set<Event> events) {
 		this.events = events;
 	}
 
