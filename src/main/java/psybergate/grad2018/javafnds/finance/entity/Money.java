@@ -41,8 +41,6 @@ public final class Money implements Comparable<Money> {
 	public Money add(Money money) {
 		Long cents = this.cents + money.cents;
 		return new Money(cents);
-//		BigDecimal moneyValue = money.rands.add(this.rands);
-//		return new Money(moneyValue);
 	}
 
 	public Money subtract(Money money) {
