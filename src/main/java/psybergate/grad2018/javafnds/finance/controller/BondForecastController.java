@@ -14,8 +14,9 @@ import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.service.BondForecastService;
 
 @ManagedBean("Bond")
-public class BondForecastController extends AbstractForecastController {
+public class BondForecastController extends BaseForecastController {
 
+	public static final String WEB_INF_VIEWS_BOND_FORECAST_JSP = "/WEB-INF/views/bond/forecast.jsp";
 	@EJB
 	private BondForecastService bondForecastService;
 
@@ -26,14 +27,14 @@ public class BondForecastController extends AbstractForecastController {
 	public String forecast(Map<String, String[]> request, Map<String, Object> response) {
 		if (request.isEmpty()) {
 			response.put("summary", bondForecastService.getSummary(null, false));
-			return "/WEB-INF/views/bond/forecast.jsp";
+			return WEB_INF_VIEWS_BOND_FORECAST_JSP;
 		}
 		Bond bond = getBond(request);
 		updateBond(bond, request);
 		boolean includeCashRequired = request.get("include_cash_required") != null;
 		List<ForecastItem> forecastItems = bondForecastService.getForecastItems(bond, includeCashRequired);
 		loadBondResponce(response, bond, forecastItems, includeCashRequired);
-		return "/WEB-INF/views/bond/forecast.jsp";
+		return WEB_INF_VIEWS_BOND_FORECAST_JSP;
 	}
 
 	@Override

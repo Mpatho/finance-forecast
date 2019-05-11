@@ -11,7 +11,7 @@ import psybergate.grad2018.javafnds.finance.entity.Money;
 import psybergate.grad2018.javafnds.finance.service.InvestmentForecastService;
 
 @ManagedBean("Investment")
-public class InvestmentForecastController extends AbstractForecastController {
+public class InvestmentForecastController extends BaseForecastController {
 
 	@EJB
 	private InvestmentForecastService investmentForecastService;

@@ -7,23 +7,27 @@ import java.util.Map;
 import psybergate.grad2018.javafnds.finance.entity.Event;
 import psybergate.grad2018.javafnds.finance.entity.ForecastEntity;
 
-public abstract class AbstractForecastController implements ForecastController {
+public abstract class BaseForecastController implements ForecastController {
 
-	protected void addEvent(Map<String, String[]> request, ForecastEntity entity, int i) {
-		if (validateEvent(entity.getMonths(), request.get("eventType")[i], request.get("eventValue")[i], request.get(
-				"eventMonth")[i])) {
-			String eventType = request.get("eventType")[i];
-			BigDecimal eventValue = new BigDecimal(request.get("eventValue")[i]);
-			int month = Integer.parseInt(request.get("eventMonth")[i]);
+    private static final String EVENT_TYPE = "eventType";
+	private static final String EVENT_VALUE = "eventValue";
+	private static final String EVENT_MONTH = "eventMonth";
+
+    protected void addEvent(Map<String, String[]> request, ForecastEntity entity, int i) {
+		if (validateEvent(entity.getMonths(), request.get(EVENT_TYPE)[i], request.get(EVENT_VALUE)[i], request.get(
+                EVENT_MONTH)[i])) {
+			String eventType = request.get(EVENT_TYPE)[i];
+			BigDecimal eventValue = new BigDecimal(request.get(EVENT_VALUE)[i]);
+			int month = Integer.parseInt(request.get(EVENT_MONTH)[i]);
 			Event event = new Event(eventType, month, eventValue);
 			entity.addEvent(event);
 		}
 	}
 
 	protected void getEvents(Map<String, String[]> request, ForecastEntity entity) {
-		if (request.get("eventType") != null) {
+		if (request.get(EVENT_TYPE) != null) {
 			entity.setEvents(new HashSet<>());
-			for (int i = 0; i < request.get("eventType").length; i++) {
+			for (int i = 0; i < request.get(EVENT_TYPE).length; i++) {
 				addEvent(request, entity, i);
 			}
 		}
